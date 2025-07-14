@@ -1,0 +1,23 @@
+site: https://www.energy.gov/eere/buildings/funding-opportunities
+
+program_type: Federal Energy Grant
+
+selectors:
+  title: "h1, .page-title, .funding-title"
+  funding: ".award-amount, .funding-amount, .grant-amount"
+  deadline: ".deadline, .closing-date, .due-date"
+  eligibility: ".eligibility, .applicant-eligibility, .who-can-apply"
+
+deep_links:
+  selector: "a[href*='/funding-opportunities/']"
+  attribute: "href"
+
+auto_pdf_detection: true
+pdf_min_size: 10000
+pdf_max_size: 20000000
+
+headers:
+  User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+
+rate_limit: 2
+timeout: 45

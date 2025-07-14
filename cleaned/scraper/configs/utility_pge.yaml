@@ -1,0 +1,26 @@
+name: "Pacific Gas & Electric (PG&E)"
+description: "PG&E utility rebates and incentives for energy efficiency"
+base_url: "https://www.pge.com"
+start_urls:
+  - "https://www.pge.com/en_US/small-medium-business/save-money-on-your-bill/rebates-incentives/rebates-incentives.page"
+  - "https://www.pge.com/en_US/residential/save-energy-money/savings-solutions-and-rebates/savings-solutions-and-rebates.page"
+
+selectors:
+  program_links: "a[href*='rebate'], a[href*='incentive'], a[href*='program']"
+  title: "h1, h2, .rebate-title"
+  description: ".rebate-description, .program-details, .content"
+  amount: ".rebate-amount, .incentive-amount"
+  deadline: ".expires, .valid-until, .deadline"
+  eligibility: ".eligibility, .requirements"
+  
+rate_limit: 3
+timeout: 20
+
+extraction_rules:
+  amount_patterns:
+    - "\\$[\\d,]+ per \\w+"
+    - "\\$[\\d,]+ rebate"
+    - "up to \\$[\\d,]+"
+  deadline_patterns:
+    - "\\d{1,2}/\\d{1,2}/\\d{4}"
+    - "through \\w+ \\d{4}"

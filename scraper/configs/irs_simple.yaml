@@ -1,0 +1,20 @@
+site: https://www.irs.gov/credits-deductions/residential-clean-energy-credit
+
+program_type: Federal Tax Credit
+
+selectors:
+  title: "h1, .page-title"
+  funding: ".field-body p, .content p"
+  deadline: ".deadline, .expiration"
+  eligibility: ".eligibility, .requirements"
+
+# Enable main page extraction but disable problematic features
+auto_pdf_detection: false
+deep_links:
+  enabled: false
+
+rate_limit: 2
+timeout: 15
+
+headers:
+  User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"

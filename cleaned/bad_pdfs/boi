@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html  lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# ">
+  <head>
+    <meta charset="utf-8" />
+<noscript><style>form.antibot * :not(.antibot-message) { display: none !important; }</style>
+</noscript><script async src="https://www.googletagmanager.com/gtag/js?id=G-7K9S6RGTEK"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};gtag("js", new Date());gtag("set", "developer_id.dMDhkMT", true);gtag("config", "G-7K9S6RGTEK", {"groups":"default","page_placeholder":"PLACEHOLDER_page_location"});</script>
+<meta name="description" content="Beneficial ownership information reporting requirements are now back in effect, with a new deadline of March 21, 2025, for most companies. Prior to March 21, 2025, FinCEN will assess its options for further modifying deadlines. For more information, see our website https://fincen.gov/boi." />
+<link rel="canonical" href="https://www.fincen.gov/boi" />
+<meta property="og:site_name" content="FinCEN.gov" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.fincen.gov/boi" />
+<meta property="og:title" content="FinCEN.gov" />
+<meta property="og:description" content="Beneficial ownership information reporting requirements are now back in effect, with a new deadline of March 21, 2025, for most companies. Prior to March 21, 2025, FinCEN will assess its options for further modifying deadlines. For more information, see our website https://fincen.gov/boi." />
+<meta name="Generator" content="Drupal 10 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/profiles/fincen_gov/themes/fincen_gov_theme/favicon.ico" type="image/vnd.microsoft.icon" />
+
+    <title>Beneficial Ownership Information Reporting | FinCEN.gov</title>
+    <link rel="stylesheet" media="all" href="/sites/default/files/css/css_UUpOYHqDMpWj6N079iCCvek6WjKme9SnqraDQ5PcG5Q.css?delta=0&amp;language=en&amp;theme=fincen_gov_theme&amp;include=eJxNzFEOwjAMA9ALteuRqqwzoSJtpiYb7PYMxgc_lvxkGS-X2h9pGdtKMuGq4VZ7Qc-sey7anYrnlRjp8nh6_Hn8-P_e72hILDqTRPPj_OPAqizIPqibkOtIS7UiVBtGsMMcLc1kCHvF09I3p6bLJngDSPc_qg" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_O4TX_ujI0aC9LTbN_zwDPBM0NBnAOIoI2F68wkneF1Y.css?delta=1&amp;language=en&amp;theme=fincen_gov_theme&amp;include=eJxNzFEOwjAMA9ALteuRqqwzoSJtpiYb7PYMxgc_lvxkGS-X2h9pGdtKMuGq4VZ7Qc-sey7anYrnlRjp8nh6_Hn8-P_e72hILDqTRPPj_OPAqizIPqibkOtIS7UiVBtGsMMcLc1kCHvF09I3p6bLJngDSPc_qg" />
+
+    
+  </head>
+  <body class="path-node page-node-type-site-page has-glyphicons">
+    <a href="#main-content" class="visually-hidden focusable skip-link">
+      Skip to main content
+    </a>
+    
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+              <header class="navbar navbar-default container" id="navbar" role="banner">
+            <div class="navbar-header">
+          <div class="region region-navigation">
+    <section id="block-fincen-gov-theme-usabanner" class="block block-block-content block-block-content8e8e3bfc-e49f-4b50-b4dc-feeff9142e23 clearfix">
+  
+    
+
+      
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item">
+<section aria-label="Official website of the United States government" class="usa-banner">
+<div class="usa-accordion">
+<header class="usa-banner__header usa-banner__header--expanded">
+<div class="usa-banner__inner mq--t">
+<div class="grid-col-auto"><img alt="U.S. flag" class="usa-banner__header-flag" src="/sites/default/files/shared/us_flag_small.png"></div>
+
+<div aria-hidden="false" class="grid-col-fill tablet:grid-col-auto">
+<p class="usa-banner__header-text">An official website of the United States Government</p>
+
+<p class="usa-banner__header-action">Here’s how you know</p>
+</div>
+<button aria-controls="gov-banner" aria-expanded="false" class="usa-accordion__button usa-banner__button"><span class="usa-banner__button-text">Here’s how you know</span></button></div>
+</header>
+
+<div class="usa-banner__content usa-accordion__content" hidden id="gov-banner">
+<div class="grid-row grid-gap-lg">
+<div class="usa-banner__guidance tablet:grid-col-6"><img alt="Dot gov" class="usa-banner__icon usa-media-block__img" role="img" src="/sites/default/files/shared/icon-dot-gov.svg">
+<div class="usa-media-block__body">
+<p><strong>Official websites use .gov </strong><br>
+A <strong>.gov</strong> website belongs to an official government organization in the United States.</p>
+</div>
+</div>
+
+<div class="usa-banner__guidance tablet:grid-col-6"><img alt="Https" class="usa-banner__icon usa-media-block__img" role="img" src="/sites/default/files/shared/icon-https.svg">
+<div class="usa-media-block__body">
+<p><strong>Secure .gov websites use HTTPS </strong><br>
+A <strong>lock</strong> (<span class="icon-lock"><svg aria-labelledby="banner-lock-title banner-lock-description" class="usa-banner__lock-image" height="64" role="img" viewBox="0 0 52 64" width="52">
+<title id="banner-lock-title"></title>
+<desc id="banner-lock-description">A locked padlock</desc><path d="M26 0c10.493 0 19 8.507 19 19v9h3a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V32a4 4 0 0 1 4-4h3v-9C7 8.507 15.507 0 26 0zm0 8c-5.979 0-10.843 4.77-10.996 10.712L15 19v9h22v-9c0-6.075-4.925-11-11-11z" fill="#000000" fill-rule="evenodd" /></svg></span>) or <strong>https://</strong> means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+      
+  </section>
+
+      <a class="logo navbar-btn pull-left" href="/" title="Home" rel="home">
+      <img src="/profiles/fincen_gov/themes/fincen_gov_theme/images/header.svg" alt="Home" />
+    </a>
+      
+  </div>
+
+                          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+              </div>
+
+                    <div id="navbar-collapse" class="navbar-collapse collapse">
+            <div class="region region-navigation-collapsible">
+    <head>
+
+
+</head>
+
+<nav role="navigation" aria-labelledby="block-fincen-gov-theme-main-menu-menu" id="block-fincen-gov-theme-main-menu" class="col-md-8">
+<h2 class="visually-hidden" id="block-fincen-gov-theme-main-menu-menu">508</h2>
+<h2 class="visually-hidden" id="pagination-heading">Pagination</h2>
+
+      
+              <ul block="block-fincen-gov-theme-main-menu" class="menu nav navbar-nav">
+                      <li>
+        <a href="/" data-drupal-link-system-path="&lt;front&gt;">Home</a>
+                  </li>
+                  <li class="expanded dropdown">
+        <a href="/about" class="dropdown-toggle" >About <span class="caret"></span></a>
+                                  <ul block="block-fincen-gov-theme-main-menu" class="menu dropdown-menu">
+                      <li>
+        <a href="/about/mission" data-drupal-link-system-path="node/16">Mission</a>
+                  </li>
+                  <li>
+        <a href="/about/what-we-do" data-drupal-link-system-path="node/19740">What We Do</a>
+                  </li>
+                  <li>
+        <a href="/about/insignia" title="Interpreting FinCEN’s Insignia" data-drupal-link-system-path="node/18933">Insignia</a>
+                  </li>
+                  <li>
+        <a href="/about/office-equal-opportunity" title="Office of Equal Opportunity" data-drupal-link-system-path="node/11">EEO</a>
+                  </li>
+                  <li>
+        <a href="/about/contract-opportunities" title="Contract Opportunities" data-drupal-link-system-path="node/10">Contract Opportunities</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li class="expanded dropdown">
+        <a href="/resources" class="dropdown-toggle" >Resources <span class="caret"></span></a>
+                                  <ul block="block-fincen-gov-theme-main-menu" class="menu dropdown-menu">
+                      <li>
+        <a href="/resources/advisoriesbulletinsfact-sheets" title="Alerts/Advisories/Notices/Bulletins/Fact Sheets" data-drupal-link-system-path="node/18822">Alerts/Advisories/Notices/Bulletins/Fact Sheets</a>
+                  </li>
+                  <li>
+        <a href="/resources/filing-information" title="Filing Information" data-drupal-link-system-path="node/13680">Bank Secrecy Act Filing Information</a>
+                  </li>
+                  <li>
+        <a href="/boi" data-drupal-link-system-path="node/19407" class="is-active" aria-current="page">Beneficial Ownership Information Reporting</a>
+                  </li>
+                  <li>
+        <a href="/coronavirus" title="COVID-19 Information" data-drupal-link-system-path="node/19212">COVID-19 Information</a>
+                  </li>
+                  <li>
+        <a href="/resources/financial-trend-analyses" data-drupal-link-system-path="node/19454">Financial Trend Analyses</a>
+                  </li>
+                  <li>
+        <a href="/resources/financial-institutions" title="Financial Institutions" data-drupal-link-system-path="node/215">Financial Institutions</a>
+                  </li>
+                  <li>
+        <a href="/resources/financial-crime-enforcement-network-exchange" title="FinCEN Exchange" data-drupal-link-system-path="node/18878">FinCEN Exchange</a>
+                  </li>
+                  <li>
+        <a href="/resources/innovation" title="FinCEN&#039;s Innovation Page" data-drupal-link-system-path="node/19003">Innovation</a>
+                  </li>
+                  <li>
+        <a href="/resources/international-programs" title="International Home" data-drupal-link-system-path="node/115">International</a>
+                  </li>
+                  <li>
+        <a href="/resources/law-enforcement-overview" title="Law Enforcement" data-drupal-link-system-path="node/205">Law Enforcement</a>
+                  </li>
+                  <li>
+        <a href="/resources/fincen-combats-ransomware" data-drupal-link-system-path="node/19388">Ransomware</a>
+                  </li>
+                  <li>
+        <a href="/reports/sar-stats" title="SAR Analytics" data-drupal-link-system-path="node/7483">SAR Stats</a>
+                  </li>
+                  <li>
+        <a href="/resources/scams" data-drupal-link-system-path="node/19748">Scams</a>
+                  </li>
+                  <li>
+        <a href="/resources/fincens-legal-authorities" title="Statutes and Regulations" data-drupal-link-system-path="node/148">Statutes and Regulations</a>
+                  </li>
+                  <li>
+        <a href="/resources/suspicious-activity-report-sar-advisory-key-terms" data-drupal-link-system-path="node/188">Suspicious Activity Report (SAR) Advisory Key Terms</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li class="expanded dropdown">
+        <a href="/news-room" class="dropdown-toggle" >Newsroom <span class="caret"></span></a>
+                                  <ul block="block-fincen-gov-theme-main-menu" class="menu dropdown-menu">
+                      <li>
+        <a href="/news-room/news" data-drupal-link-system-path="news-room/news">News</a>
+                  </li>
+                  <li>
+        <a href="/newsroom/readouts" data-drupal-link-system-path="node/19526">Readouts</a>
+                  </li>
+                  <li>
+        <a href="/news-room/speeches" title="Speeches" data-drupal-link-system-path="news-room/speeches">Speeches</a>
+                  </li>
+                  <li>
+        <a href="/news-room/testimony" title="Testimony" data-drupal-link-system-path="news-room/testimony">Testimony</a>
+                  </li>
+                  <li>
+        <a href="/news-room/enforcement-actions" data-drupal-link-system-path="news-room/enforcement-actions">Enforcement Actions</a>
+                  </li>
+                  <li>
+        <a href="/news-room/sar-technical-bulletins" data-drupal-link-system-path="news-room/sar-technical-bulletins">SAR Technical Bulletins</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li class="expanded dropdown">
+        <a href="/cutting-edge-opportunities" class="dropdown-toggle" >Careers <span class="caret"></span></a>
+                                  <ul block="block-fincen-gov-theme-main-menu" class="menu dropdown-menu">
+                      <li>
+        <a href="/careers/core-career-descriptions" data-drupal-link-system-path="node/10681">Core Career Descriptions</a>
+                  </li>
+                  <li>
+        <a href="/careers/quality-work-life" title="Quality of Work Life" data-drupal-link-system-path="node/203">Quality of Work Life</a>
+                  </li>
+                  <li>
+        <a href="/current-openings" title="Current Openings" data-drupal-link-system-path="node/18543">Current Openings</a>
+                  </li>
+        </ul>
+  
+            </li>
+                  <li>
+        <a href="/resources/advisoriesbulletinsfact-sheets/advisories" data-drupal-link-system-path="resources/advisoriesbulletinsfact-sheets/advisories">Advisories</a>
+                  </li>
+        </ul>
+  
+
+
+
+  </nav>
+<section id="block-fincen-gov-theme-searchapi" class="block block-block-content block-block-content0a6e4707-367a-4f90-a515-a99dca7ce9ed clearfix">
+  
+    
+
+      
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><style type="text/css">.search-box{ 
+    display: inline-flex;
+    margin: 8px 0px;
+  z-index: 2;
+  width: 100%;
+  }
+
+
+  #block-fincen-gov-theme-searchapi {
+  width: 80%;
+  margin: 10px auto;
+  }
+  
+  .navbar-header {
+      z-index: 1;
+      position: relative;
+  }
+  
+  #block-fincen-gov-theme-main-menu {
+  z-index: 1;
+  }
+  
+  .search-text {
+      border-radius: 5px 0px 0px 5px !important;
+  }
+  
+  .search-btn {
+    border-radius: 0px 5px 5px 0px !important;
+    top: 0px;
+    width: 35px;
+font-size:0px;
+
+    background: url('/sites/default/files/shared/glyphicons-halflings-white.png') #286090 no-repeat;
+    background-size: 550px;
+    background-position: -48px 8px;
+    image-rendering: unset;
+  }
+  
+  
+  .search-btn:before {
+      content: "\e003";
+  }
+  
+  
+  
+  @media only screen and (min-width: 768px) {
+  .search-box{ 
+  max-width:300px;
+  }
+  #block-fincen-gov-theme-searchapi {
+      width: inherit;
+      margin: inherit;
+  }
+  }
+  
+  @media only screen and (min-width: 1250px) {
+  .search-box{ 
+  max-width:350px;
+  }
+  #block-fincen-gov-theme-searchapi {
+      width: inherit;
+      margin: inherit;
+  }
+  }
+</style>
+<form accept-charset="UTF-8" action="https://search.usa.gov/search" class="input-group search-box" id="search_form" method="get" target="blank"><input autocomplete="off" id="affiliate" limit="2" name="affiliate" type="hidden" value="fincen"> <label for="query" hidden>Enter Search Term(s):</label> <input name="publication_date" type="hidden" value="latest"> <input autocomplete="off" class="usagov-search-autocomplete form-search form-control search-text" id="query" name="query" placeholder="Search" type="text"> <label for="search-btn" hidden>Search Button</label> <input aria-label="Search Button" class="icon glyphicon glyphicon-search button btn-primary btn icon-only search-btn" data-disable-with="Search" id="search-btn" type="submit" value>&nbsp;</form>
+<script>
+//<![CDATA[
+      var usasearch_config = { siteHandle:"fincen" };
+
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "//search.usa.gov/javascripts/remote.loader.js";
+      document.getElementsByTagName("head")[0].appendChild(script);
+
+//]]>
+
+</script></div>
+      
+  </section>
+
+
+  </div>
+
+        </div>
+                </header>
+  
+  <div role="main" class="main-container container js-quickedit-main-content">
+    <div class="row">
+
+            
+                              <aside class="col-sm-3" role="complementary">
+              <div class="region region-sidebar-first">
+    <nav role="navigation" aria-labelledby="block-sidebar-menu-menu" id="block-sidebar-menu">
+            
+  <h2 class="visually-hidden" id="block-sidebar-menu-menu">Sidebar Menu</h2>
+  
+
+        
+		<ul class="menu"> 
+    	        	         		                
+          	         		                
+          	         		                
+          	         		                
+          	         		                
+          	         		                
+          	
+  	
+		
+								
+								
+													<li class="expanded active-trail">
+								<a href="/resources" data-drupal-link-system-path="node/5883">Resources</a>
+																			<ul class="menu"> 
+    	
+  	<!--	<ul class="menu"> -->
+  
+  	
+		
+													<li>
+								<a href="/resources/advisoriesbulletinsfact-sheets" title="Alerts/Advisories/Notices/Bulletins/Fact Sheets" data-drupal-link-system-path="node/18822">Alerts/Advisories/Notices/Bulletins/Fact Sheets</a>
+															</li>
+					
+													<li>
+								<a href="/resources/filing-information" title="Filing Information" data-drupal-link-system-path="node/13680">Bank Secrecy Act Filing Information</a>
+															</li>
+					
+													<li class="active-trail">
+								<a href="/boi" data-drupal-link-system-path="node/19407" class="is-active" aria-current="page">Beneficial Ownership Information Reporting</a>
+															</li>
+					
+													<li>
+								<a href="/coronavirus" title="COVID-19 Information" data-drupal-link-system-path="node/19212">COVID-19 Information</a>
+															</li>
+					
+													<li>
+								<a href="/resources/financial-trend-analyses" data-drupal-link-system-path="node/19454">Financial Trend Analyses</a>
+															</li>
+					
+													<li class="collapsed">
+								<a href="/resources/financial-institutions" title="Financial Institutions" data-drupal-link-system-path="node/215">Financial Institutions</a>
+															</li>
+					
+													<li class="collapsed">
+								<a href="/resources/financial-crime-enforcement-network-exchange" title="FinCEN Exchange" data-drupal-link-system-path="node/18878">FinCEN Exchange</a>
+															</li>
+					
+													<li class="collapsed">
+								<a href="/resources/innovation" title="FinCEN&#039;s Innovation Page" data-drupal-link-system-path="node/19003">Innovation</a>
+															</li>
+					
+													<li class="collapsed">
+								<a href="/resources/international-programs" title="International Home" data-drupal-link-system-path="node/115">International</a>
+															</li>
+					
+													<li class="collapsed">
+								<a href="/resources/law-enforcement-overview" title="Law Enforcement" data-drupal-link-system-path="node/205">Law Enforcement</a>
+															</li>
+					
+													<li>
+								<a href="/resources/fincen-combats-ransomware" data-drupal-link-system-path="node/19388">Ransomware</a>
+															</li>
+					
+													<li>
+								<a href="/reports/sar-stats" title="SAR Analytics" data-drupal-link-system-path="node/7483">SAR Stats</a>
+															</li>
+					
+													<li>
+								<a href="/resources/scams" data-drupal-link-system-path="node/19748">Scams</a>
+															</li>
+					
+													<li class="collapsed">
+								<a href="/resources/fincens-legal-authorities" title="Statutes and Regulations" data-drupal-link-system-path="node/148">Statutes and Regulations</a>
+															</li>
+					
+													<li>
+								<a href="/resources/suspicious-activity-report-sar-advisory-key-terms" data-drupal-link-system-path="node/188">Suspicious Activity Report (SAR) Advisory Key Terms</a>
+															</li>
+					  					</ul>
+	
+															</li>
+					
+								
+								
+								  					</ul>
+	
+
+
+  </nav>
+<section class="views-element-container block block-views block-views-blockcontent-type-site-page-sidebar-block clearfix" id="block-views-block-content-type-site-page-sidebar-block">
+  
+    
+
+      <div block="block-views-block-content-type-site-page-sidebar-block" class="form-group"><div class="view view-content-type-site-page view-id-content_type_site_page view-display-id-sidebar_block js-view-dom-id-b8b313d1ec4fc4d0c794a10223be3f5b0959993c3631d72b32d032ee73205df4">
+  
+    
+      
+      <div class="view-content">
+          <div class="views-row"><div class="views-field views-field-field-content-sidebar"><div class="field-content">
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><p><a href="/boi/small-business-resources">Small Business Resources</a></p>
+</div>
+      </div></div></div>
+    <div class="views-row"><div class="views-field views-field-field-content-sidebar"><div class="field-content">
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><p><a href="/boi/Reference-Materials">Reference Materials</a></p>
+</div>
+      </div></div></div>
+    <div class="views-row"><div class="views-field views-field-field-content-sidebar"><div class="field-content">
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><p><a href="/boi/newsroom">BOI Newsroom</a></p>
+</div>
+      </div></div></div>
+    <div class="views-row"><div class="views-field views-field-field-content-sidebar"><div class="field-content">
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><div class="FinUpdates" style="background: rgb(222,229,241); padding: 25px;">
+<p><b>Get FinCEN News Updates</b></p>
+
+<p>Stay Informed with<br>
+FinCEN Updates</p>
+
+<div class="more-link form-group CustomBlockBtn"><a href="https://service.govdelivery.com/accounts/USFINCEN/subscriber/new" target="_blank">Subscribe</a></div>
+</div>
+</div>
+      </div></div></div>
+    <div class="views-row"><div class="views-field views-field-field-content-sidebar"><div class="field-content">
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><div class="FinUpdates" style="background: rgb(222,229,241); padding: 25px;">
+<p><b>Beneficial Ownership Questions?</b></p>
+
+<div style="display: flex; width: 100%; margin-top: 15px">
+<div class="more-link form-group CustomBlockBtn"><a href="/contact">Contact FinCEN</a></div>
+</div>
+</div>
+</div>
+      </div></div></div>
+    <div class="views-row"><div class="views-field views-field-field-content-sidebar"><div class="field-content">
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><p><a href="/what-we-do">About FinCEN</a></p></div>
+      </div></div></div>
+
+    </div>
+  
+          </div>
+</div>
+
+  </section>
+
+
+  </div>
+
+          </aside>
+              
+                  <section class="col-sm-9">
+
+                                      <div class="highlighted">  <div class="region region-highlighted">
+    <div data-drupal-messages-fallback class="hidden"></div>
+
+  </div>
+</div>
+                  
+                
+                          <a id="main-content"></a>
+            <div class="region region-content">
+        <h1 class="page-header">
+<span>Beneficial Ownership Information Reporting</span>
+</h1>
+
+<section id="block-fincen-gov-theme-boichatbot" class="block block-block-content block-block-content835b009b-954d-40a4-bba4-586d29407ce1 clearfix">
+  
+    
+
+      
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><p><script type="text/javascript">
+
+    // javascript chatbot begins
+    function openChatbotWindow() {
+
+        var urlLinkSrc = 'https://contact-center.fincen.gov';
+        // set the width and height of the new window popout
+        const width = 480;
+        const height = 640;
+        // set the width and height of the new window popout
+        
+        // center the new window on the middle of the screen and take into account dual monitors
+        const left = window.screenX + (window.innerWidth / 2 - width / 2);
+        const top = window.screenY + (window.innerHeight / 2 - height / 2);
+        // center the new window on the middle of the screen and take into account dual monitors
+        
+        // put the url here
+        window.open(urlLinkSrc, 'Chatbot', `width=${width},height=${height},left=${left},top=${top}`);
+        // put the url here
+    }
+    
+           
+        setTimeout(function () {
+            // const chatbotC = document.createElement('div');
+            // chatbotC.setAttribute('class', 'chatbot-circle');
+	        // chatbotC.setAttribute('tabindex', '0');
+            // chatbotC.setAttribute('title', 'Need Help? Chat with us.');
+            // chatbotC.setAttribute('role', 'button');
+            // chatbotC.setAttribute('aria-label', 'Chat with us');
+
+            // document.getElementById('edit-actions').appendChild(chatbotC);
+            var chatClick = document.getElementsByClassName('chatbot-circle');
+            var chatClickBlock = document.getElementsByClassName('chatbot-block');
+
+            for (var i = 0; i < chatClick.length; i++) {
+                    chatClick[i].onclick = function() {
+                        openChatbotWindow();
+                    };
+                }
+
+                for (var i = 0; i < chatClickBlock.length; i++) {
+                    chatClickBlock[i].onclick = function() {
+                        openChatbotWindow();
+                    };
+                }
+        }, 2000);
+    
+    // javascript chatbot ends
+    </script>
+<style type="text/css">.chatbot-circle {
+        position: fixed;
+        height: 50px;
+        width: 50px;
+        overflow: hidden;
+        right: 10px;
+        bottom: 10px;
+        background: #046B99;
+        background-repeat: no-repeat;
+        background-position: center;
+        border: 2px #fff solid;
+        display: block;
+        cursor: pointer;
+        border-radius: 50%;
+
+    }
+
+    .chatbot-circle:hover {
+    background-color: #1a4480;
+}
+
+.chatbot-circle svg {
+   fill: white;
+}
+</style>
+</p>
+</div>
+      
+  </section>
+
+<div class="clearfix row bs-2col node node--type-site-page node--view-mode-full">
+  
+
+  
+    <div class="col-sm-10 bs-region bs-region--right">
+    
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><style type="text/css">#block-sidebar-menu {
+    display: none !important;
+}
+
+iframe {
+position: relative;
+margin:  10px auto;
+display: block;
+}
+
+/* New */
+
+.ui-accordion .ui-accordion-header {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    margin: 2px 0 0 0;
+    padding: 0.5em 0.5em 0.5em 0.7em;
+    font-size: 100%;
+}
+
+.ui-accordion-header:hover {
+    border: 1px solid #cccccc/*{borderColorHover}*/;
+    background: #ededed/*{bgColorHover}*/ /*{bgImgUrlHover}*/ /*{bgHoverXPos}*/ /*{bgHoverYPos}*/ /*{bgHoverRepeat}*/;
+    font-weight: normal/*{fwDefault}*/;
+    color: #2b2b2b/*{fcHover}*/;
+}
+
+.ui-accordion .ui-accordion-content {
+    padding: 1em 2.2em;
+    border-top: 0;
+    overflow: auto;
+}
+
+.ui-accordion .ui-accordion-content {
+    height: auto !important;
+    display: none;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+    border-top-right-radius: 3px/*{cornerRadius}*/;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-bottom-right-radius: 3px/*{cornerRadius}*/;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+    border-bottom-left-radius: 3px/*{cornerRadius}*/;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border: 1px solid #c5c5c5/*{borderColorDefault}*/;
+    background: #f6f6f6/*{bgColorDefault}*/ /*{bgImgUrlDefault}*/ /*{bgDefaultXPos}*/ /*{bgDefaultYPos}*/ /*{bgDefaultRepeat}*/;
+    font-weight: normal/*{fwDefault}*/;
+    color: #454545/*{fcDefault}*/;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #003eff !important/*{borderColorActive}*/;
+    background: #007fff !important/*{bgColorActive}*/ /*{bgImgUrlActive}*/ /*{bgActiveXPos}*/ /*{bgActiveYPos}*/ /*{bgActiveRepeat}*/;
+    font-weight: normal/*{fwDefault}*/;
+    color: #ffffff !important/*{fcActive}*/;
+}
+
+/* New */
+
+
+.page-header {
+    display: none !important;
+    }
+    .views-row:nth-child(1),
+    .views-row:nth-child(2),
+    .views-row:nth-child(3)
+    /* .views-row:nth-child(4) */
+     {
+    background-color: #3379b7!important;
+    color: #fff !important;
+    }
+    
+    .views-row a:nth-child(1),
+    .views-row a:nth-child(2),
+    .views-row a:nth-child(3)
+    /* .views-row a:nth-child(4) */
+     {
+    color: #fff !important;
+    }
+
+    .views-row a:hover:nth-child(1),
+    .views-row a:hover:nth-child(2),
+    .views-row a:hover:nth-child(3)
+    /* .views-row a:hover:nth-child(4) */
+     {
+    color: #929497 !important;
+    text-decoration: none !important;
+    }
+
+    .views-row a:hover:last-child,
+    .views-row a:last-child {
+        color: inherit !important;
+        text-decoration:inherit !important;
+    }
+
+    .boi-sub-1 a,
+.boi-sub-2 p a {
+    font-weight: bold;
+}
+
+.boi-flex-a {
+    display: flex !important;
+}
+
+.boi-flex,
+.boi-sub-1,
+.boi-sub-2 {
+    display: flex;
+    margin: 10px auto;
+}
+
+.boi-img-2 {
+    width: 100%;
+}
+
+.boi-sub-1-icons {
+    width: 50px;
+    margin: 0 10px;
+}
+
+.boi-sub-2-icons {
+    width: 100%;
+    height: 100%;
+}
+
+.boi-sub-2 p,
+.boi-sub-2-icons {
+margin: 10px auto;
+text-align: center;
+}
+
+.boi-sub-1 p a {
+    width: 150px;
+    position: relative;
+    display: block; 
+}
+
+.boi-flex {
+ flex-direction: column;
+}
+
+.boi-blue-line {
+    position: relative;
+    width: 100%;
+    background-color: #046B99;
+    margin: 15px 0;
+    height: 2px;
+}
+
+.boi-sub-1 {
+    flex-direction: row;
+}
+
+.boi-sub-1 p {
+    color: #046B99;
+}
+
+.boi-sub-2 p a {
+    /* color: #ffffff; */
+    color: #3379b7;
+    text-decoration: none;
+}
+
+.boi-red-block {
+    margin: 15px 0;
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 15px;
+}
+
+
+
+.boi-sub-2 {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #3379b7; */
+    /*background-color: #ffffff;*/
+    /*border: 3px #3379b7 solid;*/
+    overflow: hidden;
+    margin: 10px 5px;
+   /* padding: 10px;*/
+    width: 100%;
+
+}
+
+.titles {
+        font-size: 36px;
+        font-size: bold;
+    }
+    
+
+.boi-red-text {
+    color: red;
+}
+
+
+.boi-grey-text,
+.boi-grey-text a {
+    color: #a8aaad !important;
+    /* font-size: 13px !important; */
+    /* width: 85% !important; */
+    display: block;
+    /* line-height: 15px; */
+}
+
+.boi-grey-text a {
+color: #3379b7!important;
+}
+
+.boi-blue-text {
+    color: #046B99;
+}
+
+.boi-flex-blocker {
+    position: relative;
+}
+
+.click-title.blue {
+ color: #3379b7 !important;
+}
+
+.click-title,
+.click-1 a,
+.click-2 a,
+.click-3 a {
+    color: #fff;
+    font-size: 20px;
+}
+
+.click-1 a,
+.click-2 a,
+.click-3 a {
+    line-height: 21px;
+}
+
+
+.click-1,
+.click-2,
+.click-3 {
+ display: block;
+ position: absolute;
+ width: 100%;
+ height: 25px;
+ left: 37px;
+ /* cursor: pointer; */
+}
+
+.click-title {
+    display: block;
+    position: absolute;
+    width: 100%; 
+    top: 0px;
+    left: 10px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+
+.click-1 { 
+    top:52px;
+    /* background-color: red; */
+}
+.click-2 { 
+    top:85px;
+    /* background-color: blue; */
+}
+.click-3 { 
+    top:120px;
+    /* background-color: yellow; */
+}
+
+.boi-flex {
+     display: flex;
+     flex-direction: column;
+     margin-bottom: 15px;
+}
+
+.boi-img {
+height: 50px;
+width: 50px;
+margin-right: 25px;
+}
+
+.click-2.grey.boi-grey-text {
+    top: 105px;
+}
+
+
+.boi-img-alert {
+    width: 15px;
+    height: 14px; 
+    /*width: 25px;
+    height: 24px;*/
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.details-btn {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.details-info {
+    overflow: hidden;
+    display: none;
+    margin-top: 15px;
+}
+
+.details-arrow-up,
+.details-arrow-down {
+    left: 5px;
+    height: 8px;
+    width: 8px;
+    position: relative;
+    display: block;
+    top: 5px;
+}
+
+.details-arrow-up:after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-bottom: 4px solid #a94442;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    top: 0px;
+}
+
+
+.details-arrow-down:after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-top: 4px solid #a94442;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    top: 0px;
+}
+
+@media only screen and (min-width: 768px) {
+
+    .boi-flex {
+        flex-direction: row;
+    }
+
+.click-1 { 
+    top:50px;
+}
+.click-2 { 
+    top:82px;
+}
+.click-3 { 
+    top:115px;
+}
+
+.click-1.grey { 
+    top:49px;
+}
+.click-2.grey { 
+    top:108px;
+}
+
+}
+</style>
+<p><img alt="BOI Hero Banner" class="header-image" src="/sites/default/files/shared/BOI_Logo_Header.png" title="BOI Hero Banner"></p>
+
+<p style="border: #000 solid 1px; padding: 5px;"><strong><span style="color: red;">ALERT</span></strong> [Updated March 26, 2025]: All entities created in the United States — including those previously known as “domestic reporting companies” — and their beneficial owners are now exempt from the requirement to report beneficial ownership information (BOI) to FinCEN. Existing foreign companies that must report their beneficial ownership information have at least an additional 30 days from March 26, 2025—until April 25, 2025, for most companies—to do so. For more information, see <a href="/news/news-releases/fincen-removes-beneficial-ownership-reporting-requirements-us-companies-and-us">press release</a> and <a href="#alert-1">alert</a>.</p>
+
+<div class="boi-flex">
+<div class="boi-flex-blocker"><img alt="Prepare" class="boi-img-2" src="/sites/default/files/shared/Prepare_Button_Background_with_Arrows.png" title="Prepare">
+<div class="click-title">Prepare</div>
+
+<div class="click-1"><a aria-label="See more of How do I file?" href="/boi-faqs#B_1">How do I file?</a></div>
+
+<div class="click-2"><a aria-label="See more of Do I qualify for an exemption?" href="/boi-faqs#C_2">Do I qualify for an exemption?</a></div>
+
+<div class="click-3"><a aria-label="See more of How do I get a FinCEN ID?" href="/boi-faqs#M_3">How do I get a FinCEN ID?</a></div>
+</div>
+<!-- Other One -->
+
+<div class="boi-flex-blocker"><img alt="File" class="boi-img-2" src="/sites/default/files/shared/File_Button_Background_Arrows.png" title="File">
+<div class="click-title blue">File</div>
+
+<div class="click-1 grey boi-grey-text"><a aria-label="File a report using the BOI E-Filing System" href="https://boiefiling.fincen.gov">File a report using the BOI E-Filing System</a></div>
+
+<div class="click-2 grey boi-grey-text"><a aria-label="Create a FinCEN ID (optional)." href="https://fincenid.fincen.gov">Create a FinCEN ID (optional)</a></div>
+<!-- <div class="click-3"><a aria-label="See more of How do I get a FinCEN ID?" href="/boi-faqs#M_3">How do I get a FinCEN ID?</a></div>--></div>
+<!-- <div class="boi-flex-blocker"><img alt="File" class="boi-img-2" src="/sites/default/files/shared/File_Button_Background_Arrow_Text.png" title="File" /></div> --></div>
+
+<div class="boi-flex">
+<div class="boi-sub-1"><a aria-label="See more of FAQs" href="/boi-faqs"><img alt="FAQ" class="boi-sub-1-icons" src="/sites/default/files/shared/Blue_FAQ.png" title="FAQ"> </a>
+
+<p><a aria-label="See more of FAQs" href="/boi-faqs">Need More Information?<br>
+View our FAQ page.</a></p>
+</div>
+
+<div class="boi-sub-1"><a aria-label="Click to Subscribe" href="https://service.govdelivery.com/accounts/USFINCEN/subscriber/new" target="_blank"><img alt="News" class="boi-sub-1-icons" src="/sites/default/files/shared/Blue_Envelope_Icon.png" title="News"> </a>
+
+<p><a aria-label="Click to Subscribe" href="https://service.govdelivery.com/accounts/USFINCEN/subscriber/new" target="_blank">Stay Informed.<br>
+Subscribe to FinCEN<br>
+Updates.</a></p>
+</div>
+</div>
+<!--<div class="boi-flex" style=" align-items: center;"><img alt="Red Alert" class="boi-img-alert" src="/sites/default/files/shared/Red_Alert_Icon-1.png" title="Red Alert" />
+    <p><font color="red"><strong>Alerts</strong></font></p>
+</div> --><!-- <img alt="Red Alert" class="boi-img-alert" src="/sites/default/files/shared/Red_Alert_Icon-1.png" title="Red Alert" /> --><!-- New -->
+
+<div class="ui-accordion"><!-- Accordion 1 -->
+<div class="boi-flex-a ui-accordion-header ui-state-default" id="alert-1" tabindex="0"><img alt="Red Alert" class="boi-img-alert" src="/sites/default/files/shared/Red_Alert_Icon-1.png" title="Red Alert">
+<p><strong>Alert:</strong> FinCEN Removes Beneficial Ownership Reporting Requirements for U.S. Companies and U.S. Persons, Sets New Deadlines for Foreign Companies</p>
+</div>
+
+<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" tabindex="0">
+<p>Today, the Financial Crimes Enforcement Network (FinCEN) <a href="/news/news-releases/fincen-removes-beneficial-ownership-reporting-requirements-us-companies-and-us">announced</a> that, consistent with the Department of the Treasury’s March 2, 2025, <a href="https://home.treasury.gov/news/press-releases/sb0038">announcement</a>, it is issuing an <a href="/resources/statutes-regulations/federal-register-notices/beneficial-ownership-information-3">interim final rule</a> that removes the requirement for U.S. companies and U.S. persons to report beneficial ownership information (BOI) to FinCEN under the Corporate Transparency Act.</p>
+
+<p>In that interim final rule, FinCEN revises the regulatory definition of “reporting company” to mean only those entities that are formed under the law of a foreign country and that have registered to do business in any U.S. State or Tribal jurisdiction by the filing of a document with a secretary of state or similar office (formerly known as “foreign reporting companies”). FinCEN also exempts entities previously known as “domestic reporting companies” from BOI reporting requirements. Thus, through this interim final rule, all entities created in the United States — including those previously known as “domestic reporting companies” — and their beneficial owners will be exempt from the requirement to report BOI to FinCEN.</p>
+
+<p>However, foreign entities that meet the new definition of a “reporting company” and do not qualify for an exemption from the reporting requirements must report their BOI to FinCEN under new deadlines. These foreign entities will not be required to report any U.S. persons as beneficial owners, and U.S. persons will not be required to report BOI with respect to any such entity for which they are a beneficial owner.</p>
+
+<p>Upon the publication of the interim final rule, the following deadlines apply for foreign entities that are reporting companies:</p>
+
+<ul>
+	<li>Reporting companies registered to do business in the United States before the date of publication of the interim final rule must file BOI reports no later than 30 days from that date.</li>
+	<li>Reporting companies registered to do business in the United States on or after the date of publication of the interim final rule have 30 calendar days to file an initial BOI report after receiving notice that their registration is effective.</li>
+</ul>
+
+<p>In accord with its prior notices and the Department of the Treasury’s March 2, 2025, announcement, FinCEN is applying all exemptions and deadline extensions in the interim final rule as of today, in advance of formal publication in the Federal Register, and will further not enforce any beneficial ownership reporting penalties or fines against U.S. citizens or domestic reporting companies or their beneficial owners.</p>
+</div>
+<!-- Accordion 1 --><!-- Accordion 1 --><!-- Accordion 2 -->
+
+<div class="boi-flex-a ui-accordion-header ui-state-default" tabindex="0"><img alt="Red Alert" class="boi-img-alert" src="/sites/default/files/shared/Red_Alert_Icon-1.png" title="Red Alert">
+<p><strong>Alert:</strong> FinCEN has issued five Notices extending the filing deadlines to submit BOI reports for certain reporting companies in response to Hurricane Milton, Hurricane Helene, Hurricane Debby, Hurricane Beryl, and Hurricane Francine.</p>
+</div>
+
+<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" tabindex="0">
+<p>As further explained in the Notices, to qualify, a reporting company must have a BOI reporting deadline falling within the period beginning one day before the date the specified disaster began—as indicated by the Federal Emergency Management Agency (FEMA)—and ending 90 days after that date. (Where multiple disasters with different starting dates are related to the same storm, FinCEN used the earliest of these dates.) A reporting company also must be located in an area that is designated both by FEMA as qualifying for individual or public assistance and by the Internal Revenue Service as eligible for tax filing relief. Please refer to the applicable Notice for specific information.</p>
+
+<ul>
+	<li><a href="/sites/default/files/shared/FinCEN-BOI-Notice-Beryl-508FINAL.pdf">NOTICE: FinCEN Provides BOI Reporting Relief to Victims of Hurricane Beryl</a></li>
+	<li><a href="/sites/default/files/shared/FinCEN-BOI-Notice-Debby-508FINAL.pdf">NOTICE: FinCEN Provides BOI Reporting Relief to Victims of Hurricane Debby</a></li>
+	<li><a href="/sites/default/files/shared/FinCEN-BOI-Notice-Francine-508FINAL.pdf">NOTICE: FinCEN Provides BOI Reporting Relief to Victims of Hurricane Francine</a></li>
+	<li><a href="/sites/default/files/shared/FinCEN-BOI-Notice-Helene-508FINAL.pdf">NOTICE: FinCEN Provides BOI Reporting Relief to Victims of Hurricane Helene</a></li>
+	<li><a href="/sites/default/files/shared/FinCEN-BOI-Notice-Milton-508FINAL.pdf">NOTICE: FinCEN Provides BOI Reporting Relief to Victims of Hurricane Milton</a></li>
+</ul>
+
+<p><em>All entities created in the United States — including those previously known as “domestic reporting companies” — and their beneficial owners are now exempt from the requirement to report beneficial ownership information (BOI) to the Financial Crimes Enforcement Network (FinCEN) under the Corporate Transparency Act (CTA).</em></p>
+
+<p><em>FinCEN published an interim final rule on March 26, 2025, that revised the definition of “reporting company” in its regulations implementing the CTA to mean only those entities formed under the law of a foreign country that have registered to do business in any U.S. State or tribal jurisdiction by the filing of a document with a secretary of state or similar office (formerly known as “foreign reporting companies”). FinCEN also formally exempted entities previously known as “domestic reporting companies” from the CTA’s reporting requirements.</em></p>
+
+<p><em>Reporting companies now also do not need to report the BOI of any U.S. persons, and U.S. persons are exempt from having to provide BOI with respect to any reporting company for which they are a beneficial owner.</em></p>
+
+<p><em>Foreign entities that meet the new definition of a “reporting company” and do not qualify for an exemption from the reporting requirements are required to file with FinCEN under new deadlines:</em></p>
+
+<ul>
+	<li><em>Reporting companies registered to do business in the United States before March 26, 2025, must file BOI reports by April 25, 2025.</em></li>
+	<li><em>Reporting companies registered to do business in the United States on or after March 26, 2025, have 30 calendar days to file an initial BOI report after receiving notice that their registration is effective.</em></li>
+</ul>
+
+<p><em>The guidance issued below has not yet been fully updated to account for this new interim final rule. Thus, any guidance here indicating that U.S companies, or their beneficial owners, must report BOI to FinCEN; that BOI must be reported for U.S. persons; or that reporting companies must report BOI before April 25, 2025, should be disregarded.</em></p>
+</div>
+<!-- Accordion 2 --><!-- Accordion 4 -->
+
+<div class="boi-flex-a ui-accordion-header ui-state-default" tabindex="0"><img alt="Red Alert" class="boi-img-alert" src="/sites/default/files/shared/Red_Alert_Icon-1.png" title="Red Alert">
+<p><strong>Alert:</strong> FinCEN has learned of fraudulent attempts to solicit information from individuals and entities who may be subject to reporting requirements under the Corporate Transparency Act.</p>
+</div>
+
+<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" tabindex="0">
+<p>These fraudulent scams may include:</p>
+
+<ul>
+	<li>Correspondence that references a “Form 4022” or “Form 5102” is fraudulent. FinCEN does not have a “Form 4022” or a “Form 5102.” Do not send BOI to anyone by completing these forms.</li>
+	<li>Correspondence or other documents referencing a “US Business Regulations Dept.” This correspondence is fraudulent; there is no government entity by this name.</li>
+</ul>
+
+<p>Please be on the lookout for anything that may indicate correspondence you receive is fraudulent. For example, be cautious of any of the following:</p>
+
+<ul>
+	<li>Correspondence requesting payment. There is NO fee to file BOI directly with FinCEN. FinCEN does NOT send correspondence requesting payment to file BOI. Do not send money in response to any mailing regarding filing your beneficial ownership information report that claims to be from FinCEN or another government agency.</li>
+	<li>Correspondence that asks the recipient to click on a suspicious URL or to scan a suspicious QR code. Those e-mails or letters could be fraudulent. Do not click any suspicious links or attachments or scan any suspicious QR codes.</li>
+	<li>Correspondence regarding penalties. FinCEN does NOT send initial correspondence regarding CTA penalties via e-mail or over the phone. Do not submit payments via phone, mail, or websites as requests/directions to do so are fraudulent.</li>
+</ul>
+
+<p>Use caution when you receive correspondence from an unknown party. Verify the sender. Never give personal information, including regarding beneficial ownership to anyone unless you trust the other party.</p>
+
+<p>FinCEN issued a public alert on December 18, 2024, to raise awareness of fraud schemes abusing FinCEN’s name, insignia, and authorities for financial gain—including scams that exploit beneficial ownership reporting. Learn more about these schemes and where to report them <a href="/sites/default/files/2024-12/Alert-FinCEN-Scams-FINAL508.pdf">here</a>.</p>
+</div>
+<!-- Accordion 4 --><!-- Accordion 5 -->
+
+<div class="boi-flex-a ui-accordion-header ui-state-default" tabindex="0"><img alt="Red Alert" class="boi-img-alert" src="/sites/default/files/shared/Red_Alert_Icon-1.png" title="Red Alert">
+<p><strong>Alert:</strong> Ongoing Litigation – <em>National Small Business United v. Yellen,</em> No. 5:22-cv-01448 (N.D. Ala.) [Updated February 19, 2025]</p>
+</div>
+
+<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" tabindex="0">
+<p>On March 1, 2024, in the case of National Small Business United v. Yellen, No. 5:22-cv-01448 (N.D. Ala.), a federal district court in the Northern District of Alabama, Northeastern Division, entered a final declaratory judgment, concluding that the Corporate Transparency Act exceeds the Constitution’s limits on Congress’s power and enjoining the Department of the Treasury and FinCEN from enforcing the Corporate Transparency Act against the plaintiffs. The Department of Justice, on behalf of the Department of the Treasury, filed a Notice of Appeal on March 11, 2024.</p>
+
+<p>FinCEN is complying with the court’s order and will continue to comply with the court’s order for as long as it remains in effect. As a result, the government is not currently enforcing the Corporate Transparency Act against the plaintiffs in that action: Isaac Winkles, reporting companies for which Isaac Winkles is the beneficial owner or applicant, the National Small Business Association, and members of the National Small Business Association (as of March 1, 2024). Those individuals and entities are not required to report beneficial ownership information to FinCEN at this time.</p>
+</div>
+<!-- Accordion 5 --></div>
+
+<div class="boi-flex" style="max-width: 400px;">
+<div class="boi-sub-2"><a aria-label="Read more of Brochure Introduction to BOI Reporting" href="/sites/default/files/shared/BOI-Informational-Brochure-April-2024.pdf"><img alt="Brochure" class="boi-sub-2-icons" src="/sites/default/files/shared/BOI-brochure-icon.png" title="Brochure"></a>
+
+<p>&nbsp;</p>
+</div>
+
+<div class="boi-sub-2"><a aria-label="BOI Notice to Customers Reference Guide" href="/sites/default/files/shared/BOI-Notice-to-Customers-508FINAL.pdf"><img alt="BOI Notice to Customers Reference Guide" class="boi-sub-2-icons" src="/sites/default/files/shared/BOI-reference-guide-icon.png" title="BOI Notice to Customers Reference Guide"></a>
+
+<p>&nbsp;</p>
+</div>
+</div>
+
+<div class="boi-blue-line">&nbsp;</div>
+
+<p class="boi-blue-text">For concerns related to the implementation of the Corporate Transparency Act, please contact the <strong><a href="https://oig.treasury.gov/" target="_blank">Office of the Inspector General</a></strong>.</p>
+<script type="text/javascript">
+    window.onload = function() {
+        if (window.jQuery) {  
+            // jQuery is loaded  
+            var acc = jQuery(".ui-accordion-header");
+            var panel = jQuery(".ui-accordion-content");
+            var i;
+        
+            for (i = 0; i < acc.length; i++) {
+            jQuery(acc[i]).click(function(){
+
+            if (jQuery(this).hasClass('ui-state-active')) {
+                jQuery(this).next(panel).hide();
+                 jQuery(this).removeClass('ui-state-active').addClass('ui-state-default').attr('aria-expanded', 'false');
+            }
+            else {
+                jQuery(panel).hide();
+                jQuery(this).toggleClass('ui-state-default ui-state-active');
+                jQuery(acc).addClass('ui-state-default').removeClass('ui-state-active');
+                jQuery(this).next(panel).show();
+                jQuery(this).removeClass('ui-state-default').addClass('ui-state-active').attr('aria-expanded', 'true');
+            }
+            });
+        }
+
+// Test
+jQuery(document).on('keydown', function(e) {
+ 
+   if(e.key === 'Tab') {
+     var getElement = jQuery(document.activeElement);
+
+      if(getElement.hasClass('ui-accordion-header') || getElement.hasClass('ui-accordion-content')) {
+        jQuery(acc).removeClass('ui-state-default').addClass('ui-state-active').attr('aria-expanded', 'true');
+        jQuery(panel).show();
+      }
+   }
+ 
+});
+// Test
+
+        } else {
+            // jQuery is not loaded
+            console.log("Doesn't Work");
+        }
+ 
+    }
+  
+    </script></div>
+      
+  </div>
+  
+</div>
+
+
+  </div>
+
+              </section>
+
+                </div>
+  </div>
+
+      <footer class="footer container" role="contentinfo">
+        <div class="region region-footer">
+    <section id="block-fincen-gov-custom-treasury-logo" class="block clearfix col-md-3">
+  
+    
+
+      <span><img src="/profiles/fincen_gov/themes/fincen_gov_theme/images/treasury_logo.svg" alt="Smiley face"></span>
+  </section>
+
+<nav role="navigation" aria-labelledby="block-fincen-gov-theme-footer-menu" id="block-fincen-gov-theme-footer">
+            
+  <h2 class="visually-hidden" id="block-fincen-gov-theme-footer-menu">Footer menu</h2>
+  
+
+        
+              <ul class="nav-footer col-md-3">
+     <li> <a href="/" class="footer-link-title">Home <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="/resources" class="footer-link-title">Resources <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="/contact" class="footer-link-title">Contact <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="/what-we-do" class="footer-link-title">About <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="/cutting-edge-opportunities" class="footer-link-title">Careers <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="/news-room" class="footer-link-title">Newsroom <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="/about/contract-opportunities" class="footer-link-title">Contract Opportunities <span class=""></span></a></li>
+                
+      </ul>
+          <ul class="nav-footer col-md-3">
+     <li> <a href="https://service.govdelivery.com/accounts/USFINCEN/subscriber/new" class="footer-link-title">Get News Updates <span class=""></span></a></li>
+                
+      </ul>
+      
+
+
+
+  </nav>
+<section id="block-googletranslator" class="block block-google-translator clearfix">
+  
+    
+
+      <a href="#" class="notranslate google-translator-switch">Languages</a>
+
+  </section>
+
+<section id="block-additionalfooterlinks" class="block block-block-content block-block-content3dffd735-ca66-4048-bb21-1350ad4b7564 clearfix">
+  
+    
+
+      
+            <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item"><style type="text/css">.icons-footer {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.icons-footer a {
+    display: block;
+}
+
+.icon-footer-sm {
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+}
+</style>
+<div class="col-xl-9 col-lg-9 col-md-9 col-xl-offset-3 col-lg-offset-3 col-md-offset-3" id="additional-footer-links">
+<div aria-label="Social Media Footer Icons" class="icons-footer" role="img"><a href="https://www.facebook.com/fincentreasury"><img alt="Facebook Icon" class="icon-footer-sm" src="/sites/default/files/shared/facebook.svg"></a> <a href="https://www.linkedin.com/company/fincen"><img alt="Linkedin Icon" class="icon-footer-sm" src="/sites/default/files/shared/linkedin.svg"></a> <a href="https://twitter.com/FinCENnews"><img alt="X Icon" class="icon-footer-sm" src="/sites/default/files/shared/x.svg"></a></div>
+<br>
+<a href="https://www.USA.gov" target="_blank">USA.gov</a> | <a href="https://www.Regulations.gov" target="_blank">Regulations.gov</a>&nbsp;| <a href="https://www.treasury.gov">Treasury.gov</a>&nbsp;| <a href="https://www.IRS.gov" target="_blank">IRS.gov</a> | <a href="/freedom-information-act-foia-and-guide-accessing-fincen-information">Freedom of Information Act (FOIA)</a> | <a href="https://home.treasury.gov/footer/no-fear-act" target="_blank">NO FEAR Act</a> |&nbsp;<a href="https://vote.gov/">Vote.gov</a>&nbsp;|&nbsp;<a href="/accessibility">Accessibility</a> | <a href="/about/office-equal-opportunity">Office of Equal Opportunity</a> | <a href="/privacy-security">Privacy Policy</a> | <a href="https://home.treasury.gov/footer/no-fear-act">Public Posting Notice of Finding of Discrimination</a>&nbsp;|&nbsp;<a href="/security-and-vulnerability-disclosure-policies">Security and Vulnerability Disclosure Policies (VDP)</a>&nbsp;|&nbsp;<a href="https://oig.treasury.gov/">Office of Inspector General</a></div>
+</div>
+      
+  </section>
+
+
+  </div>
+
+    </footer>
+  
+  </div>
+
+    
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","pathPrefix":"","currentPath":"node\/19407","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"data":{"extlink":{"extTarget":true,"extTargetNoOverride":false,"extNofollow":false,"extNoreferrer":false,"extFollowNoOverride":false,"extClass":"0","extLabel":"(link is external)","extImgClass":false,"extSubdomains":true,"extExclude":"(service\\.govdelivery\\.com)","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":true,"extAlertText":"You are going to a web site that FinCEN does not control and\r\nwhose privacy policies may differ.","mailtoClass":"0","mailtoLabel":"(link sends email)","extUseFontAwesome":false,"extIconPlacement":"append","extFaLinkClasses":"fa fa-external-link","extFaMailtoClasses":"fa fa-envelope-o","whitelistedDomains":null}},"google_analytics":{"account":"G-7K9S6RGTEK","trackOutbound":true,"trackMailto":true,"trackTel":true,"trackDownload":true,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"},"bootstrap":{"forms_has_error_value_toggle":1,"modal_animation":1,"modal_backdrop":"true","modal_focus_input":1,"modal_keyboard":1,"modal_select_text":1,"modal_show":1,"modal_size":"","popover_enabled":1,"popover_animation":1,"popover_auto_close":1,"popover_container":"body","popover_content":"","popover_delay":"0","popover_html":0,"popover_placement":"right","popover_selector":"","popover_title":"","popover_trigger":"click","tooltip_enabled":1,"tooltip_animation":1,"tooltip_container":"body","tooltip_delay":"0","tooltip_html":0,"tooltip_placement":"auto left","tooltip_selector":"","tooltip_trigger":"hover"},"googleTranslatorDisclaimer":{"selector":".google-translator-switch","displayMode":"SIMPLE","disclaimerTitle":"Automatic translation disclaimer","disclaimer":"Translation of this page is provided by the third-party Google Translate service. In case of dispute, the original language content should prevail.","acceptText":"Accept","dontAcceptText":"Do Not Accept","element":"\u003Cspan id=\u0022google_translator_element\u0022\u003E\u003C\/span\u003E\n\u003Cscript src=\u0022\/\/translate.google.com\/translate_a\/element.js?cb=Drupal.behaviors.googleTranslatorElement.init\u0022\u003E\u003C\/script\u003E\n"},"googleTranslatorElement":{"id":"google_translator_element","languages":"af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ny,zh-CN,zh-TW,co,hr,cs,da,nl,en,eo,et,ee,tl,fi,fr,fy,gl,ka,de,el,gn,gu,ht,ha,haw,iw,hi,hu,is,ig,id,ga,it,ja,jw,kn,kk,km,rw,ko,kri,ku,ckb,ky,lo,lv,ln,lt,lg,mk,mg,ms,ml,mt,mi,mr,mn,ne,no,or,om,ps,fa,pl,pt,pa,qu,ro,ru,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,tt,te,th,ti,tr,tk,ug,uk,ur,uz,vi,cy,xh,yi,yo,zu","displayMode":"SIMPLE"},"user":{"uid":0,"permissionsHash":"ff2eb2ab06e494b711b2a80c30483798542929d7073e6ed556004b1c652caa4e"}}</script>
+<script src="/core/assets/vendor/jquery/jquery.min.js?v=3.7.1"></script>
+<script src="/core/assets/vendor/underscore/underscore-min.js?v=1.13.7"></script>
+<script src="/core/assets/vendor/once/once.min.js?v=1.0.1"></script>
+<script src="/core/misc/drupalSettingsLoader.js?v=10.4.5"></script>
+<script src="/core/misc/drupal.js?v=10.4.5"></script>
+<script src="/core/misc/drupal.init.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/version-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/data-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/disable-selection-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/jquery-patch-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/scroll-parent-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/unique-id-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/focusable-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/keycode-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/plugin-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widget-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/labels-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/controlgroup-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/form-reset-mixin-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/mouse-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/checkboxradio-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/draggable-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/resizable-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/button-min.js?v=10.4.5"></script>
+<script src="/core/assets/vendor/jquery.ui/ui/widgets/dialog-min.js?v=10.4.5"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/version-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/data-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/disable-selection-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/focusable-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/form-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/ie-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/keycode-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/labels-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/plugin-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/safe-active-element-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/safe-blur-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/scroll-parent-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/tabbable-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/unique-id-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/widget-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/widgets/mouse-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/position-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/widgets/draggable-min.js?v=1.13.2"></script>
+<script src="/modules/contrib/jquery_ui/assets/vendor/jquery.ui/ui/widgets/resizable-min.js?v=1.13.2"></script>
+<script src="/core/assets/vendor/tabbable/index.umd.min.js?v=6.2.0"></script>
+<script src="/core/assets/vendor/tua-body-scroll-lock/tua-bsl.umd.min.js?v=10.4.5"></script>
+<script src="/themes/contrib/bootstrap/js/bootstrap-pre-init.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/drupal.bootstrap.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/attributes.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/theme.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/popover.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/tooltip.js?svv0c4"></script>
+<script src="/modules/contrib/extlink/extlink.js?v=10.4.5"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/affix.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/alert.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/button.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/carousel.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/collapse.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/dropdown.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/modal.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/tooltip.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/popover.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/scrollspy.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/tab.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/bootstrap/js/transition.js?svv0c4"></script>
+<script src="/profiles/fincen_gov/themes/fincen_gov_theme/js/js-fixes.js?svv0c4"></script>
+<script src="/modules/contrib/google_analytics/js/google_analytics.js?v=10.4.5"></script>
+<script src="/core/misc/debounce.js?v=10.4.5"></script>
+<script src="/core/misc/displace.js?v=10.4.5"></script>
+<script src="/core/misc/jquery.tabbable.shim.js?v=10.4.5"></script>
+<script src="/core/misc/position.js?v=10.4.5"></script>
+<script src="/themes/contrib/bootstrap/js/modal.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/dialog.js?svv0c4"></script>
+<script src="/themes/contrib/bootstrap/js/modal.jquery.ui.bridge.js?svv0c4"></script>
+<script src="/core/misc/dialog/dialog-deprecation.js?v=10.4.5"></script>
+<script src="/core/misc/dialog/dialog.js?v=10.4.5"></script>
+<script src="/core/misc/dialog/dialog.position.js?v=10.4.5"></script>
+<script src="/modules/contrib/google_translator/js/init.js?v=2.x"></script>
+<script src="/modules/contrib/google_translator/js/disclaimer.js?v=2.x"></script>
+<script src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=FinCEN" async type="text/javascript" id="_fed_an_ua_tag"></script>
+
+  </body>
+</html>

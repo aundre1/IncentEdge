@@ -1,0 +1,16 @@
+site: https://www.energy.gov/eere/solar/homeowners-guide-federal-tax-credit-solar-photovoltaics
+
+program_type: Federal Tax Credit
+
+selectors:
+  title: "h1, .page-title, .field-title"
+  funding: ".field-body, .content-area p"
+  deadline: ".deadline, .expiration, .effective-date"
+  eligibility: ".eligibility, .requirements"
+
+auto_pdf_detection: false
+rate_limit: 2
+timeout: 15
+
+headers:
+  User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"

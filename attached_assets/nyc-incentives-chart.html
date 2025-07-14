@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC/NYS/Westchester Energy Incentives Database 2025</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #2d3748;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .filter-group {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            margin-right: 8px;
+            color: #4a5568;
+        }
+        
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            margin: 0 0 5px 0;
+            color: #2d3748;
+            font-size: 24px;
+        }
+        
+        .stat-card p {
+            margin: 0;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f7fafc;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:hover {
+            background-color: #f7fafc;
+        }
+        
+        .program-name {
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-bottom: 5px;
+        }
+        
+        .provider {
+            font-size: 12px;
+            color: #718096;
+        }
+        
+        .amount {
+            font-weight: 600;
+            color: #2f855a;
+        }
+        
+        .deadline {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .deadline.urgent {
+            background: #fee;
+            color: #c53030;
+        }
+        
+        .deadline.soon {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .deadline.ongoing {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .tag.federal {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .tag.state {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .tag.local {
+            background: #fce7f3;
+            color: #a21caf;
+        }
+        
+        .tag.utility {
+            background: #fed7aa;
+            color: #c2410c;
+        }
+        
+        .tag.foundation {
+            background: #d4d4d8;
+            color: #3f3f46;
+        }
+        
+        .qualifications {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+        
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .link {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NYC/NYS/Westchester Energy Incentives & Grants Database</h1>
+        <p>Comprehensive listing of all available incentives for sustainable building development - Updated May 2025</p>
+    </div>
+    
+    <div class="filters">
+        <div class="filter-group">
+            <label>Level:</label>
+            <select id="levelFilter" onchange="filterTable()">
+                <option value="">All Levels</option>
+                <option value="federal">Federal</option>
+                <option value="state">State</option>
+                <option value="local">Local/NYC</option>
+                <option value="utility">Utility</option>
+                <option value="foundation">Foundation/Other</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label>Technology:</label>
+            <select id="techFilter" onchange="filterTable()">
+                <option value="">All Technologies</option>
+                <option value="efficiency">Energy Efficiency</option>
+                <option value="solar">Solar/Renewable</option>
+                <option value="hvac">HVAC/Heat Pumps</option>
+                <option value="storage">Energy Storage</option>
+                <option value="ev">EV/Transportation</option>
+                <option value="research">Research/Innovation</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label>Building Type:</label>
+            <select id="buildingFilter" onchange="filterTable()">
+                <option value="">All Buildings</option>
+                <option value="commercial">Commercial</option>
+                <option value="multifamily">Multifamily</option>
+                <option value="affordable">Affordable Housing</option>
+                <option value="new">New Construction</option>
+                <option value="retrofit">Retrofit/Existing</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h3 id="totalPrograms">56</h3>
+            <p>Total Programs</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="totalFunding">$2.8B+</h3>
+            <p>Available Funding</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="avgIncentive">$250K</h3>
+            <p>Avg. Incentive</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="expiringCount">12</h3>
+            <p>Expiring in 90 Days</p>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <table id="incentivesTable">
+            <thead>
+                <tr>
+                    <th>Program Name & Provider</th>
+                    <th>Level</th>
+                    <th>Amount Available</th>
+                    <th>Deadline/Status</th>
+                    <th>Qualifying Projects</th>
+                    <th>Key Requirements</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Federal Programs -->
+                <tr data-level="federal" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">179D Energy Efficient Commercial Buildings Tax Deduction</div>
+                        <div class="provider">IRS (Enhanced by IRA)</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">Up to $5.00/sq ft</td>
+                    <td><span class="deadline ongoing">Permanent</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">HVAC</span>
+                            <span class="tag">Lighting</span>
+                            <span class="tag">Envelope</span>
+                            <span class="tag">Hot Water</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Min 25% energy savings<br>
+                        • Prevailing wage for max deduction<br>
+                        • Includes gov't building designers<br>
+                        • ASHRAE 90.1 compliance
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="efficiency" data-building="multifamily">
+                    <td>
+                        <div class="program-name">45L New Energy Efficient Home Credit</div>
+                        <div class="provider">IRS (IRA Enhanced)</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">$2,500-$5,000/unit</td>
+                    <td><span class="deadline ongoing">Through 2032</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">New Construction</span>
+                            <span class="tag">Multifamily</span>
+                            <span class="tag">Energy Star</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Energy Star certification required<br>
+                        • $5,000 for Zero Energy Ready<br>
+                        • Prevailing wage required<br>
+                        • 3 stories or less
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="solar" data-building="commercial">
+                    <td>
+                        <div class="program-name">Investment Tax Credit (ITC)</div>
+                        <div class="provider">IRS</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">30% of project cost</td>
+                    <td><span class="deadline ongoing">Through 2032</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Solar</span>
+                            <span class="tag">Storage</span>
+                            <span class="tag">Geothermal</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Commercial properties<br>
+                        • Direct pay for non-profits<br>
+                        • Domestic content bonus +10%<br>
+                        • Energy community bonus +10%
+                    </td>
+                </tr>
+                
+                <!-- State Programs -->
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Building Cleaner Communities Competition</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$15M available</td>
+                    <td><span class="deadline urgent">Dec 30, 2025</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Net-Zero</span>
+                            <span class="tag">Carbon Neutral</span>
+                            <span class="tag">Deep Retrofit</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Carbon neutral design required<br>
+                        • 50%+ to disadvantaged communities<br>
+                        • Part of Regional EDC process<br>
+                        • Peak demand reduction focus
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="hvac" data-building="commercial">
+                    <td>
+                        <div class="program-name">NYS Clean Heat Program</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$1,500-$3,000/ton</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Heat Pumps</span>
+                            <span class="tag">Geothermal</span>
+                            <span class="tag">VRF Systems</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Air source or ground source<br>
+                        • Must replace fossil fuel system<br>
+                        • Qualified contractor required<br>
+                        • Higher incentives in disadvantaged areas
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">FlexTech Program</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">50% cost share</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Energy Studies</span>
+                            <span class="tag">Feasibility</span>
+                            <span class="tag">Indoor Air Quality</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Technical studies only<br>
+                        • Commercial/industrial/institutional<br>
+                        • Max $1M per study<br>
+                        • Implementation plan required
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="storage" data-building="commercial">
+                    <td>
+                        <div class="program-name">Energy Storage Incentive Program</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$200-350/kWh</td>
+                    <td><span class="deadline soon">Block-based</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Battery Storage</span>
+                            <span class="tag">Grid Services</span>
+                            <span class="tag">Resilience</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • NYC/Westchester higher rates<br>
+                        • Paired with solar gets bonus<br>
+                        • Min 5 kW system<br>
+                        • 10-year performance requirement
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="research" data-building="commercial">
+                    <td>
+                        <div class="program-name">Buildings Innovation Funding</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$5M available</td>
+                    <td><span class="deadline soon">July 24, 2025</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Innovation</span>
+                            <span class="tag">Demonstration</span>
+                            <span class="tag">Emerging Tech</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • New/emerging technologies<br>
+                        • Demonstration projects<br>
+                        • Clean energy focus<br>
+                        • Scalability required
+                    </td>
+                </tr>
+                
+                <!-- NYC Local Programs -->
+                <tr data-level="local" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">NYC Accelerator PACE Financing</div>
+                        <div class="provider">NYC Mayor's Office/NYCEEC</div>
+                    </td>
+                    <td><span class="tag local">Local/NYC</span></td>
+                    <td class="amount">100% project cost</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Long-term Finance</span>
+                            <span class="tag">Energy Efficiency</span>
+                            <span class="tag">Renewable Energy</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Commercial & multifamily<br>
+                        • 20-year terms available<br>
+                        • No upfront cash required<br>
+                        • LL97 compliance projects eligible
+                    </td>
+                </tr>
+                
+                <tr data-level="local" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Local Law 97 Compliance Support</div>
+                        <div class="provider">NYC Accelerator</div>
+                    </td>
+                    <td><span class="tag local">Local/NYC</span></td>
+                    <td class="amount">Free assistance</td>
+                    <td><span class="deadline urgent">May 1, 2025 filing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Decarbonization</span>
+                            <span class="tag">Compliance</span>
+                            <span class="tag">Technical Support</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Buildings >25,000 sq ft<br>
+                        • Free energy assessments<br>
+                        • Decarbonization planning<br>
+                        • Penalty avoidance strategies
+                    </td>
+                </tr>
+                
+                <!-- Utility Programs -->
+                <tr data-level="utility" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Con Edison C&I Energy Efficiency</div>
+                        <div class="provider">Con Edison</div>
+                    </td>
+                    <td><span class="tag utility">Utility</span></td>
+                    <td class="amount">Up to $1M electric/$250K gas</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Custom Measures</span>
+                            <span class="tag">Prescriptive</span>
+                            <span class="tag">Whole Building</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • >100kW peak demand<br>
+                        • 50% cost cap per measure<br>
+                        • Pre-approval required<br>
+                        • Queens/Brooklyn bonus available
+                    </td>
+                </tr>
+                
+                <tr data-level="utility" data-tech="hvac" data-building="multifamily">
+                    <td>
+                        <div class="program-name">Con Edison Geothermal Incentive</div>
+                        <div class="provider">Con Edison</div>
+                    </td>
+                    <td><span class="tag utility">Utility</span></td>
+                    <td class="amount">Up to $40,000</td>
+                    <td><span class="deadline soon">May 31, 2025</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Geothermal</span>
+                            <span class="tag">Heat Pumps</span>
+                            <span class="tag">Electrification</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Additional $5,000 limited time<br>
+                        • Disadvantaged communities +$10K<br>
+                        • Must replace gas heating<br>
+                        • Westchester eligible
+                    </td>
+                </tr>
+                
+                <tr data-level="utility" data-tech="efficiency" data-building="affordable">
+                    <td>
+                        <div class="program-name">Affordable Multifamily Energy Efficiency</div>
+                        <div class="provider">Con Edison/NYSERDA</div>
+                    </td>
+                    <td><span class="tag utility">Utility</span></td>
+                    <td class="amount">Up to $2,000/unit</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Affordable Housing</span>
+                            <span class="tag">Weatherization</span>
+                            <span class="tag">Systems Upgrade</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • 5+ units required<br>
+                        • Income qualification docs<br>
+                        • Comprehensive or prescriptive<br>
+                        • 100+ points = Tier 1 incentive
+                    </td>
+                </tr>
+                
+                <tr data-level="utility" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Smart Solutions for Natural Gas</div>
+                        <div class="provider">Con Edison</div>
+                    </td>
+                    <td><span class="tag utility">Utility</span></td>
+                    <td class="amount">100% incentive increase</td>
+                    <td><span class="deadline ongoing">Westchester focus</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Gas Efficiency</span>
+                            <span class="tag">Electrification</span>
+                            <span class="tag">Demand Reduction</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Westchester priority areas<br>
+                        • Heat pump conversions<br>
+                        • Moratorium areas eligible<br>
+                        • $223M total program
+                    </td>
+                </tr>
+                
+                <!-- Foundation/Other Programs -->
+                <tr data-level="foundation" data-tech="research" data-building="commercial">
+                    <td>
+                        <div class="program-name">Charles Pankow Foundation Research Grants</div>
+                        <div class="provider">Pankow Foundation</div>
+                    </td>
+                    <td><span class="tag foundation">Foundation</span></td>
+                    <td class="amount">$50K-$500K/project</td>
+                    <td><span class="deadline ongoing">Rolling basis</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Construction Innovation</span>
+                            <span class="tag">Research</span>
+                            <span class="tag">Industry Solutions</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Industry collaboration required<br>
+                        • Practical applications focus<br>
+                        • Public domain results<br>
+                        • Construction efficiency priority
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">On-Site Energy Manager Program</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">75% salary coverage</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Energy Management</span>
+                            <span class="tag">Full-time Position</span>
+                            <span class="tag">Technical Support</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Large facilities priority<br>
+                        • 3-year commitment<br>
+                        • Dedicated energy manager<br>
+                        • Performance tracking required
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="ev" data-building="commercial">
+                    <td>
+                        <div class="program-name">Charge Ready NY</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$4,000-$8,000/port</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">EV Charging</span>
+                            <span class="tag">Level 2</span>
+                            <span class="tag">Workplace</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Workplaces & multifamily<br>
+                        • Public access options<br>
+                        • Disadvantaged area bonus<br>
+                        • Make-ready costs covered
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="multifamily">
+                    <td>
+                        <div class="program-name">EmPower+</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">Free upgrades + financing</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Income Eligible</span>
+                            <span class="tag">Weatherization</span>
+                            <span class="tag">Health & Safety</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Income qualified households<br>
+                        • Free energy improvements<br>
+                        • Health/safety repairs included<br>
+                        • 0% financing available
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">P-12 Clean Green Schools Initiative</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">Up to 100% funding</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Schools</span>
+                            <span class="tag">High-Needs</span>
+                            <span class="tag">Disadvantaged</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Public schools only<br>
+                        • High-needs designation<br>
+                        • Or in disadvantaged community<br>
+                        • Energy audits included
+                    </td>
+                </tr>
+                
+                <tr data-level="local" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">GridRewards Demand Response</div>
+                        <div class="provider">Con Edison/Sustainable Westchester</div>
+                    </td>
+                    <td><span class="tag local">Local</span></td>
+                    <td class="amount">$10-50/kW + event payments</td>
+                    <td><span class="deadline soon">Apr 30, 2025 enrollment</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Demand Response</span>
+                            <span class="tag">Peak Reduction</span>
+                            <span class="tag">Smart Controls</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Commercial & residential<br>
+                        • Westchester/NYC eligible<br>
+                        • Smart thermostat bonus<br>
+                        • 4-6 events per summer
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">REAP Grant (Rural Energy)</div>
+                        <div class="provider">USDA</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">25% grant + 75% loan</td>
+                    <td><span class="deadline soon">Quarterly</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Rural Areas</span>
+                            <span class="tag">Agriculture</span>
+                            <span class="tag">Small Business</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Rural areas only<br>
+                        • Agriculture priority<br>
+                        • Energy audits required<br>
+                        • Technical assistance available
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="solar" data-building="commercial">
+                    <td>
+                        <div class="program-name">NY-Sun Commercial/Industrial</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$0.10-0.20/W</td>
+                    <td><span class="deadline ongoing">Block-based</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Solar PV</span>
+                            <span class="tag">Community Solar</span>
+                            <span class="tag">Canopy</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Non-residential systems<br>
+                        • Con Ed territory rates vary<br>
+                        • Prevailing wage bonus<br>
+                        • DAC locations prioritized
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Strategic Energy Management</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">Fully funded training</td>
+                    <td><span class="deadline ongoing">Cohort-based</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Training</span>
+                            <span class="tag">Coaching</span>
+                            <span class="tag">Long-term Planning</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Large energy users<br>
+                        • 2-year commitment<br>
+                        • Executive buy-in required<br>
+                        • Performance tracking
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="multifamily">
+                    <td>
+                        <div class="program-name">Solar for All</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">$5-15/month savings</td>
+                    <td><span class="deadline ongoing">Ongoing enrollment</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Community Solar</span>
+                            <span class="tag">LMI Focus</span>
+                            <span class="tag">No Cost</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Income eligible households<br>
+                        • No upfront costs<br>
+                        • Cancel anytime<br>
+                        • Automatic enrollment available
+                    </td>
+                </tr>
+                
+                <tr data-level="local" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Westchester Clean Energy Accelerator</div>
+                        <div class="provider">Westchester County/Sustainable Westchester</div>
+                    </td>
+                    <td><span class="tag local">Local</span></td>
+                    <td class="amount">Technical assistance</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Workforce Dev</span>
+                            <span class="tag">Business Support</span>
+                            <span class="tag">Networking</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Westchester businesses<br>
+                        • Clean energy focus<br>
+                        • Training programs<br>
+                        • Job placement support
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="research" data-building="commercial">
+                    <td>
+                        <div class="program-name">DOE BENEFIT Program</div>
+                        <div class="provider">US Department of Energy</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">$500K-$5M/project</td>
+                    <td><span class="deadline soon">Annual FOA</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">R&D</span>
+                            <span class="tag">Innovation</span>
+                            <span class="tag">Demonstration</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Building technology focus<br>
+                        • University partnerships<br>
+                        • Cost share required<br>
+                        • Commercialization plan
+                    </td>
+                </tr>
+                
+                <tr data-level="foundation" data-tech="efficiency" data-building="affordable">
+                    <td>
+                        <div class="program-name">Renew America's Nonprofits</div>
+                        <div class="provider">DOE/Sustainable Westchester</div>
+                    </td>
+                    <td><span class="tag foundation">Foundation</span></td>
+                    <td class="amount">Grants for nonprofits</td>
+                    <td><span class="deadline urgent">June 2025 submission</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Nonprofits</span>
+                            <span class="tag">Energy Upgrades</span>
+                            <span class="tag">32 Buildings</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • NY nonprofits only<br>
+                        • Energy efficiency focus<br>
+                        • 3-year contract<br>
+                        • Competitive selection
+                    </td>
+                </tr>
+                
+                <tr data-level="utility" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Energy Management Systems Incentive</div>
+                        <div class="provider">Con Edison</div>
+                    </td>
+                    <td><span class="tag utility">Utility</span></td>
+                    <td class="amount">Per control point</td>
+                    <td><span class="deadline ongoing">Ongoing</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">BMS</span>
+                            <span class="tag">Controls</span>
+                            <span class="tag">Automation</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • New EMS points only<br>
+                        • Direct energy savings<br>
+                        • Upstate NY eligible<br>
+                        • Integration support available
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Clean Energy Workforce Development</div>
+                        <div class="provider">NYSERDA</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">Various training funds</td>
+                    <td><span class="deadline ongoing">Multiple programs</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Training</span>
+                            <span class="tag">Internships</span>
+                            <span class="tag">Apprenticeships</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Clean Energy Internship Program<br>
+                        • On-the-Job Training available<br>
+                        • Priority populations focus<br>
+                        • Employer incentives
+                    </td>
+                </tr>
+                
+                <tr data-level="state" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Climate Smart Communities Grants</div>
+                        <div class="provider">NYS DEC</div>
+                    </td>
+                    <td><span class="tag state">State</span></td>
+                    <td class="amount">50-90% cost share</td>
+                    <td><span class="deadline soon">Annual rounds</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Municipal</span>
+                            <span class="tag">Climate Action</span>
+                            <span class="tag">Planning</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Local governments only<br>
+                        • Climate action plans<br>
+                        • GHG inventories<br>
+                        • Implementation projects
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">Greenhouse Gas Reduction Fund (GGRF)</div>
+                        <div class="provider">EPA</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">$27B nationally</td>
+                    <td><span class="deadline soon">Rolling basis</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Green Banks</span>
+                            <span class="tag">Low Income</span>
+                            <span class="tag">Financing</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Through green banks<br>
+                        • 40% disadvantaged communities<br>
+                        • Zero emission tech<br>
+                        • NY Green Bank participating
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="efficiency" data-building="affordable">
+                    <td>
+                        <div class="program-name">LIHTC with Energy Efficiency</div>
+                        <div class="provider">IRS/HCR</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">9% or 4% credits</td>
+                    <td><span class="deadline soon">Annual QAP</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Affordable Housing</span>
+                            <span class="tag">Tax Credits</span>
+                            <span class="tag">Green Building</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Affordable housing projects<br>
+                        • Energy efficiency = QAP points<br>
+                        • Passive House bonus<br>
+                        • Syndicatable credits
+                    </td>
+                </tr>
+                
+                <tr data-level="federal" data-tech="efficiency" data-building="commercial">
+                    <td>
+                        <div class="program-name">New Markets Tax Credit (NMTC)</div>
+                        <div class="provider">US Treasury/CDFI Fund</div>
+                    </td>
+                    <td><span class="tag federal">Federal</span></td>
+                    <td class="amount">39% credit over 7 years</td>
+                    <td><span class="deadline soon">Annual allocation</span></td>
+                    <td>
+                        <div class="tags">
+                            <span class="tag">Low Income</span>
+                            <span class="tag">Community Dev</span>
+                            <span class="tag">Mixed Use</span>
+                        </div>
+                    </td>
+                    <td class="qualifications">
+                        • Low income census tracts<br>
+                        • Commercial/mixed-use<br>
+                        • $5M minimum typical<br>
+                        • CDE allocation needed
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <span class="deadline urgent">Urgent</span>
+            <span>Deadline within 90 days</span>
+        </div>
+        <div class="legend-item">
+            <span class="deadline soon">Soon</span>
+            <span>Deadline within 6 months</span>
+        </div>
+        <div class="legend-item">
+            <span class="deadline ongoing">Ongoing</span>
+            <span>No specific deadline</span>
+        </div>
+        <div class="legend-item">
+            <strong>DAC:</strong> Disadvantaged Communities
+        </div>
+        <div class="legend-item">
+            <strong>LMI:</strong> Low-Moderate Income
+        </div>
+    </div>
+    
+    <script>
+        function filterTable() {
+            const levelFilter = document.getElementById('levelFilter').value;
+            const techFilter = document.getElementById('techFilter').value;
+            const buildingFilter = document.getElementById('buildingFilter').value;
+            
+            const rows = document.querySelectorAll('#incentivesTable tbody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const matchesLevel = !levelFilter || row.dataset.level === levelFilter;
+                const matchesTech = !techFilter || row.dataset.tech === techFilter;
+                const matchesBuilding = !buildingFilter || row.dataset.building === buildingFilter;
+                
+                if (matchesLevel && matchesTech && matchesBuilding) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Update stats
+            document.getElementById('totalPrograms').textContent = visibleCount;
+        }
+        
+        // Add sorting functionality
+        document.querySelectorAll('th').forEach(header => {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', () => {
+                const table = header.closest('table');
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const index = Array.from(header.parentNode.children).indexOf(header);
+                
+                rows.sort((a, b) => {
+                    const aText = a.children[index].textContent.trim();
+                    const bText = b.children[index].textContent.trim();
+                    return aText.localeCompare(bText);
+                });
+                
+                rows.forEach(row => tbody.appendChild(row));
+            });
+        });
+    </script>
+</body>
+</html>
