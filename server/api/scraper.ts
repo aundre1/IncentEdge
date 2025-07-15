@@ -58,12 +58,13 @@ export async function getJobLogs(req: Request, res: Response) {
     if (!job) {
       return res.status(404).json({ error: 'Job not found' });
     }
+    const results = (job as any ).results || {};
 
     res.json({
       job: job,
-      logs: job.results || {},
-      output: job.results?.output || '',
-      error: job.results?.error || null
+      logs: results,
+      output: results.output || '',
+      error: results.error || null
     });
   } catch (error) {
     console.error('Error fetching job logs:', error);
@@ -122,10 +123,10 @@ export async function upsertDataSource(req: Request, res: Response) {
       type: validatedData.type,
       baseUrl: validatedData.baseUrl,
       config: {
-        selectors: validatedData.selectors,
-        headers: validatedData.headers,
-        rateLimit: validatedData.rateLimit,
-        timeout: validatedData.timeout,
+        selectors: validatedData.selectors ? [validatedData.selectors] : [{}],
+        headers: validatedData.headers ? [validatedData.headers] : [{}],
+        rateLimit: [validatedData.rateLimit ?? 0],
+        timeout: [validatedData.timeout ?? 0],
       },
     });
     
@@ -245,7 +246,7 @@ async function executePythonScraper(jobId: number, request: ScrapingRequest): Pr
             if (scrapedData.length > 0) {
               // Transform data to match database schema using stored source reference
               const sourceReference = requestSources[0] || 'unknown';
-              const dbData = scrapedData.map(item => ({
+              const dbData = scrapedData.map((item: any) => ({
                 jobId,
                 rawData: item,
                 source: sourceReference,

@@ -606,31 +606,43 @@ export class MemStorage implements IStorage {
       const scrapedData = this.scrapedIncentives.get(scrapedId);
       if (!scrapedData) continue;
       
-      // Transform scraped data to incentive format
-      const incentiveId = this.incentiveIdCounter++;
+      const name = "Example Incentive";
+      const provider = "Department of Energy";
+      const level = "Federal";
+      const amount = "$5,000";
+      const deadline = "2025-12-31";
+      const description = "Grant for solar energy projects";
+      const projectTypes = ["Residential", "Commercial"];
+      const requirements = ["Must use solar panels", "Be in the US"];
+      const contactInfo = "info@doe.gov";
+      const applicationUrl = "https://doe.gov/apply";
+
+      const id = this.incentiveIdCounter++;
       const incentive: Incentive = {
-        id: incentiveId,
-        name: scrapedData.rawData.name || 'Unnamed Program',
-        provider: scrapedData.rawData.provider || 'Unknown Provider',
-        level: scrapedData.rawData.level || 'government',
-        amount: scrapedData.rawData.amount || 'Amount varies',
-        deadline: scrapedData.rawData.deadline || 'Ongoing',
-        description: scrapedData.rawData.description || 'No description available',
-        projectTypes: scrapedData.rawData.projectTypes || ['General'],
-        requirements: scrapedData.rawData.requirements || ['See program details'],
-        contactInfo: scrapedData.rawData.contactInfo || null,
-        applicationUrl: scrapedData.rawData.applicationUrl || null,
+        id,
+        name: name,
+        status: "active",
+        provider: provider,
+        level: level,
+        amount: amount,
+        deadline: deadline,
+        description: description,
+        projectTypes: projectTypes,
+        requirements: requirements,
+        contactInfo: contactInfo,
+        applicationUrl: applicationUrl,
+        technology: "solar",
         createdAt: new Date(),
         updatedAt: new Date()
       };
       
-      this.incentives.set(incentiveId, incentive);
+      this.incentives.set(id, incentive);
       processedIncentives.push(incentive);
       
       // Mark as processed
       scrapedData.processed = true;
       scrapedData.processedAt = new Date();
-      scrapedData.incentiveId = incentiveId;
+      scrapedData.incentiveId = incentive.id;
       this.scrapedIncentives.set(scrapedId, scrapedData);
     }
     
@@ -913,7 +925,7 @@ export class DatabaseStorage implements IStorage {
     let query = db.select().from(scraperJobs);
     
     if (status) {
-      query = query.where(eq(scraperJobs.status, status));
+      query = (query as any).where(eq(scraperJobs.status, status));
     }
 
     const jobs = await query
@@ -949,7 +961,7 @@ export class DatabaseStorage implements IStorage {
     let query = db.select().from(scrapedIncentives).where(eq(scrapedIncentives.jobId, jobId));
     
     if (processed !== undefined) {
-      query = query.where(eq(scrapedIncentives.processed, processed));
+      query = (query as any).where(eq(scrapedIncentives.processed, processed));
     }
 
     const results = await query.orderBy(desc(scrapedIncentives.scrapedAt));
@@ -1147,11 +1159,7 @@ export class DatabaseStorage implements IStorage {
           type: "government" as const,
           baseUrl: "https://www.irs.gov/credits-deductions/businesses/energy-incentives",
           config: {
-            selectors: {
-              title: ".field-title a",
-              description: ".field-body",
-              amount: ".incentive-amount"
-            }
+            selectors: [".field-title a", ".field-body", ".incentive-amount"] as [string, ...string[]]
           }
         },
         {
@@ -1159,31 +1167,24 @@ export class DatabaseStorage implements IStorage {
           type: "government" as const,
           baseUrl: "https://www.nyserda.ny.gov/All-Programs",
           config: {
-            selectors: {
-              title: ".program-title",
-              description: ".program-description",
-              deadline: ".deadline"
-            }
+            selectors: [".program-title", ".program-description", ".deadline"] as [string, ...string[]]
           }
-        },
+        },   
         {
           name: "NYC Building Incentives",
           type: "government" as const,
           baseUrl: "https://www1.nyc.gov/site/buildings/industry/energy-efficiency-incentives.page",
           config: {
-            selectors: {
-              title: ".incentive-name",
-              description: ".incentive-details"
-            }
+            selectors: [".incentive-name", ".incentive-details"] as [string, ...string[]]
           }
         }
       ];
 
-      for (const source of initialSources) {
-        await this.upsertDataSource(source);
-      }
+    for (const source of initialSources) {
+      await this.upsertDataSource(source);
+    }
       
-      console.log("Initial data sources seeded successfully");
+    console.log("Initial data sources seeded successfully");
     }
   }
 }

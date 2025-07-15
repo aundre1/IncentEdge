@@ -1,0 +1,118 @@
+import { pgTable, text, serial, integer, boolean, json, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+// Users table for authentication
+export const users = pgTable("users", {
+    id: serial("id").primaryKey(),
+    username: text("username").notNull().unique(),
+    password: text("password").notNull(),
+});
+export const insertUserSchema = createInsertSchema(users).pick({
+    username: true,
+    password: true,
+});
+// Incentives table for storing incentive data
+export const incentives = pgTable("incentives", {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    provider: text("provider").notNull(),
+    level: text("level").notNull(), // Federal, State, Local, Utility, Foundation
+    amount: text("amount").notNull(),
+    deadline: text("deadline").notNull(),
+    projectTypes: json("project_types").notNull().$type(),
+    requirements: json("requirements").notNull().$type(),
+    description: text("description").notNull(),
+    contactInfo: text("contact_info"),
+    applicationUrl: text("application_url"),
+    status: text("status").default("active").notNull(),
+    technology: text("technology").default("efficiency").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+export const insertIncentiveSchema = createInsertSchema(incentives).omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+});
+// Leads table for storing contact form submissions
+export const leads = pgTable("leads", {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    phone: text("phone"),
+    company: text("company"),
+    projectType: text("project_type").notNull(),
+    message: text("message").notNull(),
+    subscribe: boolean("subscribe").default(false).notNull(),
+    propertyType: text("property_type"),
+    squareFootage: text("square_footage"),
+    incentiveInterest: text("incentive_interest"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    status: text("status").default("new").notNull(), // new, contacted, qualified, closed
+});
+export const insertLeadSchema = createInsertSchema(leads).omit({
+    id: true,
+    createdAt: true,
+    status: true,
+});
+// Calculator submissions for tracking usage
+export const calculatorSubmissions = pgTable("calculator_submissions", {
+    id: serial("id").primaryKey(),
+    projectType: text("project_type").notNull(),
+    squareFootage: integer("square_footage").notNull(),
+    budget: integer("budget").notNull(),
+    estimatedIncentive: integer("estimated_incentive").notNull(),
+    email: text("email"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+export const insertCalculatorSubmissionSchema = createInsertSchema(calculatorSubmissions).omit({
+    id: true,
+    createdAt: true,
+});
+// Scraper jobs table for tracking scraping operations
+export const scraperJobs = pgTable("scraper_jobs", {
+    id: serial("id").primaryKey(),
+    status: text("status").notNull().default("pending"), // pending, running, completed, failed
+    source: text("source").notNull(), // e.g., "federal", "state", "local", "utility"
+    startedAt: timestamp("started_at").defaultNow().notNull(),
+    completedAt: timestamp("completed_at"),
+    recordsFound: integer("records_found").default(0),
+    recordsImported: integer("records_imported").default(0),
+    errorMessage: text("error_message"),
+    metadata: json("metadata").$type(),
+});
+export const insertScraperJobSchema = createInsertSchema(scraperJobs).omit({
+    id: true,
+    startedAt: true,
+});
+// Scraped incentives table for raw scraped data before processing
+export const scrapedIncentives = pgTable("scraped_incentives", {
+    id: serial("id").primaryKey(),
+    jobId: integer("job_id").references(() => scraperJobs.id).notNull(),
+    rawData: json("raw_data").notNull().$type(),
+    source: text("source").notNull(),
+    sourceUrl: text("source_url"),
+    scrapedAt: timestamp("scraped_at").defaultNow().notNull(),
+    processed: boolean("processed").default(false).notNull(),
+    processedAt: timestamp("processed_at"),
+    incentiveId: integer("incentive_id").references(() => incentives.id),
+});
+export const insertScrapedIncentiveSchema = createInsertSchema(scrapedIncentives).omit({
+    id: true,
+    scrapedAt: true,
+});
+// Data sources configuration table
+export const dataSources = pgTable("data_sources", {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    type: text("type").notNull(), // "government", "utility", "foundation"
+    baseUrl: text("base_url").notNull(),
+    isActive: boolean("is_active").default(true).notNull(),
+    lastScrapedAt: timestamp("last_scraped_at"),
+    scrapingInterval: integer("scraping_interval").default(86400), // seconds
+    config: json("config").$type().default({}),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+export const insertDataSourceSchema = createInsertSchema(dataSources).omit({
+    id: true,
+    createdAt: true,
+});
