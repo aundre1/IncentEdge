@@ -21,6 +21,7 @@ export default function IncentivesPage() {
     status: "",
     amount: 0
   });
+  const [sortBy, setSortBy] = useState("relevance");
   
   // Fetch all incentives
   const { data: allIncentives, isLoading } = useQuery<Incentive[]>({
@@ -361,12 +362,98 @@ export default function IncentivesPage() {
     return true;
   });
   
-  // Apply pagination to filtered results
+  // Sort filtered incentives based on sortBy selection
+  const sortedIncentives = [...filteredIncentives].sort((a, b) => {
+    switch (sortBy) {
+      case "amount-high":
+        // Extract numeric amounts for comparison
+        const extractAmount = (amountText: string): number => {
+          const text = amountText.toLowerCase();
+          
+          // Handle percentage cases
+          if (text.includes('%')) {
+            const percentMatch = text.match(/([\d\.]+)%/);
+            if (percentMatch) {
+              return parseFloat(percentMatch[1]) * 1000; // Scale up percentages
+            }
+          }
+          
+          // Handle "per" unit rates
+          const perMatch = text.match(/\$?([\d,\.]+)\s*per/i);
+          if (perMatch) {
+            return parseFloat(perMatch[1].replace(/,/g, '')) * 100; // Scale per-unit rates
+          }
+          
+          // Handle "up to" amounts
+          const upToMatch = text.match(/up\s+to\s+\$?([\d,\.]+)/i);
+          if (upToMatch) {
+            return parseFloat(upToMatch[1].replace(/,/g, ''));
+          }
+          
+          // Handle millions/billions
+          const millionMatch = text.match(/\$?([\d,\.]+)\s*million/i);
+          if (millionMatch) {
+            return parseFloat(millionMatch[1].replace(/,/g, '')) * 1000000;
+          }
+          
+          const billionMatch = text.match(/\$?([\d,\.]+)\s*billion/i);
+          if (billionMatch) {
+            return parseFloat(billionMatch[1].replace(/,/g, '')) * 1000000000;
+          }
+          
+          // Extract plain dollar amounts
+          const dollarMatch = text.match(/\$?([\d,]+)/);
+          if (dollarMatch) {
+            return parseFloat(dollarMatch[1].replace(/,/g, ''));
+          }
+          
+          return 0; // Default for non-numeric amounts
+        };
+        
+        const amountA = extractAmount(a.amount);
+        const amountB = extractAmount(b.amount);
+        return amountB - amountA; // High to low
+        
+      case "deadline":
+        // Sort by deadline, treating "Ongoing" as furthest future
+        const getDeadlineValue = (deadline: string): number => {
+          if (deadline.toLowerCase().includes('ongoing')) return Number.MAX_SAFE_INTEGER;
+          if (deadline.toLowerCase().includes('permanent')) return Number.MAX_SAFE_INTEGER;
+          
+          // Try to extract year
+          const yearMatch = deadline.match(/(\d{4})/);
+          if (yearMatch) {
+            return parseInt(yearMatch[1]);
+          }
+          
+          // Try to extract month/day
+          const dateMatch = deadline.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+          if (dateMatch) {
+            return new Date(parseInt(dateMatch[3]), parseInt(dateMatch[1]) - 1, parseInt(dateMatch[2])).getTime();
+          }
+          
+          return 0;
+        };
+        
+        return getDeadlineValue(a.deadline) - getDeadlineValue(b.deadline);
+        
+      case "updated":
+        // Sort by recently updated (would need timestamp field, for now sort by name)
+        return b.name.localeCompare(a.name);
+        
+      case "relevance":
+      default:
+        // Default relevance sort (by name alphabetically)
+        return a.name.localeCompare(b.name);
+    }
+  });
+
+  // Apply pagination to sorted results
   const totalIncentives = allIncentives || [];
-  const filteredCount = filteredIncentives.length;
+  const filteredCount = sortedIncentives.length;
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedIncentives = filteredIncentives.slice(startIndex, endIndex);
+  const paginatedIncentives = sortedIncentives.slice(startIndex, endIndex);
   
   // Pagination metadata
   const pagination = {
@@ -405,7 +492,7 @@ export default function IncentivesPage() {
       'Requirements'
     ];
 
-    const csvData = filteredIncentives.map(incentive => [
+    const csvData = sortedIncentives.map(incentive => [
       `"${incentive.name}"`,
       `"${incentive.provider}"`,
       `"${incentive.level}"`,
@@ -516,12 +603,17 @@ export default function IncentivesPage() {
               </p>
               <div className="flex items-center">
                 <span className="mr-2 text-sm text-muted-foreground">Sort by:</span>
-                <select className="text-sm border-border rounded-md p-1.5">
-                  <option>Relevance</option>
-                  <option>Amount (High to Low)</option>
-                  <option>Deadline (Soonest)</option>
-                  <option>Recently Updated</option>
-                </select>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="relevance">Relevance</SelectItem>
+                    <SelectItem value="amount-high">Amount (High to Low)</SelectItem>
+                    <SelectItem value="deadline">Deadline (Soonest)</SelectItem>
+                    <SelectItem value="updated">Recently Updated</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             

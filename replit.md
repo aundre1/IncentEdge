@@ -55,6 +55,7 @@ IncentEdge is a professional web application designed for institutional investor
 - **Mobile-First Navigation**: Improved header layout with collapsible hamburger menu for tablets and mobile devices, ensuring logo prominence while maintaining professional navigation on all screen sizes
 - **Geographic Expansion**: Updated all website content to reflect expanded Northeast regional coverage from NYC/NY/Westchester to include New Jersey, Pennsylvania, Rhode Island, Maine, Massachusetts, Delaware, Vermont, and New Hampshire
 - **Navigation Fixes**: Fixed call-to-action buttons in homepage hero section to properly link Schedule Consultation to contact page and View Case Studies to incentives page
+- **Sort Functionality Fixed**: Replaced non-functional HTML select with proper React component for Sort by dropdown, implemented comprehensive sorting by Amount (High to Low), Deadline (Soonest), Recently Updated, and Relevance with intelligent amount parsing for accurate financial data ordering
 
 ## User Preferences
 - Professional, institutional-grade design aesthetic
