@@ -1,0 +1,59 @@
+name: "DOT Transportation Electrification and Infrastructure"
+description: "Department of Transportation electrification and clean transportation programs"
+base_url: "https://www.transportation.gov"
+crawl_depth: 3
+target_paths:
+  - "/rural/grant-toolkit/dot-grant-programs"
+  - "/policy-initiatives/automated-vehicles"
+  - "/mission/sustainability"
+  - "/grants"
+  - "/bipartisan-infrastructure-law"
+  - "/rural/grant-toolkit"
+  - "/policy/transportation-policy/build-america"
+
+pdf_patterns:
+  - "*electric*"
+  - "*vehicle*"
+  - "*charging*"
+  - "*infrastructure*"
+  - "*grant*"
+  - "*transportation*"
+  - "*clean*"
+  - "*bipartisan*"
+
+selectors:
+  title: "h1, h2, .grant-title, .program-title"
+  description: "p, .description, .grant-description, .program-overview"
+  amount: ".funding-amount, .grant-amount, .award-amount"
+  deadline: ".deadline, .application-deadline, .due-date"
+  eligibility: ".eligibility, .who-can-apply, .eligible-applicants"
+
+extraction_rules:
+  program_indicators:
+    - "grant"
+    - "program"
+    - "funding"
+    - "initiative"
+    - "loan"
+    - "assistance"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ (?:million|billion)"
+    - "\\$[\\d,]+(?:\\.\\d{2})?"
+    - "up to \\$[\\d,]+"
+    - "\\d+% match"
+  
+  deadline_patterns:
+    - "\\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{1,2}, \\d{4}\\b"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "rolling"
+    - "annual"
+
+skip_patterns:
+  - "news"
+  - "press"
+  - "blog"
+  - "calendar"
+
+expected_programs: 20
+priority: high

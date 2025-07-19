@@ -1,0 +1,73 @@
+name: "Climate Foundations and Corporate Programs"
+description: "Foundation and corporate climate/sustainability funding programs"
+base_url: "https://kresge.org"
+crawl_depth: 3
+target_paths:
+  - "/programs/environment"
+  - "/what-we-fund/environment"
+  - "/grants-database"
+
+additional_sites:
+  - base_url: "https://www.fordfoundation.org"
+    paths:
+      - "/work/challenging-inequality/climate-change"
+  - base_url: "https://www.bloomberg.org"
+    paths:
+      - "/environment"
+  - base_url: "https://www.rockefellerfoundation.org"
+    paths:
+      - "/our-work/food-systems"
+      - "/our-work/energy-systems"
+  - base_url: "https://www.macfound.org"
+    paths:
+      - "/programs/climate-solutions"
+  - base_url: "https://www.williampennfoundation.org"
+    paths:
+      - "/what-we-fund/environment-and-communities"
+  - base_url: "https://www.nycommunitytrust.org"
+    paths:
+      - "/grants-scholarships"
+  - base_url: "https://www.tbf.org"
+    paths:
+      - "/what-we-do/grants"
+
+pdf_patterns:
+  - "*grant*"
+  - "*funding*"
+  - "*climate*"
+  - "*environment*"
+  - "*sustainability*"
+  - "*energy*"
+  - "*clean*"
+  - "*program*"
+
+selectors:
+  title: "h1, h2, .grant-title, .program-name"
+  description: "p, .description, .grant-description, .overview"
+  amount: ".grant-amount, .funding-range, .award-size"
+  deadline: ".deadline, .application-deadline, .due-date"
+  eligibility: ".eligibility, .who-can-apply, .requirements"
+
+extraction_rules:
+  program_indicators:
+    - "grant"
+    - "funding"
+    - "program"
+    - "initiative"
+    - "award"
+    - "fellowship"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ to \\$[\\d,]+"
+    - "up to \\$[\\d,]+ million"
+    - "\\$[\\d,]+ grants"
+    - "grants of \\$[\\d,]+"
+  
+  deadline_patterns:
+    - "\\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{1,2}, \\d{4}\\b"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "rolling applications"
+    - "annual cycle"
+
+expected_programs: 50
+priority: medium

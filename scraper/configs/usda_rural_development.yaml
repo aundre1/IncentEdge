@@ -1,0 +1,60 @@
+name: "USDA Rural Development Energy Programs"
+description: "Rural energy and infrastructure programs from USDA"
+base_url: "https://www.rd.usda.gov"
+crawl_depth: 3
+target_paths:
+  - "/programs-services/energy-programs"
+  - "/programs-services/energy-programs/rural-energy-america-program-renewable-energy-systems-energy-efficiency-improvement-guaranteed-loans"
+  - "/programs-services/energy-programs/rural-energy-america-program-renewable-energy-systems-energy-efficiency-improvement-grants"
+  - "/programs-services/business-programs/business-industry-loan-guarantees"
+  - "/programs-services/community-facilities/community-facilities-direct-loan-grant-program"
+  - "/programs-services/water-environmental-programs"
+
+pdf_patterns:
+  - "*energy*"
+  - "*renewable*" 
+  - "*grant*"
+  - "*loan*"
+  - "*rural*"
+  - "*infrastructure*"
+  - "*community*"
+  - "*facilities*"
+
+selectors:
+  title: "h1, h2, .page-title, .program-title"
+  description: "p, .description, .program-description, .content"
+  amount: ".amount, .funding, .grant-amount, .loan-amount"
+  deadline: ".deadline, .due-date, .application-deadline"
+  eligibility: ".eligibility, .requirements, .who-can-apply"
+
+extraction_rules:
+  program_indicators:
+    - "program"
+    - "grant"
+    - "loan"
+    - "incentive"
+    - "funding"
+    - "assistance"
+  
+  amount_patterns:
+    - "\\$[\\d,]+(?:\\.\\d{2})?"
+    - "up to \\$[\\d,]+"
+    - "\\$[\\d,]+ to \\$[\\d,]+"
+    - "\\d+% of (?:project )?costs?"
+  
+  deadline_patterns:
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "\\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{1,2}, \\d{4}\\b"
+    - "rolling"
+    - "ongoing"
+    - "annual"
+
+skip_patterns:
+  - "newsletter"
+  - "blog"
+  - "news"
+  - "event"
+  - "calendar"
+
+expected_programs: 45
+priority: high

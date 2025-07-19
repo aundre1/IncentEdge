@@ -1,0 +1,66 @@
+name: "New Jersey Clean Energy Program Comprehensive"
+description: "Complete New Jersey clean energy, efficiency, and renewable programs"
+base_url: "https://www.njcleanenergy.com"
+crawl_depth: 4
+target_paths:
+  - "/residential"
+  - "/commercial-industrial"
+  - "/renewable-energy"
+  - "/electric-vehicles"
+  - "/main/home/residential/residential-programs"
+  - "/main/home/ci/ci-programs"
+  - "/main/home/renewable"
+  - "/main/home/financing"
+
+additional_sites:
+  - base_url: "https://www.njeda.com"
+    paths:
+      - "/cleantech"
+      - "/financing/incentives"
+      - "/economic-redevelopment-incentive-grant-erg"
+  - base_url: "https://www.bpu.state.nj.us"
+    paths:
+      - "/agenda/energy/renewable"
+      - "/agenda/energy/efficiency"
+
+pdf_patterns:
+  - "*rebate*"
+  - "*incentive*"
+  - "*program*"
+  - "*clean*"
+  - "*energy*"
+  - "*solar*"
+  - "*storage*"
+  - "*ev*"
+  - "*electric*"
+
+selectors:
+  title: "h1, h2, .program-title, .page-title"
+  description: "p, .description, .program-details, .overview"
+  amount: ".rebate-amount, .incentive-amount, .funding"
+  deadline: ".deadline, .program-end, .application-period"
+  eligibility: ".eligibility, .requirements, .who-qualifies"
+
+extraction_rules:
+  program_indicators:
+    - "rebate"
+    - "incentive" 
+    - "program"
+    - "financing"
+    - "loan"
+    - "grant"
+  
+  amount_patterns:
+    - "\\$[\\d,]+(?:\\.\\d{2})? per [\\w\\s]+"
+    - "\\$[\\d,]+ rebate"
+    - "up to \\$[\\d,]+"
+    - "\\d+% of costs?"
+  
+  deadline_patterns:
+    - "fund exhaustion"
+    - "while funds last"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "ongoing"
+
+expected_programs: 50
+priority: high

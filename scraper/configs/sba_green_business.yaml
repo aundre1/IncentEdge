@@ -1,0 +1,59 @@
+name: "SBA Green Business and Clean Energy Programs"
+description: "Small Business Administration clean energy and environmental programs"
+base_url: "https://www.sba.gov"
+crawl_depth: 3
+target_paths:
+  - "/funding-programs/loans"
+  - "/funding-programs/loans/specialty-loans"
+  - "/funding-programs/investment-capital"
+  - "/funding-programs/grants"
+  - "/business-guide/grow-your-business/green-business-guide"
+  - "/partners/lenders/504-loan-program"
+  - "/partners/lenders/7a-loan-program"
+  - "/funding-programs/disaster-assistance"
+
+pdf_patterns:
+  - "*green*"
+  - "*energy*"
+  - "*environmental*"
+  - "*clean*"
+  - "*504*"
+  - "*7a*"
+  - "*loan*"
+  - "*program*"
+
+selectors:
+  title: "h1, h2, .page-title, .program-name"
+  description: "p, .description, .program-overview, .content"
+  amount: ".loan-amount, .funding-amount, .max-loan"
+  deadline: ".deadline, .application-period"
+  eligibility: ".eligibility, .requirements, .small-business-requirements"
+
+extraction_rules:
+  program_indicators:
+    - "loan"
+    - "grant"
+    - "funding"
+    - "program"
+    - "assistance"
+    - "financing"
+  
+  amount_patterns:
+    - "\\$[\\d,]+(?:\\.\\d{2})?"
+    - "up to \\$[\\d,]+ million"
+    - "\\$[\\d,]+ to \\$[\\d,]+"
+    - "\\d+% financing"
+  
+  deadline_patterns:
+    - "ongoing"
+    - "continuous"
+    - "rolling applications"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+
+skip_patterns:
+  - "press-release"
+  - "blog"
+  - "success-story"
+
+expected_programs: 25
+priority: high

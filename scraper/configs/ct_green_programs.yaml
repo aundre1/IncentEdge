@@ -1,0 +1,68 @@
+name: "Connecticut Green Bank and Energy Programs"
+description: "Connecticut Green Bank, DEEP, and utility energy programs"
+base_url: "https://www.ctgreenbank.com"
+crawl_depth: 3
+target_paths:
+  - "/financing-options"
+  - "/programs"
+  - "/financing-options/commercial-pace"
+  - "/financing-options/residential-solar-loans"
+  - "/financing-options/solar-ppa"
+
+additional_sites:
+  - base_url: "https://portal.ct.gov/deep"
+    paths:
+      - "/energy/programs"
+      - "/climate-change"
+  - base_url: "https://energizect.com"
+    paths:
+      - "/residents"
+      - "/business"
+      - "/rebates-incentives"
+  - base_url: "https://www.eversource.com"
+    paths:
+      - "/content/ct-c/residential/save-money-energy"
+  - base_url: "https://www.uinet.com"
+    paths:
+      - "/save-energy/rebates-incentives"
+
+pdf_patterns:
+  - "*green*"
+  - "*energy*"
+  - "*financing*"
+  - "*pace*"
+  - "*rebate*"
+  - "*incentive*"
+  - "*solar*"
+  - "*efficiency*"
+
+selectors:
+  title: "h1, h2, .program-name, .financing-title"
+  description: "p, .description, .program-details, .overview"
+  amount: ".financing-amount, .rebate, .incentive"
+  deadline: ".deadline, .program-end, .availability"
+  eligibility: ".eligibility, .requirements, .criteria"
+
+extraction_rules:
+  program_indicators:
+    - "financing"
+    - "loan"
+    - "rebate"
+    - "incentive"
+    - "program"
+    - "pace"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ to \\$[\\d,]+"
+    - "up to \\$[\\d,]+"
+    - "\\d+% financing"
+    - "\\$[\\d,]+ rebate"
+  
+  deadline_patterns:
+    - "ongoing"
+    - "while funds available"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "annual"
+
+expected_programs: 35
+priority: high

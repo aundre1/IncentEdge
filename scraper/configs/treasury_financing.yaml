@@ -1,0 +1,56 @@
+name: "Treasury Department Clean Energy Financing"
+description: "Treasury tax credits, bonds, and financing programs for clean energy"
+base_url: "https://home.treasury.gov"
+crawl_depth: 3
+target_paths:
+  - "/policy-issues/climate-change"
+  - "/policy-issues/tax-policy"
+  - "/news/featured-stories/treasury-guidance-clean-energy-tax-credits"
+  - "/policy-issues/climate-change/treasury-climate-hub"
+  - "/policy-issues/financial-markets-financial-institutions-fiscal-service"
+
+pdf_patterns:
+  - "*tax*"
+  - "*credit*"
+  - "*bond*"
+  - "*clean*"
+  - "*energy*"
+  - "*financing*"
+  - "*guidance*"
+  - "*climate*"
+
+selectors:
+  title: "h1, h2, .policy-title, .program-title"
+  description: "p, .description, .policy-description, .summary"
+  amount: ".credit-amount, .tax-credit, .percentage"
+  deadline: ".deadline, .effective-date, .expiration"
+  eligibility: ".eligibility, .requirements, .qualifying-projects"
+
+extraction_rules:
+  program_indicators:
+    - "credit"
+    - "bond"
+    - "program"
+    - "financing"
+    - "tax"
+    - "incentive"
+  
+  amount_patterns:
+    - "\\d+% (?:tax )?credit"
+    - "\\$[\\d,]+ per [\\w\\s]+"
+    - "up to \\$[\\d,]+"
+    - "\\d+% of (?:project )?costs?"
+  
+  deadline_patterns:
+    - "\\b\\d{4}\\b"
+    - "December 31, \\d{4}"
+    - "through \\d{4}"
+    - "permanent"
+
+skip_patterns:
+  - "press-release"
+  - "speech"
+  - "testimony"
+
+expected_programs: 12
+priority: high

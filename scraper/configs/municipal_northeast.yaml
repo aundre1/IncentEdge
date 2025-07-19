@@ -1,0 +1,75 @@
+name: "Northeast Municipal Sustainability Programs"
+description: "City and county level sustainability and energy programs across Northeast"
+base_url: "https://www1.nyc.gov"
+crawl_depth: 3
+target_paths:
+  - "/site/buildings/industry/energy-efficiency-incentives.page"
+  - "/site/sustainability"
+  - "/site/planning/zoning/districts-tools/special-purpose-districts/sustainability"
+
+additional_sites:
+  - base_url: "https://www.phila.gov"
+    paths:
+      - "/departments/office-of-sustainability"
+      - "/services/permits-violations-licenses/apply-for-licenses-permits-and-business-registrations/green-business-certification"
+  - base_url: "https://www.boston.gov"
+    paths:
+      - "/departments/environment/climate-action"
+      - "/departments/environment/energy"
+  - base_url: "https://www.newark.gov"
+    paths:
+      - "/departments/sustainability"
+  - base_url: "https://www.hartford.gov"
+    paths:
+      - "/government/departments/sustainability"
+  - base_url: "https://www.providenceri.gov"
+    paths:
+      - "/sustainability"
+  - base_url: "https://www.portlandmaine.gov"
+    paths:
+      - "/1329/Sustainability-Resilience"
+  - base_url: "https://www.burlingtonvt.gov"
+    paths:
+      - "/departments/ced/climate-action"
+
+pdf_patterns:
+  - "*sustainability*"
+  - "*climate*"
+  - "*energy*"
+  - "*green*"
+  - "*incentive*"
+  - "*grant*"
+  - "*program*"
+  - "*rebate*"
+
+selectors:
+  title: "h1, h2, .program-title, .page-title"
+  description: "p, .description, .program-details, .content"
+  amount: ".amount, .funding, .rebate, .incentive"
+  deadline: ".deadline, .application-period, .due-date"
+  eligibility: ".eligibility, .requirements, .who-can-apply"
+
+extraction_rules:
+  program_indicators:
+    - "program"
+    - "incentive"
+    - "rebate"
+    - "grant"
+    - "financing"
+    - "tax credit"
+    - "abatement"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ (?:rebate|grant|credit)"
+    - "up to \\$[\\d,]+"
+    - "\\d+% property tax reduction"
+    - "\\$[\\d,]+ per [\\w\\s]+"
+  
+  deadline_patterns:
+    - "ongoing"
+    - "annual application"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "while funds available"
+
+expected_programs: 150
+priority: medium

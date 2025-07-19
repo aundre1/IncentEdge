@@ -1,0 +1,70 @@
+name: "Massachusetts Clean Energy Comprehensive"
+description: "Complete Massachusetts clean energy programs including Mass Save, MassCEC, and DOER"
+base_url: "https://www.masscec.com"
+crawl_depth: 4
+target_paths:
+  - "/programs"
+  - "/incentives"
+  - "/financing"
+  - "/what-we-do/clean-energy-investment"
+  - "/what-we-do/clean-energy-market-development"
+
+additional_sites:
+  - base_url: "https://www.masssave.com"
+    paths:
+      - "/residential/rebates-and-incentives"
+      - "/business/rebates-and-incentives"
+      - "/financing"
+  - base_url: "https://www.mass.gov/orgs/department-of-energy-resources"
+    paths:
+      - "/green-communities"
+      - "/clean-energy-solutions"
+      - "/renewable-energy"
+  - base_url: "https://www.nationalgridus.com"
+    paths:
+      - "/massachusetts/business/save-money-energy/energy-efficiency-programs"
+  - base_url: "https://www.eversource.com"
+    paths:
+      - "/content/ema-c/residential/save-money-energy/explore-alternatives/mass-save"
+
+pdf_patterns:
+  - "*rebate*"
+  - "*incentive*"
+  - "*program*"
+  - "*masssave*"
+  - "*energy*"
+  - "*efficiency*"
+  - "*renewable*"
+  - "*green*communities*"
+
+selectors:
+  title: "h1, h2, .program-name, .page-title"
+  description: "p, .description, .program-overview, .details"
+  amount: ".rebate, .incentive-amount, .savings"
+  deadline: ".deadline, .expiration, .program-period"
+  eligibility: ".eligibility, .requirements, .qualifications"
+
+extraction_rules:
+  program_indicators:
+    - "rebate"
+    - "incentive"
+    - "program" 
+    - "financing"
+    - "grant"
+    - "loan"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ rebate"
+    - "\\$[\\d,]+ per [\\w\\s]+"
+    - "up to \\$[\\d,]+"
+    - "\\d+% off"
+    - "no cost"
+  
+  deadline_patterns:
+    - "ongoing"
+    - "while supplies last"
+    - "December 31, \\d{4}"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+
+expected_programs: 45
+priority: high

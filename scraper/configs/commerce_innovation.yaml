@@ -1,0 +1,55 @@
+name: "Commerce Department Clean Technology Innovation"
+description: "Department of Commerce clean technology and innovation programs"
+base_url: "https://www.commerce.gov"
+crawl_depth: 3
+target_paths:
+  - "/bureaus-and-offices/grants"
+  - "/news/grants-and-funding-opportunities"
+  - "/bureaus-and-offices/economic-development-administration/programs"
+  - "/bureaus-and-offices/national-institute-standards-and-technology/programs"
+  - "/bureaus-and-offices/minority-business-development-agency/programs"
+
+pdf_patterns:
+  - "*innovation*"
+  - "*technology*"
+  - "*clean*"
+  - "*energy*"
+  - "*grant*"
+  - "*funding*"
+  - "*economic*"
+  - "*development*"
+
+selectors:
+  title: "h1, h2, .grant-title, .program-name"
+  description: "p, .description, .program-summary, .overview"
+  amount: ".award-amount, .funding-range, .grant-size"
+  deadline: ".deadline, .application-due, .closing-date"
+  eligibility: ".eligibility, .eligible-entities, .requirements"
+
+extraction_rules:
+  program_indicators:
+    - "grant"
+    - "program"
+    - "funding"
+    - "initiative"
+    - "competition"
+    - "assistance"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ (?:to \\$[\\d,]+)?"
+    - "up to \\$[\\d,]+ million"
+    - "total of \\$[\\d,]+ million"
+  
+  deadline_patterns:
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "\\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{1,2}, \\d{4}\\b"
+    - "continuous"
+    - "rolling"
+
+skip_patterns:
+  - "press-release"
+  - "news"
+  - "event"
+
+expected_programs: 15
+priority: medium

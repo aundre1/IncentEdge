@@ -1,0 +1,75 @@
+name: "Northeast Major Utility Programs"
+description: "Comprehensive utility energy efficiency and incentive programs across Northeast"
+base_url: "https://www.nationalgridus.com"
+crawl_depth: 3
+target_paths:
+  - "/massachusetts/business/save-money-energy/energy-efficiency-programs"
+  - "/rhode-island/business/ways-save/energy-efficiency-rebates-programs"
+  - "/new-york/business/ways-save/energy-efficiency-programs"
+
+additional_sites:
+  - base_url: "https://www.eversource.com"
+    paths:
+      - "/content/ema-c/residential/save-money-energy"
+      - "/content/ct-c/business/save-money-energy"
+  - base_url: "https://www.pseg.com"
+    paths:
+      - "/save-green/save-energy"
+      - "/save-green/rebates-incentives"
+  - base_url: "https://coned.com"
+    paths:
+      - "/save-money/rebates-incentives-tax-credits"
+  - base_url: "https://www.peco.com"
+    paths:
+      - "/save-energy-money/rebates-incentives"
+  - base_url: "https://www.pplelectric.com"
+    paths:
+      - "/save-energy-and-money/rebates-and-programs"
+  - base_url: "https://www.centralmaine.com"
+    paths:
+      - "/business/energy-efficiency"
+  - base_url: "https://www.unitil.com"
+    paths:
+      - "/save-energy/rebates-incentives"
+
+pdf_patterns:
+  - "*rebate*"
+  - "*incentive*"
+  - "*program*"
+  - "*efficiency*"
+  - "*energy*"
+  - "*commercial*"
+  - "*industrial*"
+  - "*business*"
+
+selectors:
+  title: "h1, h2, .program-title, .rebate-title"
+  description: "p, .description, .program-overview, .details"
+  amount: ".rebate-amount, .incentive, .savings"
+  deadline: ".deadline, .program-period, .availability"
+  eligibility: ".eligibility, .requirements, .qualifications"
+
+extraction_rules:
+  program_indicators:
+    - "rebate"
+    - "incentive"
+    - "program"
+    - "discount"
+    - "credit"
+    - "savings"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ rebate"
+    - "\\$[\\d,]+ per [\\w\\s]+"
+    - "up to \\$[\\d,]+"
+    - "\\d+% off"
+    - "\\$[\\d,]+ credit"
+  
+  deadline_patterns:
+    - "ongoing"
+    - "while supplies last"
+    - "annual program"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+
+expected_programs: 200
+priority: high

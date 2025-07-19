@@ -1,0 +1,67 @@
+name: "Pennsylvania Energy and Economic Development Programs"
+description: "Pennsylvania DEP, PEDA, PHFA, and utility energy programs"
+base_url: "https://www.dep.pa.gov"
+crawl_depth: 3
+target_paths:
+  - "/citizens/energy"
+  - "/business/energy"
+  - "/citizens/energy/alternative-fuels-incentive-grant"
+  - "/business/energy/pa-sunshine-solar-programs"
+
+additional_sites:
+  - base_url: "https://www.peda.org"
+    paths:
+      - "/programs"
+      - "/financing"
+  - base_url: "https://www.phfa.org"
+    paths:
+      - "/programs"
+      - "/homeowners/home-energy-assistance"
+  - base_url: "https://www.peco.com"
+    paths:
+      - "/save-energy-money/rebates-incentives"
+      - "/save-energy-money/for-your-business"
+  - base_url: "https://www.pplelectric.com"
+    paths:
+      - "/save-energy-and-money/rebates-and-programs"
+
+pdf_patterns:
+  - "*energy*"
+  - "*rebate*"
+  - "*incentive*"
+  - "*grant*"
+  - "*solar*"
+  - "*efficiency*"
+  - "*alternative*fuel*"
+  - "*renewable*"
+
+selectors:
+  title: "h1, h2, .program-title, .page-title"
+  description: "p, .description, .program-description, .overview"
+  amount: ".amount, .rebate-amount, .grant-amount"
+  deadline: ".deadline, .application-deadline, .program-end"
+  eligibility: ".eligibility, .requirements, .who-can-apply"
+
+extraction_rules:
+  program_indicators:
+    - "program"
+    - "rebate"
+    - "incentive"
+    - "grant"
+    - "financing"
+    - "loan"
+  
+  amount_patterns:
+    - "\\$[\\d,]+ (?:rebate|grant|incentive)"
+    - "up to \\$[\\d,]+"
+    - "\\$[\\d,]+ per [\\w\\s]+"
+    - "\\d+% of costs?"
+  
+  deadline_patterns:
+    - "ongoing"
+    - "annual cycle"
+    - "\\b\\d{1,2}/\\d{1,2}/\\d{4}\\b"
+    - "until funds exhausted"
+
+expected_programs: 40
+priority: high
