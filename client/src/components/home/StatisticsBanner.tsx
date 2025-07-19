@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { Database, DollarSign, TrendingUp, Clock, ArrowUpRight } from "lucide-react";
 import { IncentivesSummary } from "@shared/types";
 
@@ -122,12 +123,12 @@ export default function StatisticsBanner() {
               Join institutional investors using our platform to identify and secure optimal incentive packages
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary-modern">
+              <Link href="/contact" className="btn-primary-modern">
                 Schedule Consultation
-              </button>
-              <button className="btn-secondary-modern">
+              </Link>
+              <Link href="/incentives" className="btn-secondary-modern">
                 View Case Studies
-              </button>
+              </Link>
             </div>
           </div>
         </div>
