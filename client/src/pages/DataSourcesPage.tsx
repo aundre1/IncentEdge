@@ -203,7 +203,7 @@ export default function DataSourcesPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{summary?.totalFunding ?? "$78.6B+"}</div>
+              <div className="text-2xl font-bold text-green-600">{summary?.totalFunding ?? "$215.4B+"}</div>
               <p className="text-xs text-muted-foreground">In tracked programs</p>
             </CardContent>
           </Card>
@@ -214,7 +214,7 @@ export default function DataSourcesPage() {
               <Globe className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">12</div>
+              <div className="text-2xl font-bold text-purple-600">6</div>
               <p className="text-xs text-muted-foreground">Source categories</p>
             </CardContent>
           </Card>
