@@ -1,0 +1,4 @@
+"id","name","type","base_url","is_active","last_scraped_at","scraping_interval","config","created_at"
+"1","Federal Tax Credits","government","https://www.irs.gov/credits-deductions/businesses/energy-incentives","true",,"86400","{""selectors"":{""title"":"".field-title a"",""description"":"".field-body"",""amount"":"".incentive-amount""}}","""2025-06-24T01:42:38.460Z"""
+"2","NYSERDA Programs","government","https://www.nyserda.ny.gov/All-Programs","true",,"86400","{""selectors"":{""title"":"".program-title"",""description"":"".program-description"",""deadline"":"".deadline""}}","""2025-06-24T01:42:38.503Z"""
+"3","NYC Building Incentives","government","https://www1.nyc.gov/site/buildings/industry/energy-efficiency-incentives.page","true",,"86400","{""selectors"":{""title"":"".incentive-name"",""description"":"".incentive-details""}}","""2025-06-24T01:42:38.548Z"""
