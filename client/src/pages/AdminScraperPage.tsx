@@ -118,7 +118,7 @@ export default function AdminScraperPage() {
 
   if (summaryLoading || jobsLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
             <div className="h-8 bg-slate-200 rounded w-1/3"></div>
@@ -134,27 +134,27 @@ export default function AdminScraperPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-slate-900 mb-2 flex items-center">
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2 flex items-center">
               <Settings className="h-8 w-8 mr-3 text-blue-600" />
               Admin: AI Scraper Control
             </h1>
-            <p className="text-slate-600">
+            <p className="text-slate-600 dark:text-slate-400">
               Technical interface for managing government data scraping operations
             </p>
           </div>
-          <Badge className="bg-red-100 text-red-800 border-red-200 px-3 py-1">
+          <Badge className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700 px-3 py-1">
             Admin Only
           </Badge>
         </div>
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Jobs</CardTitle>
               <Database className="h-4 w-4 text-muted-foreground" />
@@ -164,7 +164,7 @@ export default function AdminScraperPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Jobs</CardTitle>
               <Clock className="h-4 w-4 text-blue-600" />
@@ -174,7 +174,7 @@ export default function AdminScraperPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Completed</CardTitle>
               <CheckCircle className="h-4 w-4 text-green-600" />
@@ -184,7 +184,7 @@ export default function AdminScraperPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Failed</CardTitle>
               <XCircle className="h-4 w-4 text-red-600" />
@@ -204,7 +204,7 @@ export default function AdminScraperPage() {
 
           {/* Scraping Control Tab */}
           <TabsContent value="control" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Start New Scraping Job</CardTitle>
                 <CardDescription>
@@ -262,7 +262,7 @@ export default function AdminScraperPage() {
 
           {/* Job History Tab */}
           <TabsContent value="jobs" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   Recent Jobs
@@ -318,7 +318,7 @@ export default function AdminScraperPage() {
 
           {/* Scraped Data Tab */}
           <TabsContent value="data" className="space-y-6">
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Scraped Data Viewer</CardTitle>
                 <CardDescription>

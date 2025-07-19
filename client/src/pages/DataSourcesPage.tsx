@@ -159,10 +159,10 @@ export default function DataSourcesPage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-slate-200 rounded w-1/3"></div>
+            <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[1, 2, 3].map(i => (
-                <div key={i} className="h-32 bg-slate-200 rounded"></div>
+                <div key={i} className="h-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
               ))}
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function DataSourcesPage() {
 
         {/* Overview Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Programs</CardTitle>
               <Database className="h-4 w-4 text-muted-foreground" />
@@ -197,7 +197,7 @@ export default function DataSourcesPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Available Funding</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -208,7 +208,7 @@ export default function DataSourcesPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Data Sources</CardTitle>
               <Globe className="h-4 w-4 text-muted-foreground" />
@@ -219,7 +219,7 @@ export default function DataSourcesPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Last Updated</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -238,7 +238,7 @@ export default function DataSourcesPage() {
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {dataSources.map((source, index) => (
-              <Card key={index} className="bg-white/80 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300">
+              <Card key={index} className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">
@@ -287,7 +287,7 @@ export default function DataSourcesPage() {
         </div>
 
         {/* Coverage Map Info */}
-        <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+        <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <MapPin className="h-5 w-5 text-blue-600" />

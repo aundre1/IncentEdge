@@ -42,14 +42,9 @@ export function ThemeProvider({
         : "light";
       
       root.classList.add(systemTheme);
-      console.log('Applied system theme:', systemTheme);
     } else {
       root.classList.add(theme);
-      console.log('Applied theme:', theme);
     }
-    
-    // Debug: log current classes
-    console.log('Document classes:', root.className);
   }, [theme]);
 
   const value = {
