@@ -162,7 +162,7 @@ export default function ContactPage() {
                 <Building className="text-primary mt-1 mr-4 h-5 w-5 flex-shrink-0" />
                 <div>
                   <h3 className="font-medium">Service Areas</h3>
-                  <p className="text-muted-foreground">NYC, New York State, Westchester County</p>
+                  <p className="text-muted-foreground">NYC, New York State, Westchester County, New Jersey, Pennsylvania, Rhode Island, Maine, Massachusetts, Delaware, Vermont, and New Hampshire</p>
                 </div>
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium">Comprehensive Database</h3>
-                    <p className="text-sm text-muted-foreground">Access to 100+ incentives across federal, state, local, utility, and foundation levels.</p>
+                    <p className="text-sm text-muted-foreground">Access to 187+ incentives across federal, state, local, utility, and foundation levels.</p>
                   </div>
                   <div>
                     <h3 className="font-medium">End-to-End Support</h3>

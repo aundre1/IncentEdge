@@ -53,6 +53,8 @@ IncentEdge is a professional web application designed for institutional investor
 - **Logo Integration Complete**: Replaced text-based logo with actual IncentEdge gradient logo image, created matching favicon, increased logo prominence (h-36) and positioned prominently in navigation for professional brand presence
 - **Enhanced Incentive Calculator**: Significantly expanded calculator with comprehensive input fields including location, building type, energy efficiency measures, ownership type, construction year, energy usage, sustainability certifications, and qualification checkboxes for more accurate incentive calculations
 - **Mobile-First Navigation**: Improved header layout with collapsible hamburger menu for tablets and mobile devices, ensuring logo prominence while maintaining professional navigation on all screen sizes
+- **Geographic Expansion**: Updated all website content to reflect expanded Northeast regional coverage from NYC/NY/Westchester to include New Jersey, Pennsylvania, Rhode Island, Maine, Massachusetts, Delaware, Vermont, and New Hampshire
+- **Navigation Fixes**: Fixed call-to-action buttons in homepage hero section to properly link Schedule Consultation to contact page and View Case Studies to incentives page
 
 ## User Preferences
 - Professional, institutional-grade design aesthetic

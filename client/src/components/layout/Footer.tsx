@@ -15,7 +15,7 @@ export default function Footer() {
               <IncentEdgeLogo className="h-16 text-primary-400" />
             </div>
             <p className="text-neutral-400 text-sm">
-              Helping property owners and developers navigate and leverage sustainable building incentives across NYC, NYS, and Westchester.
+              Helping property owners and developers navigate and leverage sustainable building incentives across NYC, New York State, Westchester County, New Jersey, Pennsylvania, Rhode Island, Maine, Massachusetts, Delaware, Vermont, and New Hampshire.
             </p>
             <div className="mt-4 flex space-x-4">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition">
