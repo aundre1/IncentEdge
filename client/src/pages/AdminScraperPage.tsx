@@ -20,6 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import AdminProtection from "@/components/AdminProtection";
 import type { ScraperJobSummary, ScraperJob, ScrapedIncentive } from "@shared/types";
 
 export default function AdminScraperPage() {
@@ -118,7 +119,8 @@ export default function AdminScraperPage() {
 
   if (summaryLoading || jobsLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <AdminProtection>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
             <div className="h-8 bg-slate-200 rounded w-1/3"></div>
@@ -130,11 +132,13 @@ export default function AdminScraperPage() {
           </div>
         </div>
       </div>
+      </AdminProtection>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <AdminProtection>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -354,5 +358,6 @@ export default function AdminScraperPage() {
         </Tabs>
       </div>
     </div>
+    </AdminProtection>
   );
 }
