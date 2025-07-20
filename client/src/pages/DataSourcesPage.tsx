@@ -24,124 +24,114 @@ export default function DataSourcesPage() {
 
   const dataSources: DataSourceInfo[] = [
     {
-      name: "Internal Revenue Service (IRS)",
-      type: "Federal",
-      description: "Tax credits, deductions, and federal incentive programs including Clean Energy Credits",
-      coverage: "Nationwide",
-      lastUpdated: "Daily",
-      programCount: 28,
-      status: "active",
-      icon: <Building2 className="h-6 w-6 text-blue-600" />
-    },
-    {
-      name: "Department of Energy (DOE)",
-      type: "Federal", 
-      description: "Building efficiency, renewable energy, and advanced technology programs",
-      coverage: "Nationwide",
-      lastUpdated: "Daily",
-      programCount: 18,
-      status: "active",
-      icon: <Zap className="h-6 w-6 text-amber-600" />
-    },
-    {
-      name: "NYSERDA & NY State Programs",
-      type: "State",
-      description: "New York State Energy Research and Development Authority plus state-wide initiatives",
-      coverage: "New York State",
-      lastUpdated: "Daily",
-      programCount: 27,
+      name: "Northeast State Energy Offices",
+      type: "Multi-State",
+      description: "Ten state energy offices covering NY, NJ, PA, MA, CT, VT, NH, ME, RI, DE",
+      coverage: "Northeast Region",
+      lastUpdated: "Weekly",
+      programCount: 1250,
       status: "active",
       icon: <Globe className="h-6 w-6 text-green-600" />
     },
     {
-      name: "NYC & Regional Programs",
-      type: "Local",
-      description: "NYC Mayor's Office, county programs, and municipal sustainability initiatives",
-      coverage: "NYC, Westchester, Nassau, Suffolk Counties",
-      lastUpdated: "Weekly", 
-      programCount: 15,
-      status: "active",
-      icon: <MapPin className="h-6 w-6 text-purple-600" />
-    },
-    {
-      name: "EPA Environmental Programs",
-      type: "Federal",
-      description: "Environmental Protection Agency climate and sustainability programs",
-      coverage: "Nationwide",
-      lastUpdated: "Weekly",
-      programCount: 14,
-      status: "active",
-      icon: <Globe className="h-6 w-6 text-emerald-600" />
-    },
-    {
-      name: "HUD Housing Programs",
-      type: "Federal", 
-      description: "Housing and Urban Development energy efficiency and green building programs",
-      coverage: "Nationwide",
-      lastUpdated: "Monthly",
-      programCount: 12,
-      status: "active",
-      icon: <Building2 className="h-6 w-6 text-indigo-600" />
-    },
-    {
-      name: "Northeast States Coalition",
-      type: "Multi-State",
-      description: "Connecticut, New Jersey, Vermont, Massachusetts, Rhode Island programs",
-      coverage: "Northeast Corridor",
-      lastUpdated: "Weekly",
-      programCount: 20,
-      status: "active", 
-      icon: <Globe className="h-6 w-6 text-cyan-600" />
-    },
-    {
-      name: "Utility & Grid Programs",
+      name: "Regional Utilities & Grid Operators",
       type: "Utility",
-      description: "NYISO, LIPA, regional utilities, and wholesale market programs",
-      coverage: "Regional Grid",
+      description: "NYISO, ISO-NE, utilities across the Northeast region including National Grid, ConEd, LIPA",
+      coverage: "Northeast Grid",
       lastUpdated: "Daily",
-      programCount: 18,
+      programCount: 362,
       status: "active",
       icon: <Zap className="h-6 w-6 text-orange-600" />
     },
     {
-      name: "Foundation & Private Programs",
+      name: "Municipal & Local Programs",
+      type: "Local",
+      description: "NYC Mayor's Office, county programs, municipal sustainability initiatives across Northeast cities",
+      coverage: "Regional Municipalities",
+      lastUpdated: "Weekly", 
+      programCount: 326,
+      status: "active",
+      icon: <MapPin className="h-6 w-6 text-purple-600" />
+    },
+    {
+      name: "NYSERDA Programs",
+      type: "State",
+      description: "New York State Energy Research and Development Authority comprehensive programs",
+      coverage: "New York State",
+      lastUpdated: "Daily",
+      programCount: 141,
+      status: "active",
+      icon: <Globe className="h-6 w-6 text-blue-600" />
+    },
+    {
+      name: "Department of Energy (DOE)",
+      type: "Federal", 
+      description: "Building efficiency, renewable energy, advanced technology, and loan programs",
+      coverage: "Nationwide",
+      lastUpdated: "Weekly",
+      programCount: 113,
+      status: "active",
+      icon: <Zap className="h-6 w-6 text-amber-600" />
+    },
+    {
+      name: "EPA Environmental Programs",
+      type: "Federal",
+      description: "Environmental Protection Agency climate, greenhouse gas reduction, and sustainability programs",
+      coverage: "Nationwide",
+      lastUpdated: "Weekly",
+      programCount: 87,
+      status: "active",
+      icon: <Globe className="h-6 w-6 text-emerald-600" />
+    },
+    {
+      name: "Private Foundations & Grants",
       type: "Foundation",
-      description: "Private foundations, technology consortiums, and industry partnerships",
-      coverage: "Multi-State",
+      description: "Environmental foundations, climate initiatives, and private grant programs",
+      coverage: "Northeast Focus",
       lastUpdated: "Monthly",
-      programCount: 21,
+      programCount: 64,
       status: "active",
       icon: <TrendingUp className="h-6 w-6 text-rose-600" />
     },
     {
-      name: "Regional Climate Initiatives",
-      type: "Multi-State",
-      description: "RGGI, Transportation Climate Initiative, Northeast partnerships",
-      coverage: "Regional",
-      lastUpdated: "Weekly",
-      programCount: 8,
-      status: "active",
-      icon: <Globe className="h-6 w-6 text-teal-600" />
-    },
-    {
-      name: "USDA & Rural Programs", 
+      name: "USDA Rural Development",
       type: "Federal",
-      description: "Rural development, agricultural sustainability, and community programs",
-      coverage: "Nationwide",
+      description: "Rural development, agricultural sustainability, and community infrastructure programs",
+      coverage: "Rural Areas",
       lastUpdated: "Monthly",
-      programCount: 9,
+      programCount: 64,
       status: "active",
       icon: <Building2 className="h-6 w-6 text-lime-600" />
     },
     {
-      name: "SBA & Economic Development",
+      name: "Small Business Administration (SBA)",
       type: "Federal",
-      description: "Small Business Administration and economic development incentives",
+      description: "Small business loans, green business programs, and economic development incentives",
       coverage: "Nationwide", 
       lastUpdated: "Monthly",
-      programCount: 5,
+      programCount: 63,
       status: "active",
       icon: <TrendingUp className="h-6 w-6 text-violet-600" />
+    },
+    {
+      name: "Internal Revenue Service (IRS)",
+      type: "Federal",
+      description: "Tax credits, deductions, and federal incentive programs including Clean Energy Credits",
+      coverage: "Nationwide",
+      lastUpdated: "Annual",
+      programCount: 20,
+      status: "active",
+      icon: <Building2 className="h-6 w-6 text-blue-600" />
+    },
+    {
+      name: "Treasury Department",
+      type: "Federal", 
+      description: "Investment tax credits, opportunity zones, and federal financing programs",
+      coverage: "Nationwide",
+      lastUpdated: "Quarterly",
+      programCount: 3,
+      status: "active",
+      icon: <Building2 className="h-6 w-6 text-indigo-600" />
     }
   ];
 
