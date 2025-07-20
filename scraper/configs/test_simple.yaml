@@ -1,0 +1,13 @@
+site: https://www.energy.gov/
+program_type: Federal Grant
+scrape_pdfs: false
+deep_links:
+  urls:
+  - https://www.energy.gov/eere/buildings/funding-opportunities
+  - https://www.energy.gov/eere/solar/funding-opportunities
+selectors:
+  title: h1, h2.node-title, .field-name-title h2
+  funding: .field-name-field-funding-amount, .funding-amount
+  deadline: .field-name-field-application-deadline, .deadline
+  description: .field-name-body, .node-content
+auto_pdf_detection: false
