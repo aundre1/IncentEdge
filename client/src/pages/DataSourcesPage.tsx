@@ -24,114 +24,74 @@ export default function DataSourcesPage() {
 
   const dataSources: DataSourceInfo[] = [
     {
-      name: "Northeast State Energy Offices",
-      type: "Multi-State",
-      description: "Ten state energy offices covering NY, NJ, PA, MA, CT, VT, NH, ME, RI, DE",
-      coverage: "Northeast Region",
-      lastUpdated: "Weekly",
-      programCount: 1250,
-      status: "active",
-      icon: <Globe className="h-6 w-6 text-green-600" />
-    },
-    {
-      name: "Regional Utilities & Grid Operators",
-      type: "Utility",
-      description: "NYISO, ISO-NE, utilities across the Northeast region including National Grid, ConEd, LIPA",
-      coverage: "Northeast Grid",
+      name: "Major Northeast Utilities",
+      type: "Verified Utility Programs",
+      description: "349 verified programs from National Grid, PSEG, ConEd, Eversource, CL&P, and 10 additional regional utilities",
+      coverage: "Complete Northeast Grid",
       lastUpdated: "Daily",
-      programCount: 362,
+      programCount: 349,
       status: "active",
       icon: <Zap className="h-6 w-6 text-orange-600" />
     },
     {
-      name: "Municipal & Local Programs",
-      type: "Local",
-      description: "NYC Mayor's Office, county programs, municipal sustainability initiatives across Northeast cities",
-      coverage: "Regional Municipalities",
-      lastUpdated: "Weekly", 
-      programCount: 326,
-      status: "active",
-      icon: <MapPin className="h-6 w-6 text-purple-600" />
-    },
-    {
-      name: "NYSERDA Programs",
-      type: "State",
-      description: "New York State Energy Research and Development Authority comprehensive programs",
-      coverage: "New York State",
-      lastUpdated: "Daily",
-      programCount: 141,
-      status: "active",
-      icon: <Globe className="h-6 w-6 text-blue-600" />
-    },
-    {
-      name: "Department of Energy (DOE)",
-      type: "Federal", 
-      description: "Building efficiency, renewable energy, advanced technology, and loan programs",
+      name: "Federal Tax Programs",
+      type: "IRS & Treasury Verified",
+      description: "17 verified federal tax credits including Clean Vehicle Credits, 179D deductions, and renewable energy incentives",
       coverage: "Nationwide",
       lastUpdated: "Weekly",
-      programCount: 113,
-      status: "active",
-      icon: <Zap className="h-6 w-6 text-amber-600" />
-    },
-    {
-      name: "EPA Environmental Programs",
-      type: "Federal",
-      description: "Environmental Protection Agency climate, greenhouse gas reduction, and sustainability programs",
-      coverage: "Nationwide",
-      lastUpdated: "Weekly",
-      programCount: 87,
-      status: "active",
-      icon: <Globe className="h-6 w-6 text-emerald-600" />
-    },
-    {
-      name: "Private Foundations & Grants",
-      type: "Foundation",
-      description: "Environmental foundations, climate initiatives, and private grant programs",
-      coverage: "Northeast Focus",
-      lastUpdated: "Monthly",
-      programCount: 64,
-      status: "active",
-      icon: <TrendingUp className="h-6 w-6 text-rose-600" />
-    },
-    {
-      name: "USDA Rural Development",
-      type: "Federal",
-      description: "Rural development, agricultural sustainability, and community infrastructure programs",
-      coverage: "Rural Areas",
-      lastUpdated: "Monthly",
-      programCount: 64,
-      status: "active",
-      icon: <Building2 className="h-6 w-6 text-lime-600" />
-    },
-    {
-      name: "Small Business Administration (SBA)",
-      type: "Federal",
-      description: "Small business loans, green business programs, and economic development incentives",
-      coverage: "Nationwide", 
-      lastUpdated: "Monthly",
-      programCount: 63,
-      status: "active",
-      icon: <TrendingUp className="h-6 w-6 text-violet-600" />
-    },
-    {
-      name: "Internal Revenue Service (IRS)",
-      type: "Federal",
-      description: "Tax credits, deductions, and federal incentive programs including Clean Energy Credits",
-      coverage: "Nationwide",
-      lastUpdated: "Annual",
-      programCount: 20,
+      programCount: 17,
       status: "active",
       icon: <Building2 className="h-6 w-6 text-blue-600" />
     },
     {
-      name: "Treasury Department",
-      type: "Federal", 
-      description: "Investment tax credits, opportunity zones, and federal financing programs",
+      name: "State Energy Offices",
+      type: "NYSERDA & Regional Verified",
+      description: "7 verified state energy programs including NYSERDA Clean Energy Fund and Connecticut Green Bank",
+      coverage: "Northeast States",
+      lastUpdated: "Daily",
+      programCount: 7,
+      status: "active",
+      icon: <Globe className="h-6 w-6 text-green-600" />
+    },
+    {
+      name: "Federal Environmental Agencies",
+      type: "EPA Verified Programs",
+      description: "5 verified EPA programs including $27B Greenhouse Gas Reduction Fund and Solar for All",
       coverage: "Nationwide",
-      lastUpdated: "Quarterly",
+      lastUpdated: "Weekly",
+      programCount: 5,
+      status: "active",
+      icon: <Globe className="h-6 w-6 text-emerald-600" />
+    },
+    {
+      name: "Department of Energy",
+      type: "DOE Verified Programs", 
+      description: "4 verified DOE programs including Title XVII loan guarantees and advanced vehicle manufacturing",
+      coverage: "Nationwide",
+      lastUpdated: "Weekly",
+      programCount: 4,
+      status: "active",
+      icon: <Zap className="h-6 w-6 text-amber-600" />
+    },
+    {
+      name: "Private Foundations",
+      type: "Foundation Commitments",
+      description: "3 verified foundation programs including Bezos Earth Fund and Gates Foundation climate initiatives",
+      coverage: "Global Impact",
+      lastUpdated: "Monthly",
       programCount: 3,
       status: "active",
-      icon: <Building2 className="h-6 w-6 text-indigo-600" />
+      icon: <TrendingUp className="h-6 w-6 text-rose-600" />
+    },
+    {
+      name: "Federal Support Agencies",
+      type: "Commerce & Development",
+      description: "1 verified Commerce EDA program supporting clean energy economic development",
+      coverage: "Nationwide",
+      lastUpdated: "Monthly",
+      programCount: 1,
+      status: "active",
+      icon: <Building2 className="h-6 w-6 text-lime-600" />
     }
   ];
 
@@ -170,7 +130,7 @@ export default function DataSourcesPage() {
             Market Intelligence
           </h1>
           <p className="text-slate-600 dark:text-slate-400 text-lg">
-            Real-time data from 195+ government programs across 12 major source categories
+            Real-time data from 382+ verified programs across 7 major source categories
           </p>
         </div>
 
@@ -204,7 +164,7 @@ export default function DataSourcesPage() {
               <Globe className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">6</div>
+              <div className="text-2xl font-bold text-purple-600">7</div>
               <p className="text-xs text-muted-foreground">Source categories</p>
             </CardContent>
           </Card>
