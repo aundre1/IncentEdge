@@ -210,6 +210,7 @@ export interface IStorage {
   getAllIncentives(): Promise<Incentive[]>;
   getIncentiveById(id: number): Promise<Incentive | undefined>;
   getIncentivesSummary(): Promise<IncentivesSummary>;
+  createIncentive(incentive: InsertIncentive): Promise<Incentive>;
   
   // Lead operations
   createLead(lead: InsertLead): Promise<Lead>;
@@ -309,6 +310,18 @@ export class MemStorage implements IStorage {
   
   async getIncentiveById(id: number): Promise<Incentive | undefined> {
     return this.incentives.get(id);
+  }
+  
+  async createIncentive(insertIncentive: InsertIncentive): Promise<Incentive> {
+    const id = this.incentiveIdCounter++;
+    const incentive: Incentive = {
+      ...insertIncentive,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.incentives.set(id, incentive);
+    return incentive;
   }
   
   async getIncentivesSummary(): Promise<IncentivesSummary> {
@@ -706,6 +719,11 @@ export class DatabaseStorage implements IStorage {
   
   async getIncentiveById(id: number): Promise<Incentive | undefined> {
     const [incentive] = await db.select().from(incentives).where(eq(incentives.id, id));
+    return incentive;
+  }
+  
+  async createIncentive(insertIncentive: InsertIncentive): Promise<Incentive> {
+    const [incentive] = await db.insert(incentives).values(insertIncentive).returning();
     return incentive;
   }
   

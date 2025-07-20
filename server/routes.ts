@@ -14,6 +14,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/incentives", incentivesRoutes.getAllIncentives);
   app.get("/api/incentives/summary", incentivesRoutes.getIncentivesSummary);
   app.get("/api/incentives/:id", incentivesRoutes.getIncentiveById);
+  app.post("/api/incentives", incentivesRoutes.createIncentive);
   
   // Calculator routes
   app.post("/api/calculator", calculatorRoutes.calculateIncentives);

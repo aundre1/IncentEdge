@@ -16,6 +16,22 @@ const filterQuerySchema = z.object({
   search: z.string().optional()
 }).optional();
 
+// Schema for creating a new incentive
+const createIncentiveSchema = z.object({
+  name: z.string().min(1),
+  provider: z.string().min(1),
+  level: z.string().min(1),
+  amount: z.string().min(1),
+  deadline: z.string().min(1),
+  project_types: z.array(z.string()).optional().default([]),
+  technology: z.string().optional().default("Energy Efficiency"),
+  status: z.string().optional().default("Active"),
+  requirements: z.array(z.string()).optional().default([]),
+  description: z.string().optional().default(""),
+  contact_info: z.string().optional().default(""),
+  application_url: z.string().optional().default("")
+});
+
 // Get all incentives with optional filters
 async function getAllIncentives(req: Request, res: Response) {
   try {
@@ -148,8 +164,47 @@ async function getIncentivesSummary(req: Request, res: Response) {
   }
 }
 
+// Create a new incentive
+async function createIncentive(req: Request, res: Response) {
+  try {
+    // Validate request body
+    const validationResult = createIncentiveSchema.safeParse(req.body);
+    if (!validationResult.success) {
+      return res.status(400).json({ 
+        message: "Invalid incentive data", 
+        errors: validationResult.error.errors 
+      });
+    }
+    
+    const incentiveData = validationResult.data;
+    
+    // Convert to the format expected by storage
+    const insertData = {
+      name: incentiveData.name,
+      provider: incentiveData.provider,
+      level: incentiveData.level,
+      amount: incentiveData.amount,
+      deadline: incentiveData.deadline,
+      projectTypes: incentiveData.project_types,
+      technology: incentiveData.technology,
+      status: incentiveData.status,
+      requirements: incentiveData.requirements,
+      description: incentiveData.description,
+      contactInfo: incentiveData.contact_info,
+      applicationUrl: incentiveData.application_url
+    };
+    
+    const newIncentive = await storage.createIncentive(insertData);
+    return res.status(200).json(newIncentive);
+  } catch (error) {
+    console.error("Error creating incentive:", error);
+    return res.status(500).json({ message: "Error creating incentive" });
+  }
+}
+
 export default {
   getAllIncentives,
   getIncentiveById,
-  getIncentivesSummary
+  getIncentivesSummary,
+  createIncentive
 };
