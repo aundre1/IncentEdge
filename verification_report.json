@@ -1,0 +1,25 @@
+{
+  "verification_date": "2025-07-20T18:48:40.528404",
+  "total_programs_checked": 0,
+  "verified_authentic": 0,
+  "flagged_for_review": 0,
+  "recommended_removal": 0,
+  "verification_summary": {
+    "nyserda": {
+      "verified": 16,
+      "total": 20
+    },
+    "epa": {
+      "verified": 9,
+      "total": 15
+    },
+    "irs": {
+      "verified": 17,
+      "total": 20
+    },
+    "state_energy_offices": {
+      "verified": 0,
+      "total": 1250
+    }
+  }
+}
