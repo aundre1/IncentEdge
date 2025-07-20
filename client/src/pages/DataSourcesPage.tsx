@@ -193,7 +193,7 @@ export default function DataSourcesPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{summary?.totalFunding ?? "$215.4B+"}</div>
+              <div className="text-2xl font-bold text-green-600">{summary?.totalFunding ?? "$214.4B+"}</div>
               <p className="text-xs text-muted-foreground">In tracked programs</p>
             </CardContent>
           </Card>

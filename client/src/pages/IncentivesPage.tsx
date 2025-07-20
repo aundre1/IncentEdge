@@ -51,7 +51,7 @@ export default function IncentivesPage() {
       return false;
     }
     
-    // Filter by project types - Comprehensive matching for all 187 programs
+    // Filter by project types - Comprehensive matching for all 2,240 programs
     if (filters.projectTypes.length > 0) {
       const matchesProjectType = incentive.projectTypes.some(type => 
         filters.projectTypes.some(filterType => {
