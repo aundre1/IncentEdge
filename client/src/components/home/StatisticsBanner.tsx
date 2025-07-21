@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Database, DollarSign, TrendingUp, Clock, ArrowUpRight } from "lucide-react";
-import { IncentivesSummary } from "@shared/types";
+import { IncentivesSummary } from "@shared/schema";
 
 export default function StatisticsBanner() {
   const { data: summary, isLoading } = useQuery<IncentivesSummary>({
