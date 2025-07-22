@@ -151,9 +151,19 @@ export default function AdminScraperPage() {
               Technical interface for managing government data scraping operations
             </p>
           </div>
-          <Badge className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700 px-3 py-1">
-            Admin Only
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => window.location.href = '/admin/monitoring'}
+              className="flex items-center gap-2"
+            >
+              <Database className="h-4 w-4" />
+              Data Monitoring
+            </Button>
+            <Badge className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700 px-3 py-1">
+              Admin Only
+            </Badge>
+          </div>
         </div>
 
         {/* Summary Stats */}
