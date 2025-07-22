@@ -31,6 +31,18 @@ export const incentives = pgTable("incentives", {
   technology: text("technology").default("efficiency").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  // Verification fields
+  verificationLevel: integer("verification_level").default(0).notNull(),
+  verificationDate: timestamp("verification_date"),
+  verificationSource: text("verification_source"),
+  verificationNotes: text("verification_notes"),
+  // Data tracking fields
+  lastDataCheck: timestamp("last_data_check"),
+  dataSource: text("data_source"), // Official website URL or API endpoint
+  deadlineStatus: text("deadline_status").default("unknown").notNull(), // active, expiring, expired, ongoing, unknown
+  amountVerified: boolean("amount_verified").default(false).notNull(),
+  deadlineVerified: boolean("deadline_verified").default(false).notNull(),
+  nextCheckDue: timestamp("next_check_due"),
 });
 
 export const insertIncentiveSchema = createInsertSchema(incentives).omit({
@@ -70,6 +82,34 @@ export const calculatorSubmissions = pgTable("calculator_submissions", {
   budget: integer("budget").notNull(),
   estimatedIncentive: integer("estimated_incentive").notNull(),
   email: text("email"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Program updates tracking table
+export const programUpdates = pgTable("program_updates", {
+  id: serial("id").primaryKey(),
+  incentiveId: integer("incentive_id").notNull(),
+  updateType: text("update_type").notNull(), // deadline_change, amount_change, status_change, expired
+  oldValue: text("old_value"),
+  newValue: text("new_value"),
+  source: text("source").notNull(), // manual, automated, api, scraper
+  confidence: text("confidence").default("medium").notNull(), // low, medium, high
+  verifiedBy: text("verified_by"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  applied: boolean("applied").default(false).notNull(),
+});
+
+// Data monitoring schedule
+export const monitoringSchedule = pgTable("monitoring_schedule", {
+  id: serial("id").primaryKey(),
+  incentiveId: integer("incentive_id").notNull(),
+  checkType: text("check_type").notNull(), // deadline, amount, status, availability
+  frequency: text("frequency").notNull(), // daily, weekly, monthly, quarterly
+  lastCheck: timestamp("last_check"),
+  nextCheck: timestamp("next_check").notNull(),
+  priority: text("priority").default("medium").notNull(), // low, medium, high, critical
+  automated: boolean("automated").default(true).notNull(),
+  active: boolean("active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
