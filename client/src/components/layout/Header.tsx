@@ -70,16 +70,27 @@ export default function Header() {
               <span className="sr-only">Toggle theme</span>
             </Button>
 
-            {/* Admin Link - Desktop */}
-            <Link href="/admin/scraper" className="hidden xl:block">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 px-3 text-xs bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 transition-all duration-300"
-              >
-                Admin
-              </Button>
-            </Link>
+            {/* Admin Links - Desktop */}
+            <div className="hidden xl:flex items-center gap-2">
+              <Link href="/admin/scraper">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 text-xs bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 transition-all duration-300"
+                >
+                  Admin
+                </Button>
+              </Link>
+              <Link href="/admin/monitoring">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 text-xs bg-blue-100/50 dark:bg-blue-900/50 border border-blue-200/50 dark:border-blue-700/50 hover:bg-blue-200/70 dark:hover:bg-blue-700/70 transition-all duration-300"
+                >
+                  Monitor
+                </Button>
+              </Link>
+            </div>
 
             {/* CTA Button - Desktop */}
             <Button className="hidden xl:flex btn-primary-modern">
@@ -133,16 +144,28 @@ export default function Header() {
                   Get Started
                 </Button>
                 
-                <Link href="/admin/scraper" className="block">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full text-xs"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Admin Panel
-                  </Button>
-                </Link>
+                <div className="space-y-2">
+                  <Link href="/admin/scraper" className="block">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full text-xs"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Admin Panel
+                    </Button>
+                  </Link>
+                  <Link href="/admin/monitoring" className="block">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Data Monitor
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
