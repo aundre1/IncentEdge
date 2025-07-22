@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Clock, CheckCircle, AlertTriangle, RefreshCw, Database, TrendingUp, Calendar, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,25 +36,7 @@ export default function DataMonitoringPage() {
 
   const { data: monitoringStatus, isLoading } = useQuery<MonitoringStatus>({
     queryKey: ['/api/monitoring/status'],
-    refetchInterval: 30000, // Refresh every 30 seconds
-  });
-
-  const setupMonitoringMutation = useMutation({
-    mutationFn: () => apiRequest('/api/monitoring/setup', 'POST'),
-    onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "Monitoring schedule set up successfully",
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/monitoring/status'] });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to setup monitoring schedule",
-        variant: "destructive",
-      });
-    },
+    refetchInterval: 30000,
   });
 
   const checkProgramsMutation = useMutation({
@@ -122,12 +103,12 @@ export default function DataMonitoringPage() {
   };
 
   const getConfidenceBadge = (confidence: string) => {
-    const variants = {
+    const variants: Record<string, string> = {
       high: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200",
       medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
       low: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
     };
-    return variants[confidence as keyof typeof variants] || variants.medium;
+    return variants[confidence] || variants.medium;
   };
 
   return (
@@ -148,14 +129,6 @@ export default function DataMonitoringPage() {
         
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-3">
-          <Button 
-            onClick={() => setupMonitoringMutation.mutate()}
-            disabled={setupMonitoringMutation.isPending}
-            className="flex items-center gap-2"
-          >
-            <Database className="h-4 w-4" />
-            Setup Monitoring
-          </Button>
           <Button 
             variant="outline"
             onClick={() => checkProgramsMutation.mutate()}
@@ -200,15 +173,15 @@ export default function DataMonitoringPage() {
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-emerald-500" />
-              Monitoring Active
+              Programs Monitored
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-emerald-600">
-              408
+              933
             </div>
             <p className="text-xs text-muted-foreground">
-              High-confidence programs
+              Total verified programs
             </p>
           </CardContent>
         </Card>
@@ -217,15 +190,15 @@ export default function DataMonitoringPage() {
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-orange-500" />
-              Next Check
+              Scheduled Checks
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-600">
-              24h
+              2,274
             </div>
             <p className="text-xs text-muted-foreground">
-              Until next automated check
+              Total monitoring schedules
             </p>
           </CardContent>
         </Card>
