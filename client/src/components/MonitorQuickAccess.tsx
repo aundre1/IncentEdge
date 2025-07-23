@@ -3,7 +3,7 @@ import { TrendingUp } from 'lucide-react';
 
 export default function MonitorQuickAccess() {
   const goToMonitor = () => {
-    window.location.href = '/admin/monitoring';
+    window.location.href = '/monitor';
   };
 
   return (
