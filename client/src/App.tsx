@@ -19,6 +19,7 @@ import DataSourcesPage from "@/pages/DataSourcesPage";
 import AdminScraperPage from "@/pages/AdminScraperPage";
 import DataMonitoringPage from "@/pages/DataMonitoringPage";
 import MonitorDashboard from "@/pages/MonitorDashboard";
+import SimpleMonitor from "@/pages/SimpleMonitor";
 
 function Router() {
   return (
@@ -33,7 +34,7 @@ function Router() {
           <Route path="/data-sources" component={DataSourcesPage} />
           <Route path="/admin/scraper" component={AdminScraperPage} />
           <Route path="/admin/monitoring" component={DataMonitoringPage} />
-          <Route path="/monitor" component={MonitorDashboard} />
+          <Route path="/monitor" component={SimpleMonitor} />
           <Route path="/about" component={AboutPage} />
           <Route path="/resources" component={ResourcesPage} />
           <Route path="/contact" component={ContactPage} />
