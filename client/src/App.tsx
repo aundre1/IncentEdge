@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import MonitorQuickAccess from "@/components/MonitorQuickAccess";
 import HomePage from "@/pages/HomePage";
 import IncentivesPage from "@/pages/IncentivesPage";
 import CalculatorPage from "@/pages/CalculatorPage";
@@ -48,6 +49,7 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <Router />
+        <MonitorQuickAccess />
       </TooltipProvider>
     </QueryClientProvider>
   );
