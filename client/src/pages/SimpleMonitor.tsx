@@ -1,5 +1,4 @@
 import React from 'react';
-import AdminProtection from '../components/AdminProtection';
 
 export default function SimpleMonitor() {
   const [status, setStatus] = React.useState('loading');
@@ -16,7 +15,7 @@ export default function SimpleMonitor() {
   }, []);
 
   return (
-    <AdminProtection>
+    <div>
       <div style={{ 
         minHeight: '100vh', 
         background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
@@ -209,6 +208,6 @@ export default function SimpleMonitor() {
           </div>
         </div>
       </div>
-    </AdminProtection>
+    </div>
   );
 }
