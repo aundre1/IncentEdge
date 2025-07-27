@@ -94,7 +94,7 @@ export default function HomePage() {
       <section className="py-16 bg-white dark:bg-neutral-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Market Intelligence & Investment Analysis</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">🚀 NEW CHARTS - Market Intelligence & Investment Analysis</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Real-time insights into funding opportunities, market trends, and projected returns for sustainable building investments.
             </p>
