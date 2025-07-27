@@ -46,7 +46,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Access our database of 907 active incentives across federal, state, local, utility, and foundation levels.
+                  Access our comprehensive database of 907 active incentives across federal, state, local, utility, and foundation levels.
                 </p>
               </CardContent>
               <CardFooter>

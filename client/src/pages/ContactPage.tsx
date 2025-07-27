@@ -182,7 +182,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium">Comprehensive Database</h3>
-                    <p className="text-sm text-muted-foreground">Access to 2,240+ incentives across federal, state, local, utility, and foundation levels.</p>
+                    <p className="text-sm text-muted-foreground">Access to 907 active incentives across federal, state, local, utility, and foundation levels.</p>
                   </div>
                   <div>
                     <h3 className="font-medium">End-to-End Support</h3>

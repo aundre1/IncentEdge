@@ -8,7 +8,7 @@ export const INCENTIVE_LEVELS = [
   { value: 'foundation', label: 'Foundation' }
 ];
 
-// Project Types - Complete coverage for all 2,240 programs
+// Project Types - Complete coverage for all 907 active programs
 export const PROJECT_TYPES = [
   { value: 'all', label: 'All Projects' },
   { value: 'energy efficiency', label: 'Energy Efficiency' },
