@@ -15,29 +15,23 @@ export default function HeroSection() {
       <div className="absolute inset-0 gradient-dark"></div>
       <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40"></div>
       
-      {/* Floating Elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full filter blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500 rounded-full filter blur-3xl animate-pulse delay-500"></div>
+      {/* Floating Elements - Dark Green Theme */}
+      <div className="absolute inset-0 overflow-hidden opacity-30">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-dark-600 rounded-full filter blur-3xl animate-pulse-green"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-green-dark-700 rounded-full filter blur-3xl animate-pulse-green" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-dark-500 rounded-full filter blur-3xl animate-pulse-green" style={{ animationDelay: '0.5s' }}></div>
       </div>
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 opacity-5" 
-           style={{
-             backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                               linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-             backgroundSize: '50px 50px'
-           }}>
-      </div>
+      <div className="absolute inset-0 opacity-10 grid-pattern-green"></div>
 
       <div className="container relative z-10 mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Left Content */}
           <div className="lg:col-span-7 animate-slide-up">
             {/* Executive Badge */}
-            <div className="inline-flex items-center px-4 py-2 mb-8 glass-effect rounded-full">
-              <TrendingUp className="h-4 w-4 text-emerald-400 mr-2" />
+            <div className="inline-flex items-center px-4 py-2 mb-8 glass-effect-green rounded-full border-green-glow">
+              <TrendingUp className="h-4 w-4 text-green-dark-400 mr-2 animate-pulse-green" />
               <span className="text-sm font-semibold text-white">Professional Investment Platform</span>
             </div>
 
@@ -45,7 +39,7 @@ export default function HeroSection() {
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="text-white">Maximize</span>
               <br />
-              <span className="text-gradient bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent">
+              <span className="text-gradient-emerald">
                 Real Estate ROI
               </span>
             </h1>
@@ -78,14 +72,14 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" asChild className="group bg-white text-black hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold shadow-modern hover:shadow-modern-hover transition-all duration-300">
+              <Button size="lg" asChild className="group bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 rounded-xl font-semibold shadow-green-glow hover:shadow-green-glow-hover transition-all duration-300">
                 <Link href="/calculator" className="flex items-center">
                   <Calculator className="h-5 w-5 mr-2" />
                   Calculate ROI
                   <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Link href="/incentives" className="inline-flex items-center justify-center group border-2 border-white/30 text-white hover:bg-white hover:text-slate-900 px-8 py-4 rounded-xl font-semibold backdrop-blur-sm transition-all duration-300 text-base">
+              <Link href="/incentives" className="inline-flex items-center justify-center group border-2 border-primary/50 text-white hover:bg-primary hover:border-primary px-8 py-4 rounded-xl font-semibold backdrop-blur-sm transition-all duration-300 text-base hover-lift">
                 <Building2 className="h-5 w-5 mr-2" />
                 View Programs
               </Link>
@@ -94,69 +88,69 @@ export default function HeroSection() {
 
           {/* Right Content - Stats Dashboard */}
           <div className="lg:col-span-5 animate-fade-in delay-300">
-            <div className="glass-effect rounded-2xl p-8 shadow-modern">
+            <div className="glass-effect-dark rounded-2xl p-8 shadow-emerald-soft border-green-glow">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-white mb-2">Live Market Data</h3>
                 <p className="text-gray-400 text-sm">Real-time incentive tracking</p>
               </div>
-              
+
               {/* Mini Dashboard */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20 hover-lift">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-green-dark-400 rounded-full animate-pulse-green"></div>
                     <span className="text-white font-medium">Federal Programs</span>
                   </div>
-                  <span className="text-green-400 font-semibold">
+                  <span className="text-green-dark-400 font-semibold">
                     {isLoading ? "..." : `${summary?.programDistribution.federal || 0} Active`}
                   </span>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20 hover-lift">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-green-dark-300 rounded-full animate-pulse-green"></div>
                     <span className="text-white font-medium">State Incentives</span>
                   </div>
-                  <span className="text-blue-400 font-semibold">
+                  <span className="text-green-dark-300 font-semibold">
                     {isLoading ? "..." : `${summary?.programDistribution.state || 0} Available`}
                   </span>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20 hover-lift">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-green-dark-500 rounded-full animate-pulse-green"></div>
                     <span className="text-white font-medium">Local Programs</span>
                   </div>
-                  <span className="text-purple-400 font-semibold">
+                  <span className="text-green-dark-500 font-semibold">
                     {isLoading ? "..." : `${summary?.programDistribution.local || 0} Open`}
                   </span>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20 hover-lift">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-accent rounded-full animate-pulse-green"></div>
                     <span className="text-white font-medium">Utility Rebates</span>
                   </div>
-                  <span className="text-orange-400 font-semibold">
+                  <span className="text-accent font-semibold">
                     {isLoading ? "..." : `${summary?.programDistribution.utility || 0} Ongoing`}
                   </span>
                 </div>
-                
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20 hover-lift">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-green-dark-200 rounded-full animate-pulse-green"></div>
                     <span className="text-white font-medium">Foundation Programs</span>
                   </div>
-                  <span className="text-pink-400 font-semibold">
+                  <span className="text-green-dark-200 font-semibold">
                     {isLoading ? "..." : `${summary?.programDistribution.foundation || 0} Available`}
                   </span>
                 </div>
               </div>
 
               {/* Quick Action */}
-              <div className="mt-6 pt-6 border-t border-white/10">
+              <div className="mt-6 pt-6 border-t border-primary/20">
                 <Link href="/incentives">
-                  <Button className="w-full bg-gradient-primary text-white hover:opacity-90 transition-opacity rounded-lg py-3 font-semibold">
+                  <Button className="w-full gradient-primary text-white hover:shadow-green-glow transition-all duration-300 rounded-lg py-3 font-semibold">
                     Access Full Dashboard
                   </Button>
                 </Link>

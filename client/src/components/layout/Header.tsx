@@ -76,7 +76,7 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 px-3 text-xs bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 transition-all duration-300"
+                  className="h-8 px-3 text-xs bg-primary/5 dark:bg-primary/10 border border-primary/20 dark:border-primary/30 hover:bg-primary/10 dark:hover:bg-primary/20 hover:shadow-emerald-soft transition-all duration-300"
                 >
                   Admin
                 </Button>
@@ -85,7 +85,7 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 px-3 text-xs bg-blue-100/50 dark:bg-blue-900/50 border border-blue-200/50 dark:border-blue-700/50 hover:bg-blue-200/70 dark:hover:bg-blue-700/70 transition-all duration-300"
+                  className="h-8 px-3 text-xs bg-accent/5 dark:bg-accent/10 border border-accent/20 dark:border-accent/30 hover:bg-accent/10 dark:hover:bg-accent/20 hover:shadow-emerald-soft transition-all duration-300"
                 >
                   Monitor
                 </Button>
@@ -156,10 +156,10 @@ export default function Header() {
                     </Button>
                   </Link>
                   <Link href="/admin/monitoring" className="block">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700"
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-xs bg-accent/5 dark:bg-accent/10 border-accent/30 dark:border-accent/40"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Data Monitor
