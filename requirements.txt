@@ -1,0 +1,13 @@
+# AoRa Incentive Discovery MCP Server Requirements
+
+# MCP SDK
+mcp>=1.1.0
+
+# HTTP client for API requests
+httpx>=0.27.0
+
+# Data validation
+pydantic>=2.7.0
+
+# Standard library enhancements
+python-dateutil>=2.9.0
