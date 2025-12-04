@@ -6,3 +6,16 @@ vite.config.ts.*
 *.tar.gznode_modules/
 dist/
 .env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Scraper data (generated databases)
+scraper/data/
+scraper.log
+bad_pdfs/
