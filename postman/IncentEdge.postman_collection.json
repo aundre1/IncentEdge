@@ -1,0 +1,842 @@
+{
+  "info": {
+    "name": "IncentEdge API",
+    "description": "Complete collection for IncentEdge API - Infrastructure's Bloomberg Terminal for Incentives.\n\n**Features:**\n- 24,458+ verified incentive programs\n- AI-powered matching and analysis\n- Multi-format report generation\n- Real-time portfolio analytics\n\n**Getting Started:**\n1. Set the `base_url` environment variable (e.g., https://incentedge.com/api)\n2. Set your `api_key` in the environment (or use session auth)\n3. Run the health check to verify connectivity\n\n**Documentation:** https://incentedge.com/api-docs",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{api_key}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Check API health status. No authentication required."
+          },
+          "response": []
+        },
+        {
+          "name": "Health Check (Verbose)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health?verbose=true",
+              "host": ["{{base_url}}"],
+              "path": ["health"],
+              "query": [
+                {
+                  "key": "verbose",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get detailed health check with system metrics"
+          },
+          "response": []
+        },
+        {
+          "name": "Quick Liveness Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health?quick=true",
+              "host": ["{{base_url}}"],
+              "path": ["health"],
+              "query": [
+                {
+                  "key": "quick",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projects?page=1&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["projects"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "disabled": true
+                },
+                {
+                  "key": "sector",
+                  "value": "real-estate",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "mount vernon",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all projects for the authenticated organization"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Example Multifamily Project\",\n  \"description\": \"200-unit affordable housing development\",\n  \"sector_type\": \"real-estate\",\n  \"building_type\": \"multifamily\",\n  \"construction_type\": \"new-construction\",\n  \"address_line1\": \"123 Main Street\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"zip_code\": \"10001\",\n  \"county\": \"New York\",\n  \"total_sqft\": 250000,\n  \"total_units\": 200,\n  \"affordable_units\": 60,\n  \"total_development_cost\": 150000000,\n  \"hard_costs\": 100000000,\n  \"soft_costs\": 50000000,\n  \"target_certification\": \"LEED Gold\",\n  \"domestic_content_eligible\": true,\n  \"prevailing_wage_commitment\": true,\n  \"estimated_start_date\": \"2024-06-01\",\n  \"estimated_completion_date\": \"2026-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projects",
+              "host": ["{{base_url}}"],
+              "path": ["projects"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"total_development_cost\": 165000000,\n  \"affordable_units\": 70\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Analyze Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{project_id}}\",\n  \"forceRefresh\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projects/analyze",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "analyze"]
+            },
+            "description": "Run AI-powered incentive matching for a project"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Incentive Programs",
+      "item": [
+        {
+          "name": "Search Programs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?state=NY&status=active&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "NY"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "category",
+                  "value": "federal",
+                  "disabled": true
+                },
+                {
+                  "key": "direct_pay_eligible",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "transferable",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "building_type",
+                  "value": "multifamily",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "solar",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Search the database of 24,458+ verified incentive programs"
+          },
+          "response": []
+        },
+        {
+          "name": "Federal IRA Programs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?category=federal&subcategory=IRA&status=active",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "federal"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "IRA"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "description": "Get all active IRA (Inflation Reduction Act) programs"
+          },
+          "response": []
+        },
+        {
+          "name": "Direct Pay Eligible Programs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?direct_pay_eligible=true&state=NY",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "direct_pay_eligible",
+                  "value": "true"
+                },
+                {
+                  "key": "state",
+                  "value": "NY"
+                }
+              ]
+            },
+            "description": "Find programs eligible for IRA Section 6417 Direct Pay"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Program by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs/{{program_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["programs", "{{program_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Calculate",
+      "item": [
+        {
+          "name": "Calculate Incentives",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"NY\",\n  \"county\": \"Westchester\",\n  \"buildingType\": \"multifamily\",\n  \"totalUnits\": 300,\n  \"totalSqft\": 350000,\n  \"affordableUnits\": 90,\n  \"affordablePercentage\": 30,\n  \"totalDevelopmentCost\": 250000000,\n  \"equityInvestment\": 60000000,\n  \"projectedNOI\": 16250000,\n  \"holdPeriod\": 5,\n  \"sustainabilityTier\": \"tier_2_high_performance\",\n  \"solarCapacityKw\": 500,\n  \"entityType\": \"llc\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calculate",
+              "host": ["{{base_url}}"],
+              "path": ["calculate"]
+            },
+            "description": "Calculate estimated incentives. No authentication required!"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has results\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.results).to.be.an('object');",
+                  "    pm.expect(jsonData.results.incentives).to.be.an('array');",
+                  "    pm.expect(jsonData.results.totals).to.be.an('object');",
+                  "});",
+                  "",
+                  "pm.test(\"Total incentives calculated\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.results.totals.total).to.be.a('number');",
+                  "    pm.expect(jsonData.results.totals.total).to.be.above(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Calculate - Commercial Solar",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"CA\",\n  \"municipality\": \"San Francisco\",\n  \"buildingType\": \"commercial\",\n  \"totalSqft\": 150000,\n  \"totalDevelopmentCost\": 120000000,\n  \"equityInvestment\": 30000000,\n  \"sustainabilityTier\": \"tier_3_net_zero\",\n  \"solarCapacityKw\": 750,\n  \"storageCapacityKwh\": 1000,\n  \"entityType\": \"corporation\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calculate",
+              "host": ["{{base_url}}"],
+              "path": ["calculate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Generate Executive Summary (JSON)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"Mount Vernon Mixed-Use\",\n  \"projectData\": {\n    \"address\": \"225 South 4th Ave\",\n    \"city\": \"Mount Vernon\",\n    \"state\": \"NY\",\n    \"county\": \"Westchester\",\n    \"buildingType\": \"mixed_use\",\n    \"totalUnits\": 747,\n    \"totalSqft\": 850000,\n    \"affordablePercentage\": 30,\n    \"totalDevelopmentCost\": 588800000,\n    \"equityInvestment\": 150000000,\n    \"sustainabilityTier\": \"tier_2_high_performance\"\n  },\n  \"reportType\": \"executive_summary\",\n  \"format\": \"json\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/generate",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "generate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Full Analysis (HTML)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"My Project\",\n  \"projectData\": {\n    \"city\": \"Yonkers\",\n    \"state\": \"NY\",\n    \"buildingType\": \"multifamily\",\n    \"totalUnits\": 312,\n    \"affordablePercentage\": 100,\n    \"totalDevelopmentCost\": 323800000\n  },\n  \"reportType\": \"full_analysis\",\n  \"format\": \"html\",\n  \"includeCharts\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/generate",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "generate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Incentive Matrix",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"My Project\",\n  \"projectData\": {\n    \"state\": \"NY\",\n    \"buildingType\": \"multifamily\",\n    \"totalUnits\": 300,\n    \"affordablePercentage\": 30\n  },\n  \"reportType\": \"incentive_matrix\",\n  \"format\": \"json\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/generate",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "generate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Application Checklist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"My Project\",\n  \"projectData\": {\n    \"state\": \"NY\",\n    \"buildingType\": \"multifamily\",\n    \"totalUnits\": 300,\n    \"affordablePercentage\": 30\n  },\n  \"reportType\": \"application_checklist\",\n  \"format\": \"json\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/generate",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "generate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard"]
+            },
+            "description": "Get portfolio-wide KPIs and statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Time-Series Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/stats",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "stats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Activity Feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/activity?limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "activity"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/alerts",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "alerts"]
+            },
+            "description": "Get critical alerts and upcoming deadlines"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "item": [
+        {
+          "name": "List Applications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/applications?page=1&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["applications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "draft,in-progress",
+                  "disabled": true
+                },
+                {
+                  "key": "project_id",
+                  "value": "{{project_id}}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": \"{{project_id}}\",\n  \"incentive_program_id\": \"{{program_id}}\",\n  \"amount_requested\": 5000000,\n  \"fee_type\": \"success\",\n  \"fee_amount\": 250000,\n  \"start_workflow\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/applications",
+              "host": ["{{base_url}}"],
+              "path": ["applications"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Application",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/applications/{{application_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "{{application_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"submitted\",\n  \"notes\": \"Application submitted via online portal\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/applications/{{application_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "{{application_id}}", "status"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Application",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/applications/{{application_id}}/submit",
+              "host": ["{{base_url}}"],
+              "path": ["applications", "{{application_id}}", "submit"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stripe",
+      "item": [
+        {
+          "name": "Create Checkout Session",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priceId\": \"price_starter_monthly\",\n  \"successUrl\": \"https://incentedge.com/success\",\n  \"cancelUrl\": \"https://incentedge.com/pricing\",\n  \"trialDays\": 14\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/stripe/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["stripe", "checkout"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Customer Portal Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returnUrl\": \"https://incentedge.com/settings/billing\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/stripe/portal",
+              "host": ["{{base_url}}"],
+              "path": ["stripe", "portal"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Submit Contact Form",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"company\": \"Example Corp\",\n  \"phone\": \"555-1234\",\n  \"subject\": \"API Integration Question\",\n  \"message\": \"I have questions about integrating the IncentEdge API with our property management system.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/contact",
+              "host": ["{{base_url}}"],
+              "path": ["contact"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add timestamp to all requests",
+          "pm.globals.set('timestamp', new Date().toISOString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global tests for all requests",
+          "pm.test(\"Response time is less than 5s\", function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "",
+          "pm.test(\"Response has proper headers\", function () {",
+          "    pm.response.to.have.header('Content-Type');",
+          "});",
+          "",
+          "// Check rate limit headers for authenticated requests",
+          "if (pm.response.headers.has('X-RateLimit-Limit')) {",
+          "    pm.test(\"Rate limit headers present\", function () {",
+          "        pm.response.to.have.header('X-RateLimit-Remaining');",
+          "        pm.response.to.have.header('X-RateLimit-Reset');",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://incentedge.com/api",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "your_api_key_here",
+      "type": "string"
+    },
+    {
+      "key": "project_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "program_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "application_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Theme initialization (prevent flash) -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('incentedge-theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IncentEdge - Reports</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230a3d3d'/><text x='16' y='22' text-anchor='middle' font-family='Inter,sans-serif' font-weight='700' font-size='14' fill='%232dd4bf'>IE</text></svg>">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            teal: {
+              950: '#082e2e', 900: '#0a3d3d', 850: '#0c4a4a', 800: '#0f5555',
+              700: '#146666', 600: '#0d9488', 500: '#14b8a6', 400: '#2dd4bf',
+              300: '#5eead4', 200: '#99f6e4', 100: '#ccfbf1', 50: '#f0fdfa'
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    body { background: #f8fafc; }
+    .dark body {
+      background: linear-gradient(180deg, #0f5555 0%, #0a3d3d 40%, #082e2e 100%);
+      background-attachment: fixed;
+    }
+    .dark .report-card { background: rgba(15, 85, 85, 0.5); border-color: rgba(20, 184, 166, 0.2); }
+    .dark .report-card:hover { border-color: #14b8a6; }
+
+    /* Mobile Navigation */
+    .mobile-menu-btn { display: none; }
+    .mobile-menu {
+      position: fixed;
+      top: 112px;
+      left: 0;
+      right: 0;
+      background: #0a3d3d;
+      border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+      padding: 16px;
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 35;
+    }
+    .mobile-menu.open { transform: translateY(0); opacity: 1; }
+    .mobile-menu a { display: block; padding: 12px 16px; color: #99f6e4; font-size: 14px; border-radius: 8px; transition: all 0.15s; }
+    .mobile-menu a:hover, .mobile-menu a.active { background: rgba(20, 184, 166, 0.2); color: white; }
+    .mobile-menu a.active { font-weight: 600; }
+    @media (max-width: 1024px) {
+      .desktop-nav { display: none; }
+      .mobile-menu-btn { display: flex; }
+    }
+    @media (max-width: 768px) {
+      nav { padding-left: 16px; padding-right: 16px; }
+      .grid.grid-cols-3 { grid-template-columns: 1fr; }
+    }
+
+    .report-card {
+      transition: all 0.15s ease;
+      border: 1px solid #e2e8f0;
+    }
+    .report-card:hover {
+      border-color: #14b8a6;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Toast styles */
+    .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; flex-direction: column; gap: 12px; }
+    .toast { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); min-width: 320px; max-width: 420px; transform: translateX(120%); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .toast.show { transform: translateX(0); opacity: 1; }
+    .toast.hiding { transform: translateX(120%); opacity: 0; }
+    .toast-success { background: #065f46; color: white; }
+    .toast-info { background: #0a3d3d; color: white; }
+    .toast-icon { width: 24px; height: 24px; flex-shrink: 0; }
+    .toast-content { flex: 1; }
+    .toast-title { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .toast-message { font-size: 13px; opacity: 0.9; }
+    .toast-close { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; opacity: 0.7; transition: opacity 0.15s, background 0.15s; }
+    .toast-close:hover { opacity: 1; background: rgba(255, 255, 255, 0.15); }
+    .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: rgba(255, 255, 255, 0.4); border-radius: 0 0 10px 10px; animation: toastProgress 3s linear forwards; }
+    @keyframes toastProgress { from { width: 100%; } to { width: 0%; } }
+
+    /* Print-Friendly Styles */
+    @media print {
+      body, .dark body {
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      nav, .mobile-menu, .toast-container,
+      #theme-toggle, #mobile-menu-btn, .mobile-menu-btn,
+      button, footer {
+        display: none !important;
+      }
+
+      main {
+        max-width: 100% !important;
+        padding: 20px !important;
+      }
+
+      .dark * {
+        background: transparent !important;
+        color: black !important;
+        border-color: #e2e8f0 !important;
+      }
+
+      .report-card {
+        background: white !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .grid.grid-cols-3 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      body { font-size: 11pt; }
+      h1 { font-size: 16pt; }
+      h2 { font-size: 14pt; }
+
+      @page {
+        margin: 1.5cm;
+      }
+
+      main::before {
+        content: "IncentEdge Reports - ABC Development";
+        display: block;
+        font-size: 10pt;
+        color: #64748b;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Top Navigation -->
+  <nav class="h-28 bg-teal-900 flex items-center justify-between px-6 sticky top-0 z-40">
+    <div class="flex items-center gap-8">
+      <a href="index.html" class="flex items-center">
+        <img src="../../IncentEdge Logo.png" alt="IncentEdge" class="h-[100px]">
+      </a>
+      <div class="desktop-nav flex items-center gap-1">
+        <a href="preview-v8.html" class="px-4 py-2 text-sm text-teal-200 hover:text-white hover:bg-teal-800/50 rounded-lg transition-all">Portfolio</a>
+        <a href="preview-v10.html" class="px-4 py-2 text-sm text-teal-200 hover:text-white hover:bg-teal-800/50 rounded-lg transition-all">New Analysis</a>
+        <a href="preview-v9.html" class="px-4 py-2 text-sm text-teal-200 hover:text-white hover:bg-teal-800/50 rounded-lg transition-all">Discover</a>
+        <a href="reports.html" class="px-4 py-2 text-sm font-medium text-white bg-teal-800/60 rounded-lg">Reports</a>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="text-right mr-2 hidden sm:block">
+        <p class="text-sm font-medium text-white">ABC Development</p>
+        <p class="text-xs text-teal-300">Enterprise Plan</p>
+      </div>
+      <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center text-teal-300 hover:text-white hover:bg-teal-800/50 rounded-lg transition-all">
+        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+      <button id="mobile-menu-btn" class="mobile-menu-btn w-10 h-10 items-center justify-center text-teal-300 hover:text-white hover:bg-teal-800/50 rounded-lg transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="w-9 h-9 bg-teal-700 rounded-full flex items-center justify-center text-sm font-medium text-white">AD</div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="preview-v8.html">Portfolio</a>
+    <a href="preview-v10.html">New Analysis</a>
+    <a href="preview-v9.html">Discover</a>
+    <a href="reports.html" class="active">Reports</a>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Page Header -->
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900 mb-2">Reports</h1>
+        <p class="text-slate-500">Generate and download reports for your projects and incentive analyses</p>
+      </div>
+      <button onclick="showToast('info', 'Coming Soon', 'Custom report builder will be available in the next release')" class="h-10 px-5 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg flex items-center gap-2 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Create Custom Report
+      </button>
+    </div>
+
+    <!-- Report Templates Section -->
+    <div class="mb-10">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">Report Templates</h2>
+      <div class="grid grid-cols-3 gap-6">
+
+        <!-- Executive Summary Report -->
+        <div class="report-card bg-white rounded-xl p-6 cursor-pointer" onclick="generateReport('Executive Summary')">
+          <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 mb-2">Executive Summary</h3>
+          <p class="text-sm text-slate-500 mb-4">High-level overview of portfolio incentives, capture rates, and key metrics for leadership presentations.</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium">
+            <span>Generate PDF</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </div>
+
+        <!-- Detailed Incentive Analysis -->
+        <div class="report-card bg-white rounded-xl p-6 cursor-pointer" onclick="generateReport('Detailed Incentive Analysis')">
+          <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 mb-2">Detailed Incentive Analysis</h3>
+          <p class="text-sm text-slate-500 mb-4">Comprehensive breakdown of each incentive program, eligibility requirements, and calculation methodology.</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium">
+            <span>Generate PDF</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </div>
+
+        <!-- Capital Stack Report -->
+        <div class="report-card bg-white rounded-xl p-6 cursor-pointer" onclick="generateReport('Capital Stack Analysis')">
+          <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 mb-2">Capital Stack Analysis</h3>
+          <p class="text-sm text-slate-500 mb-4">Visual breakdown of funding sources, subsidy layers, and net development costs with waterfall charts.</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium">
+            <span>Generate PDF</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </div>
+
+        <!-- Application Tracker -->
+        <div class="report-card bg-white rounded-xl p-6 cursor-pointer" onclick="generateReport('Application Tracker')">
+          <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 mb-2">Application Tracker</h3>
+          <p class="text-sm text-slate-500 mb-4">Status of all active applications, upcoming deadlines, and required action items across projects.</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium">
+            <span>Generate Excel</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </div>
+
+        <!-- Sustainability Report -->
+        <div class="report-card bg-white rounded-xl p-6 cursor-pointer" onclick="generateReport('Sustainability Impact')">
+          <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 mb-2">Sustainability Impact</h3>
+          <p class="text-sm text-slate-500 mb-4">ESG metrics, carbon reduction estimates, and sustainability tier comparisons for investor reporting.</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium">
+            <span>Generate PDF</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </div>
+
+        <!-- Data Export -->
+        <div class="report-card bg-white rounded-xl p-6 cursor-pointer" onclick="generateReport('Raw Data Export')">
+          <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          </div>
+          <h3 class="font-semibold text-slate-900 mb-2">Raw Data Export</h3>
+          <p class="text-sm text-slate-500 mb-4">Export all project data, incentive calculations, and metadata in CSV format for external analysis.</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium">
+            <span>Export CSV</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Recent Reports Section -->
+    <div>
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">Recent Reports</h2>
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Report Name</th>
+              <th class="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Type</th>
+              <th class="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Generated</th>
+              <th class="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Size</th>
+              <th class="px-6 py-4"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  </div>
+                  <span class="font-medium text-slate-900">Mount Vernon - Executive Summary</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-600">PDF</td>
+              <td class="px-6 py-4 text-sm text-slate-600">Jan 8, 2026 at 3:45 PM</td>
+              <td class="px-6 py-4 text-sm text-slate-600">2.4 MB</td>
+              <td class="px-6 py-4 text-right">
+                <button onclick="showToast('success', 'Download started', 'Mount Vernon - Executive Summary.pdf')" class="text-sm text-teal-600 font-medium hover:text-teal-700">Download</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  </div>
+                  <span class="font-medium text-slate-900">Q4 2025 Portfolio Summary</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-600">Excel</td>
+              <td class="px-6 py-4 text-sm text-slate-600">Jan 5, 2026 at 10:15 AM</td>
+              <td class="px-6 py-4 text-sm text-slate-600">856 KB</td>
+              <td class="px-6 py-4 text-right">
+                <button onclick="showToast('success', 'Download started', 'Q4 2025 Portfolio Summary.xlsx')" class="text-sm text-teal-600 font-medium hover:text-teal-700">Download</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  </div>
+                  <span class="font-medium text-slate-900">Yonkers AFH - Capital Stack Analysis</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-600">PDF</td>
+              <td class="px-6 py-4 text-sm text-slate-600">Jan 3, 2026 at 2:30 PM</td>
+              <td class="px-6 py-4 text-sm text-slate-600">3.1 MB</td>
+              <td class="px-6 py-4 text-right">
+                <button onclick="showToast('success', 'Download started', 'Yonkers AFH - Capital Stack Analysis.pdf')" class="text-sm text-teal-600 font-medium hover:text-teal-700">Download</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 px-6 py-4 bg-white mt-10">
+    <div class="max-w-6xl mx-auto flex items-center justify-between text-sm text-slate-500">
+      <p>IncentEdge v2.1 • Reports generated using latest incentive data</p>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-slate-700">Help</a>
+        <a href="#" class="hover:text-slate-700">Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // Toast Notification System
+    const toastIcons = {
+      success: `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`,
+      error: `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`,
+      warning: `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`,
+      info: `<svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+    };
+
+    function showToast(type, title, message, duration = 3000) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.style.position = 'relative';
+      toast.innerHTML = `
+        ${toastIcons[type]}
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          ${message ? `<div class="toast-message">${message}</div>` : ''}
+        </div>
+        <div class="toast-close" onclick="dismissToast(this.parentElement)">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </div>
+        <div class="toast-progress"></div>
+      `;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      setTimeout(() => dismissToast(toast), duration);
+    }
+
+    function dismissToast(toast) {
+      if (!toast || toast.classList.contains('hiding')) return;
+      toast.classList.add('hiding');
+      toast.classList.remove('show');
+      setTimeout(() => { if (toast.parentElement) toast.parentElement.removeChild(toast); }, 300);
+    }
+
+    function generateReport(reportName) {
+      showToast('info', 'Generating Report', `Preparing ${reportName}...`);
+
+      // Simulate report generation
+      setTimeout(() => {
+        showToast('success', 'Report Ready', `${reportName} has been generated and is ready for download.`);
+      }, 2000);
+    }
+
+    // Theme Toggle with localStorage persistence
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('incentedge-theme', isDark ? 'dark' : 'light');
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('open');
+        const isOpen = mobileMenu.classList.contains('open');
+        mobileMenuBtn.innerHTML = isOpen
+          ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'
+          : '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>';
+      });
+    }
+  </script>
+
+</body>
+</html>

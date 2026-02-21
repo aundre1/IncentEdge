@@ -1,0 +1,61 @@
+{
+  "totalPrograms": 30007,
+  "tierDistribution": {
+    "1": 19633,
+    "2": 4554,
+    "3": 0,
+    "4": 5820,
+    "5": 0
+  },
+  "fieldCompleteness": {
+    "URL": 99.83670476888726,
+    "Title": 100,
+    "Agency": 86.45316092911654,
+    "Program Type": 91.818575665678,
+    "Technology": 13.243576498816942,
+    "Category": 81.5742993301563,
+    "Funding Amount Raw": 70.33692138501017,
+    "Funding Amount Normalized": 0,
+    "Deadline Date": 0,
+    "Deadline Raw": 0,
+    "Eligibility": 75.7823174592595,
+    "Application Steps": 7.184990168960575,
+    "Contact Email": 0,
+    "Contact Phone": 0,
+    "State": 100,
+    "Program Level": 10.774152697703869,
+    "Application Links": 0,
+    "PDF Links": 0,
+    "Source Type": 100,
+    "Quality Score": 0,
+    "Merged From": 0,
+    "Funding AI Filled": 0,
+    "Deadline AI Filled": 0,
+    "Eligibility AI Filled": 0,
+    "Is API Source": 0,
+    "Funding Currency": 12.347119005565368,
+    "Funding Amount": 0,
+    "Funding Amount Num": 0,
+    "Category Tight": 0.09331156063585164,
+    "Council_Source": 9.587762855333755
+  },
+  "productionReady": 19633,
+  "needsEnrichment": 4554,
+  "needsURLRecovery": 0,
+  "researchQueue": 5820,
+  "quarantine": 0,
+  "topIssues": [
+    "No application link (30007 programs, 100.0%)",
+    "Missing contact info (30007 programs, 100.0%)",
+    "Missing application steps (27851 programs, 92.8%)",
+    "Missing funding amount (8901 programs, 29.7%)",
+    "Missing eligibility (7267 programs, 24.2%)",
+    "Missing technology/category (4816 programs, 16.0%)",
+    "Missing agency (4065 programs, 13.5%)",
+    "Missing program type (2455 programs, 8.2%)",
+    "Missing URL (49 programs, 0.2%)"
+  ],
+  "recommendations": [
+    "✓ 19,633 Tier 1 programs - EXCEEDS production target of 15,000"
+  ]
+}

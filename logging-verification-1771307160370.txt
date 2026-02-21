@@ -1,0 +1,1420 @@
+
+================================================================================
+VERIFICATION REPORT
+================================================================================
+
+## Summary
+
+Total Files Analyzed: 188
+Files with console statements: 91
+Total console statements: 403
+
+## Breakdown by Type
+
+  console.log: 72
+  console.error: 300
+  console.warn: 31
+
+## Files Requiring Migration
+
+### lib/encryption/examples.ts (38 statements)
+
+  Line 17: console.log
+    console.log('Add to .env:', `ENCRYPTION_MASTER_SECRET=${masterSecret}`);
+
+  Line 25: console.log
+    console.log('Encrypted EIN:', encrypted);
+
+  Line 29: console.log
+    console.log('Decrypted EIN:', decrypted); // "12-3456789"
+
+  Line 56: console.log
+    console.log('Original:', organization.ein);
+
+  Line 57: console.log
+    console.log('Encrypted:', encrypted.ein);
+
+  Line 69: console.log
+    console.log('Decrypted:', decrypted.ein); // "12-3456789"
+
+  Line 114: console.log
+    console.log('Retrieved EIN:', decrypted.ein);
+
+  Line 138: console.log
+    console.log('Encrypted', encrypted.length, 'organizations');
+
+  Line 147: console.log
+    console.log('Decrypted EINs:', decrypted.map((o) => o.ein));
+
+  Line 185: console.error
+    console.error('Database error:', error);
+
+  Line 191: console.error
+    console.error('Encryption error:', error);
+
+  Line 230: console.log
+    console.log('Webhook signature:', signature);
+
+  Line 243: console.log
+    console.log('Generated API key:', apiKey);
+
+  Line 244: console.log
+    console.log('⚠️  Save this key - it will only be shown once!');
+
+  Line 272: console.log
+    console.log('API key valid:', isValid);
+
+  Line 294: console.log
+    console.log(`Migrating ${orgs?.length || 0} organizations...`);
+
+  Line 331: console.log
+    console.log(`✓ Migrated org ${org.id}`);
+
+  Line 335: console.error
+    console.error(`✗ Failed to migrate org ${org.id}:`, error);
+
+  Line 339: console.log
+    console.log(`\nMigration complete: ${migrated} migrated, ${failed} failed`);
+
+  Line 351: console.log
+    console.log('Current keys:', currentKeys.length);
+
+  Line 352: console.log
+    console.log('Active key:', currentKeys.find((k) => k.isActive)?.id);
+
+  Line 356: console.log
+    console.log('After rotation:', newKeys.length);
+
+  Line 357: console.log
+    console.log('New active key:', newKeys.find((k) => k.isActive)?.id);
+
+  Line 370: console.log
+    console.log('Re-encrypted with new key');
+
+  Line 386: console.log
+    console.log('Encryption Coverage:');
+
+  Line 388: console.log
+    console.log(`${row.table_name}.${row.field_name}: ${row.encryption_percentage}%`);
+
+  Line 400: console.warn
+    console.warn('⚠️  Recent encryption failures:', failures.length);
+
+  Line 402: console.log
+    console.log(`- ${f.operation} on ${f.table_name}.${f.column_name}: ${f.error_message}`);
+
+  Line 410: console.log
+    console.log('\nEncryption Statistics:');
+
+  Line 411: console.log
+    console.log(`Total encrypted fields: ${stats.total_encrypted_fields}`);
+
+  Line 412: console.log
+    console.log(`Total operations: ${stats.total_operations}`);
+
+  Line 413: console.log
+    console.log(`Failed operations: ${stats.failed_operations}`);
+
+  Line 414: console.log
+    console.log(`Active keys: ${stats.active_keys}`);
+
+  Line 415: console.log
+    console.log(`Last encryption: ${stats.last_encryption}`);
+
+  Line 441: console.log
+    console.log(`\n=== Example ${exampleNumber} ===\n`);
+
+  Line 443: console.log
+    .then(() => console.log('\n✓ Example complete'))
+
+  Line 444: console.error
+    .catch((error) => console.error('\n✗ Example failed:', error));
+
+  Line 446: console.log
+    console.log('Available examples: 1-10');
+
+### app/api/stripe/webhook/route.ts (20 statements)
+
+  Line 59: console.error
+    console.error('[Webhook] Missing stripe-signature header');
+
+  Line 69: console.error
+    console.error('[Webhook] Missing STRIPE_WEBHOOK_SECRET');
+
+  Line 83: console.error
+    console.error(`[Webhook] Signature verification failed: ${message}`);
+
+  Line 90: console.log
+    console.log(`[Webhook] Received event: ${event.type} (${event.id})`);
+
+  Line 94: console.log
+    console.log(`[Webhook] Ignoring event type: ${event.type}`);
+
+  Line 123: console.log
+    console.log(`[Webhook] Successfully processed: ${event.type}`);
+
+  Line 126: console.error
+    console.error(`[Webhook] Error processing ${event.type}:`, error);
+
+  Line 133: console.error
+    console.error('[Webhook] Unexpected error:', error);
+
+  Line 145: console.log
+    console.log(`[Webhook] Processing checkout completed: ${session.id}`);
+
+  Line 152: console.error
+    console.error('[Webhook] Missing customer or subscription ID');
+
+  Line 180: console.log
+    console.log(`[Webhook] Updated organization: ${metadata.organizationId}`);
+
+  Line 199: console.log
+    console.log('[Webhook] Checkout processed successfully');
+
+  Line 206: console.log
+    console.log(`[Webhook] Processing subscription update: ${subscription.id}`);
+
+  Line 243: console.log
+    console.log('[Webhook] Subscription updated successfully');
+
+  Line 250: console.log
+    console.log(`[Webhook] Processing subscription deletion: ${subscription.id}`);
+
+  Line 283: console.log
+    console.log('[Webhook] Subscription canceled successfully');
+
+  Line 290: console.log
+    console.log(`[Webhook] Processing payment succeeded: ${invoice.id}`);
+
+  Line 305: console.log
+    console.log('[Webhook] Payment logged successfully');
+
+  Line 312: console.log
+    console.log(`[Webhook] Processing payment failed: ${invoice.id}`);
+
+  Line 347: console.log
+    console.log('[Webhook] Payment failure logged');
+
+### lib/env-validation.ts (17 statements)
+
+  Line 284: console.log
+    console.log('\n========================================');
+
+  Line 285: console.log
+    console.log('Environment Validation Results');
+
+  Line 286: console.log
+    console.log('========================================\n');
+
+  Line 288: console.log
+    console.log(`Status: ${result.valid ? 'PASS' : 'FAIL'}`);
+
+  Line 289: console.log
+    console.log(`Required: ${result.summary.required}`);
+
+  Line 290: console.log
+    console.log(`Optional: ${result.summary.optional}`);
+
+  Line 291: console.log
+    console.log(`Present: ${result.summary.present}`);
+
+  Line 292: console.log
+    console.log(`Missing: ${result.summary.missing}`);
+
+  Line 295: console.log
+    console.log('\nErrors:');
+
+  Line 296: console.log
+    result.errors.forEach(e => console.log(`  ✗ ${e}`));
+
+  Line 300: console.log
+    console.log('\nWarnings:');
+
+  Line 301: console.log
+    result.warnings.forEach(w => console.log(`  ⚠ ${w}`));
+
+  Line 304: console.log
+    console.log('\n========================================\n');
+
+  Line 315: console.error
+    console.error('Environment validation failed. Please fix the errors above.');
+
+  Line 381: console.error
+    console.error(
+
+  Line 386: console.error
+    console.error(
+
+  Line 391: console.warn
+    console.warn(
+
+### lib/stripe/client.ts (15 statements)
+
+  Line 25: console.warn
+    console.warn('[MockStripe] Creating mock checkout session:', params);
+
+  Line 35: console.warn
+    console.warn('[MockStripe] Retrieving mock checkout session:', id);
+
+  Line 50: console.warn
+    console.warn('[MockStripe] Creating mock customer:', params);
+
+  Line 58: console.warn
+    console.warn('[MockStripe] Retrieving mock customer:', id);
+
+  Line 66: console.warn
+    console.warn('[MockStripe] Updating mock customer:', id, params);
+
+  Line 78: console.warn
+    console.warn('[MockStripe] Creating mock subscription:', params);
+
+  Line 82: console.warn
+    console.warn('[MockStripe] Retrieving mock subscription:', id);
+
+  Line 89: console.warn
+    console.warn('[MockStripe] Updating mock subscription:', id, params);
+
+  Line 101: console.warn
+    console.warn('[MockStripe] Canceling mock subscription:', id);
+
+  Line 113: console.warn
+    console.warn('[MockStripe] Listing mock subscriptions');
+
+  Line 126: console.warn
+    console.warn('[MockStripe] Creating mock billing portal session:', params);
+
+  Line 141: console.warn
+    console.warn('[MockStripe] Constructing mock webhook event');
+
+  Line 207: console.warn
+    console.warn(
+
+  Line 226: console.log
+    console.log('[Stripe] Client initialized successfully');
+
+  Line 229: console.error
+    console.error('[Stripe] Failed to initialize client:', error);
+
+### app/api/jobs/process/route.ts (13 statements)
+
+  Line 44: console.error
+    console.error('[Security] CRITICAL: CRON_SECRET not configured in production');
+
+  Line 50: console.error
+    console.error('[Security] CRITICAL: CRON_SECRET too short (min 32 chars)');
+
+  Line 81: console.warn
+    console.warn('[Security] WARNING: Cron endpoint accessed without authentication (dev mode)');
+
+  Line 99: console.warn
+    console.warn('[Security] Unauthorized cron access attempt');
+
+  Line 152: console.error
+    console.error('Error processing schedules:', error);
+
+  Line 162: console.error
+    console.error('Error retrying jobs:', error);
+
+  Line 177: console.error
+    console.error('Error claiming job:', claimError);
+
+  Line 252: console.error
+    console.error('Error cleaning up jobs:', error);
+
+  Line 259: console.log
+    console.log(`[Job Processor] Completed: ${results.processed.length} jobs processed, ${results.schedules.created} scheduled, ${results.retried} retried in ${results.duration_ms}ms`);
+
+  Line 267: console.error
+    console.error('Error in POST /api/jobs/process:', error);
+
+  Line 289: console.warn
+    console.warn('[Security] Unauthorized cron status access attempt');
+
+  Line 305: console.error
+    console.error('Error fetching job stats:', statsError);
+
+  Line 373: console.error
+    console.error('Error in GET /api/jobs/process:', error);
+
+### app/api/team/invitations/route.ts (12 statements)
+
+  Line 152: console.error
+    console.error('Error fetching org invitations:', error);
+
+  Line 196: console.error
+    console.error('Error fetching project invitations:', error);
+
+  Line 204: console.error
+    console.error('Error in GET /api/team/invitations:', error);
+
+  Line 301: console.error
+    console.error('Error declining invitation:', error);
+
+  Line 319: console.error
+    console.error('Error accepting project invitation:', error);
+
+  Line 357: console.error
+    console.error('Error updating profile:', updateError);
+
+  Line 371: console.error
+    console.error('Error updating invitation:', inviteError);
+
+  Line 393: console.error
+    console.error('Error in POST /api/team/invitations:', error);
+
+  Line 454: console.error
+    console.error('Error revoking invitation:', error);
+
+  Line 473: console.error
+    console.error('Error in DELETE /api/team/invitations:', error);
+
+  Line 550: console.error
+    console.error('Error resending invitation:', error);
+
+  Line 566: console.error
+    console.error('Error in PATCH /api/team/invitations:', error);
+
+### app/api/team/roles/route.ts (11 statements)
+
+  Line 137: console.error
+    console.error('Error fetching roles:', error);
+
+  Line 170: console.error
+    console.error('Error in GET /api/team/roles:', error);
+
+  Line 279: console.error
+    console.error('Error creating role:', roleError);
+
+  Line 298: console.error
+    console.error('Error adding permissions:', permError);
+
+  Line 331: console.error
+    console.error('Error in POST /api/team/roles:', error);
+
+  Line 406: console.error
+    console.error('Error updating role:', updateError);
+
+  Line 430: console.error
+    console.error('Error updating permissions:', permError);
+
+  Line 451: console.error
+    console.error('Error in PATCH /api/team/roles:', error);
+
+  Line 529: console.error
+    console.error('Error reassigning users:', reassignError);
+
+  Line 544: console.error
+    console.error('Error deleting role:', deleteError);
+
+  Line 573: console.error
+    console.error('Error in DELETE /api/team/roles:', error);
+
+### lib/api-security.ts (11 statements)
+
+  Line 157: console.error
+    console.error('API key validation error:', error);
+
+  Line 189: console.error
+    console.error('[API Security] CRITICAL: Supabase not configured in production');
+
+  Line 194: console.warn
+    console.warn('[API Security] WARNING: API key validation disabled - for development only');
+
+  Line 206: console.error
+    console.error('[API Security] Supabase not configured and validation not skipped');
+
+  Line 211: console.error
+    console.error('[API Security] Missing Supabase configuration');
+
+  Line 229: console.warn
+    console.warn('[API Security] API key not found:', prefix);
+
+  Line 235: console.warn
+    console.warn('[API Security] API key expired:', prefix);
+
+  Line 253: console.error
+    console.error('[API Security] Database lookup error:', err);
+
+  Line 386: console.error
+    console.error('[Security] CRITICAL: Wildcard origin with credentials is not allowed');
+
+  Line 504: console.warn
+    console.warn(`[Security] Threat detected in ${fieldName}:`, result.threats);
+
+  Line 887: console.error
+    console.error('API_SIGNING_SECRET not configured');
+
+### app/api/applications/[id]/comments/route.ts (8 statements)
+
+  Line 127: console.error
+    console.error('Error fetching comments:', error);
+
+  Line 150: console.error
+    console.error('Error in GET /api/applications/[id]/comments:', error);
+
+  Line 330: console.error
+    console.error('Error creating comment:', createError);
+
+  Line 385: console.error
+    console.error('Error in POST /api/applications/[id]/comments:', error);
+
+  Line 480: console.error
+    console.error('Error updating comment:', updateError);
+
+  Line 486: console.error
+    console.error('Error in PATCH /api/applications/[id]/comments:', error);
+
+  Line 559: console.error
+    console.error('Error deleting comment:', deleteError);
+
+  Line 565: console.error
+    console.error('Error in DELETE /api/applications/[id]/comments:', error);
+
+### app/api/applications/[id]/tasks/route.ts (8 statements)
+
+  Line 134: console.error
+    console.error('Error fetching tasks:', error);
+
+  Line 174: console.error
+    console.error('Error in GET /api/applications/[id]/tasks:', error);
+
+  Line 370: console.error
+    console.error('Error creating task:', createError);
+
+  Line 392: console.error
+    console.error('Error in POST /api/applications/[id]/tasks:', error);
+
+  Line 497: console.error
+    console.error('Error updating task:', updateError);
+
+  Line 535: console.error
+    console.error('Error in PATCH /api/applications/[id]/tasks:', error);
+
+  Line 608: console.error
+    console.error('Error deleting task:', deleteError);
+
+  Line 625: console.error
+    console.error('Error in DELETE /api/applications/[id]/tasks:', error);
+
+### app/api/compliance/[projectId]/certify/route.ts (8 statements)
+
+  Line 126: console.error
+    console.error('Error fetching certifications:', error);
+
+  Line 190: console.error
+    console.error('Error in GET /api/compliance/[projectId]/certify:', error);
+
+  Line 300: console.error
+    console.error('Error creating certification:', insertError);
+
+  Line 332: console.error
+    console.error('Error in POST /api/compliance/[projectId]/certify:', error);
+
+  Line 443: console.error
+    console.error('Error updating certification:', updateError);
+
+  Line 464: console.error
+    console.error('Error in PATCH /api/compliance/[projectId]/certify:', error);
+
+  Line 529: console.error
+    console.error('Error deleting certification:', deleteError);
+
+  Line 546: console.error
+    console.error('Error in DELETE /api/compliance/[projectId]/certify:', error);
+
+### app/api/compliance/[projectId]/items/route.ts (8 statements)
+
+  Line 111: console.error
+    console.error('Error fetching compliance items:', error);
+
+  Line 163: console.error
+    console.error('Error in GET /api/compliance/[projectId]/items:', error);
+
+  Line 267: console.error
+    console.error('Error creating compliance item:', insertError);
+
+  Line 284: console.error
+    console.error('Error in POST /api/compliance/[projectId]/items:', error);
+
+  Line 398: console.error
+    console.error('Error updating compliance item:', updateError);
+
+  Line 415: console.error
+    console.error('Error in PATCH /api/compliance/[projectId]/items:', error);
+
+  Line 480: console.error
+    console.error('Error deleting compliance item:', deleteError);
+
+  Line 497: console.error
+    console.error('Error in DELETE /api/compliance/[projectId]/items:', error);
+
+### app/api/documents/[id]/route.ts (8 statements)
+
+  Line 63: console.error
+    console.error('Error fetching document:', error);
+
+  Line 108: console.error
+    console.error('Error in GET /api/documents/[id]:', error);
+
+  Line 171: console.error
+    console.error('Error updating document:', error);
+
+  Line 187: console.error
+    console.error('Error in PATCH /api/documents/[id]:', error);
+
+  Line 245: console.error
+    console.error('Error deleting file from storage:', storageError);
+
+  Line 258: console.error
+    console.error('Error deleting document:', error);
+
+  Line 273: console.error
+    console.error('Error archiving document:', error);
+
+  Line 315: console.error
+    console.error('Error in DELETE /api/documents/[id]:', error);
+
+### app/api/integrations/api-keys/route.ts (8 statements)
+
+  Line 113: console.error
+    console.error('Error fetching API keys:', error);
+
+  Line 145: console.error
+    console.error('Error in GET /api/integrations/api-keys:', error);
+
+  Line 215: console.error
+    console.error('Error creating API key:', error);
+
+  Line 249: console.error
+    console.error('Error in POST /api/integrations/api-keys:', error);
+
+  Line 319: console.error
+    console.error('Error updating API key:', error);
+
+  Line 351: console.error
+    console.error('Error in PATCH /api/integrations/api-keys:', error);
+
+  Line 428: console.error
+    console.error('Error revoking API key:', error);
+
+  Line 445: console.error
+    console.error('Error in DELETE /api/integrations/api-keys:', error);
+
+### app/api/integrations/connections/route.ts (7 statements)
+
+  Line 202: console.error
+    console.error('Error fetching connections:', error);
+
+  Line 261: console.error
+    console.error('Error in GET /api/integrations/connections:', error);
+
+  Line 413: console.error
+    console.error('Error in POST /api/integrations/connections:', error);
+
+  Line 479: console.error
+    console.error('Error updating connection:', error);
+
+  Line 508: console.error
+    console.error('Error in PATCH /api/integrations/connections:', error);
+
+  Line 585: console.error
+    console.error('Error disconnecting integration:', error);
+
+  Line 604: console.error
+    console.error('Error in DELETE /api/integrations/connections:', error);
+
+### app/api/team/[userId]/route.ts (7 statements)
+
+  Line 158: console.error
+    console.error('Error in GET /api/team/[userId]:', error);
+
+  Line 289: console.error
+    console.error('Error updating project member:', error);
+
+  Line 353: console.error
+    console.error('Error updating team member:', error);
+
+  Line 385: console.error
+    console.error('Error in PATCH /api/team/[userId]:', error);
+
+  Line 475: console.error
+    console.error('Error removing project member:', error);
+
+  Line 525: console.error
+    console.error('Error removing team member:', error);
+
+  Line 568: console.error
+    console.error('Error in DELETE /api/team/[userId]:', error);
+
+### app/api/team/route.ts (7 statements)
+
+  Line 109: console.error
+    console.error('Error fetching project members:', error);
+
+  Line 142: console.error
+    console.error('Error fetching org members:', error);
+
+  Line 165: console.error
+    console.error('Error in GET /api/team:', error);
+
+  Line 255: console.error
+    console.error('Error adding project member:', memberError);
+
+  Line 321: console.error
+    console.error('Error creating project invitation:', error);
+
+  Line 365: console.error
+    console.error('Error creating invitation:', error);
+
+  Line 394: console.error
+    console.error('Error in POST /api/team:', error);
+
+### lib/job-scheduler.ts (7 statements)
+
+  Line 432: console.error
+    console.error('Failed to queue job:', error);
+
+  Line 521: console.error
+    console.error('Failed to create schedule:', error);
+
+  Line 604: console.error
+    console.error('Failed to update schedule:', error);
+
+  Line 623: console.error
+    console.error('Failed to delete schedule:', error);
+
+  Line 655: console.error
+    console.error('Failed to get schedules:', error);
+
+  Line 697: console.error
+    console.error('Failed to get dead letter queue:', error);
+
+  Line 785: console.error
+    console.error('Failed to discard dead letter:', error);
+
+### app/api/applications/[id]/route.ts (6 statements)
+
+  Line 133: console.error
+    console.error('Error fetching application:', error);
+
+  Line 190: console.error
+    console.error('Error in GET /api/applications/[id]:', error);
+
+  Line 274: console.error
+    console.error('Error updating application:', updateError);
+
+  Line 291: console.error
+    console.error('Error in PATCH /api/applications/[id]:', error);
+
+  Line 362: console.error
+    console.error('Error deleting application:', deleteError);
+
+  Line 378: console.error
+    console.error('Error in DELETE /api/applications/[id]:', error);
+
+### app/api/documents/upload/route.ts (6 statements)
+
+  Line 174: console.error
+    console.error('Error creating document record:', docError);
+
+  Line 187: console.error
+    console.error('Error creating signed URL:', signedUrlError);
+
+  Line 213: console.error
+    console.error('Error in POST /api/documents/upload:', error);
+
+  Line 332: console.error
+    console.error('Error updating document status:', updateError);
+
+  Line 370: console.error
+    console.error('Error in PUT /api/documents/upload:', error);
+
+  Line 404: console.error
+    console.error('Error in GET /api/documents/upload:', error);
+
+### app/api/notifications/route.ts (6 statements)
+
+  Line 66: console.error
+    console.error('Error fetching notifications:', error);
+
+  Line 107: console.error
+    console.error('Error in GET /api/notifications:', error);
+
+  Line 170: console.error
+    console.error('Error creating notification:', error);
+
+  Line 176: console.error
+    console.error('Error in POST /api/notifications:', error);
+
+  Line 235: console.error
+    console.error('Error updating notifications:', error);
+
+  Line 246: console.error
+    console.error('Error in PATCH /api/notifications:', error);
+
+### app/api/projects/[id]/route.ts (6 statements)
+
+  Line 81: console.error
+    console.error('Error fetching project:', error);
+
+  Line 87: console.error
+    console.error('Error in GET /api/projects/[id]:', error);
+
+  Line 131: console.error
+    console.error('Error updating project:', error);
+
+  Line 155: console.error
+    console.error('Error in PATCH /api/projects/[id]:', error);
+
+  Line 188: console.error
+    console.error('Error deleting project:', error);
+
+  Line 206: console.error
+    console.error('Error in DELETE /api/projects/[id]:', error);
+
+### app/api/settings/route.ts (6 statements)
+
+  Line 109: console.error
+    console.error('Error fetching profile:', error);
+
+  Line 142: console.error
+    console.error('Error fetching organization:', error);
+
+  Line 180: console.error
+    console.error('Error in GET /api/settings:', error);
+
+  Line 280: console.error
+    console.error('Error updating preferences:', updateError);
+
+  Line 354: console.error
+    console.error('Error updating organization:', updateError);
+
+  Line 374: console.error
+    console.error('Error in PATCH /api/settings:', error);
+
+### app/api/analytics/portfolio/route.ts (5 statements)
+
+  Line 63: console.error
+    console.error('Error fetching projects:', projectsError);
+
+  Line 82: console.error
+    console.error('Error fetching matches:', matchesError);
+
+  Line 96: console.error
+    console.error('Error fetching applications:', applicationsError);
+
+  Line 138: console.error
+    console.error('Portfolio analytics error:', error);
+
+  Line 316: console.error
+    console.error('Concentration analysis error:', error);
+
+### app/api/analytics/route.ts (5 statements)
+
+  Line 77: console.error
+    console.error('Error fetching projects:', projectsError);
+
+  Line 101: console.error
+    console.error('Error fetching matches:', matchesError);
+
+  Line 128: console.error
+    console.error('Error fetching applications:', applicationsError);
+
+  Line 157: console.error
+    console.error('Analytics API error:', error);
+
+  Line 299: console.error
+    console.error('Analytics POST error:', error);
+
+### app/api/contact/route.ts (5 statements)
+
+  Line 41: console.error
+    console.error('Error storing inquiry:', dbError);
+
+  Line 77: console.log
+    console.log('Email notification skipped - no email service configured');
+
+  Line 81: console.error
+    console.error('Email notification failed:', emailError);
+
+  Line 91: console.error
+    console.error('Contact API error:', error);
+
+  Line 230: console.error
+    console.error('Error fetching inquiries:', error);
+
+### app/api/jobs/[id]/route.ts (5 statements)
+
+  Line 51: console.error
+    console.error('Error fetching job:', error);
+
+  Line 75: console.error
+    console.error('Error in GET /api/jobs/[id]:', error);
+
+  Line 239: console.error
+    console.error('Error in PATCH /api/jobs/[id]:', error);
+
+  Line 309: console.error
+    console.error('Error deleting job:', deleteError);
+
+  Line 325: console.error
+    console.error('Error in DELETE /api/jobs/[id]:', error);
+
+### app/api/organizations/[id]/route.ts (5 statements)
+
+  Line 63: console.error
+    console.error('Error in GET /api/organizations/[id]:', error);
+
+  Line 116: console.error
+    console.error('Error updating organization:', error);
+
+  Line 132: console.error
+    console.error('Error in PUT /api/organizations/[id]:', error);
+
+  Line 178: console.error
+    console.error('Error deleting organization:', error);
+
+  Line 184: console.error
+    console.error('Error in DELETE /api/organizations/[id]:', error);
+
+### app/api/organizations/route.ts (5 statements)
+
+  Line 47: console.error
+    console.error('Error fetching organization:', error);
+
+  Line 53: console.error
+    console.error('Error in GET /api/organizations:', error);
+
+  Line 102: console.error
+    console.error('Error creating organization:', createError);
+
+  Line 113: console.error
+    console.error('Error updating profile:', updateError);
+
+  Line 131: console.error
+    console.error('Error in POST /api/organizations:', error);
+
+### app/api/programs/sync/route.ts (5 statements)
+
+  Line 110: console.error
+    console.error('Error fetching sync history:', historyError);
+
+  Line 172: console.error
+    console.error('Error in GET /api/programs/sync:', error);
+
+  Line 231: console.error
+    console.error('Error creating sync log:', syncLogError);
+
+  Line 387: console.error
+    console.error('Error in POST /api/programs/sync:', error);
+
+  Line 454: console.error
+    console.error('Error in DELETE /api/programs/sync:', error);
+
+### app/api/applications/[id]/status/route.ts (4 statements)
+
+  Line 158: console.error
+    console.error('Error in GET /api/applications/[id]/status:', error);
+
+  Line 244: console.warn
+    console.warn(`Admin ${user.id} forcing status change from ${currentStatus} to ${newStatus}`);
+
+  Line 303: console.error
+    console.error('Error updating application status:', updateError);
+
+  Line 411: console.error
+    console.error('Error in PATCH /api/applications/[id]/status:', error);
+
+### app/api/applications/route.ts (4 statements)
+
+  Line 128: console.error
+    console.error('Error fetching applications:', error);
+
+  Line 158: console.error
+    console.error('Error in GET /api/applications:', error);
+
+  Line 273: console.error
+    console.error('Error creating application:', createError);
+
+  Line 324: console.error
+    console.error('Error in POST /api/applications:', error);
+
+### app/api/compliance/[projectId]/route.ts (4 statements)
+
+  Line 62: console.error
+    console.error('Error fetching project:', projectError);
+
+  Line 304: console.error
+    console.error('Error in GET /api/compliance/[projectId]:', error);
+
+  Line 355: console.error
+    console.error('Error calculating compliance score:', scoreError);
+
+  Line 390: console.error
+    console.error('Error in POST /api/compliance/[projectId]:', error);
+
+### app/api/compliance/route.ts (4 statements)
+
+  Line 195: console.error
+    console.error('Error fetching projects:', projectsError);
+
+  Line 261: console.error
+    console.error('Error in GET /api/compliance:', error);
+
+  Line 316: console.error
+    console.error('Error calculating compliance score:', scoreError);
+
+  Line 350: console.error
+    console.error('Error in POST /api/compliance:', error);
+
+### app/api/documents/route.ts (4 statements)
+
+  Line 115: console.error
+    console.error('Error fetching documents:', error);
+
+  Line 129: console.error
+    console.error('Error in GET /api/documents:', error);
+
+  Line 263: console.error
+    console.error('Error creating document:', error);
+
+  Line 279: console.error
+    console.error('Error in POST /api/documents:', error);
+
+### app/api/jobs/route.ts (4 statements)
+
+  Line 114: console.error
+    console.error('Error in GET /api/jobs:', error);
+
+  Line 238: console.error
+    console.error('Error in POST /api/jobs:', error);
+
+  Line 291: console.error
+    console.error('Error cancelling jobs:', error);
+
+  Line 302: console.error
+    console.error('Error in DELETE /api/jobs:', error);
+
+### app/api/projects/analyze/route.ts (4 statements)
+
+  Line 336: console.warn
+    console.warn('Live database query failed, falling back to demo:', dbError);
+
+  Line 365: console.error
+    console.error('Error in POST /api/projects/analyze:', error);
+
+  Line 432: console.error
+    console.error('Database query error:', error);
+
+  Line 610: console.warn
+    console.warn('AI recommendations failed, returning base analysis:', aiError);
+
+### app/api/projects/route.ts (4 statements)
+
+  Line 332: console.error
+    console.error('Error fetching projects:', error);
+
+  Line 354: console.error
+    console.error('Error in GET /api/projects:', error);
+
+  Line 414: console.error
+    console.error('Error creating project:', error);
+
+  Line 430: console.error
+    console.error('Error in POST /api/projects:', error);
+
+### lib/email-triggers.ts (4 statements)
+
+  Line 137: console.error
+    console.error('[EMAIL TRIGGER] Failed to send welcome email:', error);
+
+  Line 197: console.error
+    console.error('[EMAIL TRIGGER] Failed to send report ready email:', error);
+
+  Line 251: console.error
+    console.error('[EMAIL TRIGGER] Failed to send subscription confirmed email:', error);
+
+  Line 308: console.error
+    console.error('[EMAIL TRIGGER] Failed to send payment failed email:', error);
+
+### lib/email.ts (4 statements)
+
+  Line 189: console.log
+    console.log('[EMAIL DEV] Would send email:', {
+
+  Line 215: console.error
+    console.error('[EMAIL] Send error:', error);
+
+  Line 219: console.log
+    console.log('[EMAIL] Successfully sent:', {
+
+  Line 235: console.error
+    console.error('[EMAIL] Unexpected error:', err);
+
+### app/(dashboard)/analysis/page.tsx (3 statements)
+
+  Line 243: console.error
+    console.error('Error loading project:', err);
+
+  Line 323: console.error
+    console.error('Analysis error:', err);
+
+  Line 375: console.error
+    console.error('Export error:', err);
+
+### app/api/programs/route.ts (3 statements)
+
+  Line 693: console.error
+    console.error('Error fetching programs:', error);
+
+  Line 730: console.error
+    console.error('Error in GET /api/programs:', error);
+
+  Line 859: console.error
+    console.error('Error in HEAD /api/programs:', error);
+
+### lib/ai-recommendation-engine.ts (3 statements)
+
+  Line 146: console.warn
+    console.warn('ANTHROPIC_API_KEY not set, using fallback recommendations');
+
+  Line 168: console.error
+    console.error('AI recommendation generation failed:', error);
+
+  Line 389: console.error
+    console.error('Failed to parse AI response:', error);
+
+### lib/encryption/crypto-service.ts (3 statements)
+
+  Line 155: console.error
+    console.error('Encryption failed:', errorMsg);
+
+  Line 236: console.error
+    console.error('SECURITY ALERT: Authentication tag verification failed - data may be tampered');
+
+  Line 240: console.error
+    console.error('Decryption failed:', errorMsg);
+
+### lib/error-handler.ts (3 statements)
+
+  Line 201: console.error
+    console.error(JSON.stringify(cleanLogData));
+
+  Line 204: console.error
+    console.error(`[${severity.toUpperCase()}] ${errorId}:`, error);
+
+  Line 206: console.error
+    console.error('Context:', context.additionalContext);
+
+### lib/job-processor.ts (3 statements)
+
+  Line 869: console.error
+    console.error('Failed to create job:', error);
+
+  Line 889: console.error
+    console.error('Failed to get job:', error);
+
+  Line 933: console.error
+    console.error('Failed to get jobs:', error);
+
+### lib/workflow-engine.ts (3 statements)
+
+  Line 384: console.error
+    console.error('Error creating tasks from template:', error);
+
+  Line 466: console.error
+    console.error('Error fetching overdue tasks:', error);
+
+  Line 504: console.error
+    console.error('Error scheduling reminders:', error);
+
+### app/(dashboard)/projects/new/page.tsx (2 statements)
+
+  Line 157: console.log
+    console.log('Form data:', data);
+
+  Line 165: console.error
+    console.error('Error creating project:', error);
+
+### app/api/analytics/applications/route.ts (2 statements)
+
+  Line 168: console.error
+    console.error('Application analytics error:', error);
+
+  Line 512: console.error
+    console.error('Prediction error:', error);
+
+### app/api/analytics/incentives/route.ts (2 statements)
+
+  Line 201: console.error
+    console.error('Incentives analytics error:', error);
+
+  Line 591: console.error
+    console.error('Forecast error:', error);
+
+### app/api/applications/[id]/submit/route.ts (2 statements)
+
+  Line 176: console.error
+    console.error('Error in GET /api/applications/[id]/submit:', error);
+
+  Line 421: console.error
+    console.error('Error in POST /api/applications/[id]/submit:', error);
+
+### app/api/cost-estimation/route.ts (2 statements)
+
+  Line 376: console.error
+    console.error('Error in POST /api/cost-estimation:', error);
+
+  Line 426: console.error
+    console.error('Error in GET /api/cost-estimation:', error);
+
+### app/api/dashboard/activity/route.ts (2 statements)
+
+  Line 87: console.error
+    console.error('Error fetching activity logs:', error);
+
+  Line 121: console.error
+    console.error('Error in GET /api/dashboard/activity:', error);
+
+### app/api/dashboard/route.ts (2 statements)
+
+  Line 85: console.error
+    console.error('Error fetching projects:', projectsError);
+
+  Line 216: console.error
+    console.error('Error in GET /api/dashboard:', error);
+
+### app/api/dashboard/stats/route.ts (2 statements)
+
+  Line 45: console.error
+    console.error('Error fetching program count:', programError);
+
+  Line 196: console.error
+    console.error('Error in GET /api/dashboard/stats:', error);
+
+### app/api/documents/[id]/extract/route.ts (2 statements)
+
+  Line 246: console.error
+    console.error('Error in POST /api/documents/[id]/extract:', error);
+
+  Line 328: console.error
+    console.error('Error in GET /api/documents/[id]/extract:', error);
+
+### app/api/email/send/route.ts (2 statements)
+
+  Line 183: console.warn
+    console.warn('[EMAIL API] Email service not configured, running in development mode');
+
+  Line 285: console.log
+    console.log('[EMAIL API] Email sent:', {
+
+### app/api/programs/[id]/route.ts (2 statements)
+
+  Line 35: console.error
+    console.error('Error fetching program:', error);
+
+  Line 51: console.error
+    console.error('Error in GET /api/programs/[id]:', error);
+
+### app/api/stats/route.ts (2 statements)
+
+  Line 38: console.error
+    console.error('Error fetching program count:', programError);
+
+  Line 178: console.error
+    console.error('Error in GET /api/stats:', error);
+
+### app/api/stripe/create-checkout/route.ts (2 statements)
+
+  Line 91: console.log
+    console.log('User not authenticated, continuing with guest checkout');
+
+  Line 158: console.error
+    console.error('[Checkout] Error creating session:', error);
+
+### components/pricing/CheckoutButton.tsx (2 statements)
+
+  Line 92: console.error
+    console.error('[CheckoutButton] Error:', error);
+
+  Line 176: console.error
+    console.error('[ManageBillingButton] Error:', error);
+
+### hooks/useSubscription.ts (2 statements)
+
+  Line 139: console.error
+    console.error('[useSubscription] Error:', err);
+
+  Line 168: console.log
+    console.log('[useSubscription] Subscription changed, refreshing...');
+
+### lib/api-utils.ts (2 statements)
+
+  Line 119: console.error
+    console.error('API Error:', error);
+
+  Line 813: console.log
+    console.log('API Request:', JSON.stringify(log));
+
+### lib/auth-middleware.ts (2 statements)
+
+  Line 169: console.error
+    console.error('Auth middleware error:', error);
+
+  Line 398: console.error
+    console.error('Failed to log API access:', error);
+
+### lib/auth-providers.ts (2 statements)
+
+  Line 30: console.error
+    console.error('Google OAuth error:', error.message);
+
+  Line 54: console.error
+    console.error('GitHub OAuth error:', error.message);
+
+### lib/encryption/field-encryption.ts (2 statements)
+
+  Line 110: console.warn
+    console.warn(`Data encrypted with old key (${result.keyId}), consider re-encrypting`);
+
+  Line 163: console.error
+    console.error(`Failed to decrypt ${field}:`, error);
+
+### lib/stripe/subscriptions.ts (2 statements)
+
+  Line 112: console.warn
+    console.warn('[Subscriptions] Creating subscription in mock mode');
+
+  Line 352: console.warn
+    console.warn('[Subscriptions] Calculating proration in mock mode');
+
+### app/(dashboard)/dashboard/page.tsx (1 statements)
+
+  Line 74: console.error
+    console.error('Error fetching dashboard stats:', err);
+
+### app/(dashboard)/discover/page.tsx (1 statements)
+
+  Line 125: console.error
+    console.error('Error fetching incentives:', error);
+
+### app/(dashboard)/green/page.tsx (1 statements)
+
+  Line 415: console.error
+    console.error('Error loading green incentives:', err);
+
+### app/(dashboard)/matching/page.tsx (1 statements)
+
+  Line 105: console.error
+    console.error('Error loading data:', err);
+
+### app/(dashboard)/settings/billing/page.tsx (1 statements)
+
+  Line 111: console.error
+    console.error('Portal error:', error);
+
+### app/api/calculate/route.ts (1 statements)
+
+  Line 481: console.error
+    console.error('Error in POST /api/calculate:', error);
+
+### app/api/dashboard/alerts/route.ts (1 statements)
+
+  Line 278: console.error
+    console.error('Error in GET /api/dashboard/alerts:', error);
+
+### app/api/health/route.ts (1 statements)
+
+  Line 134: console.error
+    console.error('Health check failed:', error);
+
+### app/api/integrations/webhooks/test/route.ts (1 statements)
+
+  Line 219: console.error
+    console.error('Error in POST /api/integrations/webhooks/test:', error);
+
+### app/api/programs/search/route.ts (1 statements)
+
+  Line 291: console.error
+    console.error('Error in GET /api/programs/search:', error);
+
+### app/api/reports/generate/route.ts (1 statements)
+
+  Line 458: console.error
+    console.error('Error generating report:', error);
+
+### app/api/reports/route.ts (1 statements)
+
+  Line 196: console.error
+    console.error('Error in POST /api/reports:', error);
+
+### app/api/stripe/checkout/route.ts (1 statements)
+
+  Line 117: console.error
+    console.error('Error creating checkout session:', error);
+
+### app/api/stripe/portal/route.ts (1 statements)
+
+  Line 104: console.error
+    console.error('[Portal] Error creating session:', error);
+
+### app/api-docs/page.tsx (1 statements)
+
+  Line 215: console.log
+    console.log('Swagger UI loaded successfully');
+
+### app/pricing/page.tsx (1 statements)
+
+  Line 127: console.error
+    console.error('Checkout error:', error);
+
+### components/layout/v40-header.tsx (1 statements)
+
+  Line 158: console.error
+    console.error('Error submitting question:', error);
+
+### contexts/DashboardContext.tsx (1 statements)
+
+  Line 150: console.error
+    console.error('Error fetching dashboard stats:', error);
+
+### hooks/use-auth.ts (1 statements)
+
+  Line 46: console.error
+    console.error('Error fetching profile:', error);
+
+### lib/eligibility-engine.ts (1 statements)
+
+  Line 1708: console.error
+    console.error(`Error evaluating program ${program.id}:`, error);
+
+### lib/encryption/index.ts (1 statements)
+
+  Line 55: console.log
+    * console.log('ENCRYPTION_MASTER_SECRET=' + generateMasterSecret());
+
+### lib/permissions.ts (1 statements)
+
+  Line 391: console.error
+    console.error('Error getting project permissions:', error);
+
+### lib/rate-limiter.ts (1 statements)
+
+  Line 486: console.warn
+    console.warn('Distributed rate limiter falling back to local');
+
+### lib/webhook-dispatcher.ts (1 statements)
+
+  Line 647: console.error
+    console.error('Error retrying failed events:', error);
+
+
+## Next Steps
+
+1. Review MIGRATION_GUIDE.md for migration instructions
+2. Start with files that have the most console statements
+3. Use the logger import: import { logger } from '@/lib/logging/logger';
+4. Replace console.log → logger.info (or appropriate level)
+5. Add context objects with relevant data
+6. Run this script again to verify progress
+

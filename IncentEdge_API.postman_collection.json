@@ -1,0 +1,571 @@
+{
+  "info": {
+    "name": "IncentEdge API",
+    "_postman_id": "incentedge-api-v1",
+    "description": "Complete collection for IncentEdge API - Infrastructure's Bloomberg Terminal for Incentives",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://incentedge.com/api",
+      "type": "string"
+    },
+    {
+      "key": "base_url_dev",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Programs",
+      "item": [
+        {
+          "name": "Search Programs (All Federal)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?category=federal&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "federal"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all federal incentive programs"
+          }
+        },
+        {
+          "name": "Search Programs (NY State)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?state=NY&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "NY"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Get programs available in New York state"
+          }
+        },
+        {
+          "name": "Search Programs (Solar + Direct Pay)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?technology=solar&direct_pay_eligible=true&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "technology",
+                  "value": "solar"
+                },
+                {
+                  "key": "direct_pay_eligible",
+                  "value": "true"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get solar programs with IRA direct pay eligibility"
+          }
+        },
+        {
+          "name": "Search Programs (Full Text Search)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?search=energy efficiency&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "energy efficiency"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Full-text search for 'energy efficiency' programs"
+          }
+        },
+        {
+          "name": "Get Program by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs/{{program_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["programs", "{{program_id}}"],
+              "variable": [
+                {
+                  "key": "program_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get detailed information for a specific program"
+          }
+        },
+        {
+          "name": "Get Program Statistics (HEAD)",
+          "request": {
+            "method": "HEAD",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs",
+              "host": ["{{base_url}}"],
+              "path": ["programs"]
+            },
+            "description": "Get program counts by category (in response headers)"
+          }
+        }
+      ],
+      "description": "Search and retrieve incentive programs"
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projects?status=active",
+              "host": ["{{base_url}}"],
+              "path": ["projects"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "description": "List all active projects for authenticated user"
+          }
+        },
+        {
+          "name": "Get Demo Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projects?demo=true",
+              "host": ["{{base_url}}"],
+              "path": ["projects"],
+              "query": [
+                {
+                  "key": "demo",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get demo projects (no authentication required)"
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Brooklyn Mixed-Use Development\",\n  \"description\": \"200-unit mixed-use building with ground floor retail\",\n  \"sector_type\": \"real-estate\",\n  \"building_type\": \"mixed_use\",\n  \"construction_type\": \"new-construction\",\n  \"address_line1\": \"123 Atlantic Avenue\",\n  \"city\": \"Brooklyn\",\n  \"state\": \"NY\",\n  \"zip_code\": \"11201\",\n  \"county\": \"Kings\",\n  \"total_sqft\": 250000,\n  \"total_units\": 200,\n  \"affordable_units\": 60,\n  \"total_development_cost\": 180000000,\n  \"hard_costs\": 140000000,\n  \"soft_costs\": 40000000,\n  \"target_certification\": \"LEED Gold\",\n  \"renewable_energy_types\": [\"solar\"],\n  \"projected_energy_reduction_pct\": 30,\n  \"domestic_content_eligible\": true,\n  \"prevailing_wage_commitment\": true,\n  \"estimated_start_date\": \"2026-06-01\",\n  \"estimated_completion_date\": \"2028-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projects",
+              "host": ["{{base_url}}"],
+              "path": ["projects"]
+            },
+            "description": "Create a new infrastructure project"
+          }
+        },
+        {
+          "name": "Get Project by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/projects/{{project_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["projects", "{{project_id}}"],
+              "variable": [
+                {
+                  "key": "project_id",
+                  "value": "mt-vernon"
+                }
+              ]
+            },
+            "description": "Get detailed project information"
+          }
+        }
+      ],
+      "description": "Manage infrastructure projects"
+    },
+    {
+      "name": "Calculate",
+      "item": [
+        {
+          "name": "Calculate Incentives (Multifamily)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"NY\",\n  \"county\": \"Westchester\",\n  \"municipality\": \"Mount Vernon\",\n  \"buildingType\": \"multifamily\",\n  \"totalUnits\": 300,\n  \"totalSqft\": 350000,\n  \"affordableUnits\": 90,\n  \"affordablePercentage\": 30,\n  \"totalDevelopmentCost\": 300000000,\n  \"equityInvestment\": 75000000,\n  \"projectedNOI\": 19500000,\n  \"holdPeriod\": 5,\n  \"sustainabilityTier\": \"tier_2_high_performance\",\n  \"solarCapacityKw\": 500,\n  \"storageCapacityKwh\": 1000,\n  \"entityType\": \"llc\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calculate",
+              "host": ["{{base_url}}"],
+              "path": ["calculate"]
+            },
+            "description": "Calculate incentives for 300-unit multifamily project in NY"
+          }
+        },
+        {
+          "name": "Calculate Incentives (Commercial Solar)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"CA\",\n  \"buildingType\": \"commercial\",\n  \"totalSqft\": 100000,\n  \"totalDevelopmentCost\": 50000000,\n  \"equityInvestment\": 15000000,\n  \"sustainabilityTier\": \"tier_3_net_zero\",\n  \"solarCapacityKw\": 1000,\n  \"storageCapacityKwh\": 2000,\n  \"entityType\": \"corporation\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calculate",
+              "host": ["{{base_url}}"],
+              "path": ["calculate"]
+            },
+            "description": "Calculate incentives for commercial solar project in CA"
+          }
+        },
+        {
+          "name": "Calculate Incentives (Affordable Housing)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"NY\",\n  \"municipality\": \"New York City\",\n  \"buildingType\": \"multifamily\",\n  \"totalUnits\": 200,\n  \"totalSqft\": 200000,\n  \"affordableUnits\": 200,\n  \"affordablePercentage\": 100,\n  \"totalDevelopmentCost\": 200000000,\n  \"equityInvestment\": 30000000,\n  \"sustainabilityTier\": \"tier_1_efficient\",\n  \"entityType\": \"nonprofit\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calculate",
+              "host": ["{{base_url}}"],
+              "path": ["calculate"]
+            },
+            "description": "Calculate incentives for 100% affordable housing in NYC"
+          }
+        }
+      ],
+      "description": "Calculate potential incentive values"
+    },
+    {
+      "name": "Health & Stats",
+      "item": [
+        {
+          "name": "Health Check (Full)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Comprehensive health check with dependency status"
+          }
+        },
+        {
+          "name": "Health Check (Quick)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health?quick=true",
+              "host": ["{{base_url}}"],
+              "path": ["health"],
+              "query": [
+                {
+                  "key": "quick",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Quick liveness check only"
+          }
+        },
+        {
+          "name": "Health Check (Verbose)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health?verbose=true",
+              "host": ["{{base_url}}"],
+              "path": ["health"],
+              "query": [
+                {
+                  "key": "verbose",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Health check with detailed metrics and build info"
+          }
+        },
+        {
+          "name": "Liveness Probe (HEAD)",
+          "request": {
+            "method": "HEAD",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Simple liveness probe (200 if running)"
+          }
+        },
+        {
+          "name": "Platform Stats (Full)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stats",
+              "host": ["{{base_url}}"],
+              "path": ["stats"]
+            },
+            "description": "Get comprehensive platform statistics"
+          }
+        },
+        {
+          "name": "Platform Stats (Quick)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stats?quick=true",
+              "host": ["{{base_url}}"],
+              "path": ["stats"],
+              "query": [
+                {
+                  "key": "quick",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Quick stats for KPI cards only"
+          }
+        }
+      ],
+      "description": "Health checks and platform statistics"
+    },
+    {
+      "name": "Example Workflows",
+      "item": [
+        {
+          "name": "Workflow: Find NY Solar Programs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?state=NY&technology=solar&status=active&limit=20&sort_by=amount_max&sort_order=desc",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "NY"
+                },
+                {
+                  "key": "technology",
+                  "value": "solar"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "amount_max"
+                },
+                {
+                  "key": "sort_order",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Find all active solar programs in NY, sorted by highest value"
+          }
+        },
+        {
+          "name": "Workflow: IRA Direct Pay Programs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/programs?category=federal&direct_pay_eligible=true&transferable=true&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["programs"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "federal"
+                },
+                {
+                  "key": "direct_pay_eligible",
+                  "value": "true"
+                },
+                {
+                  "key": "transferable",
+                  "value": "true"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Find IRA programs with direct pay + transferable benefits"
+          }
+        },
+        {
+          "name": "Workflow: Calculate Then Search",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Save calculated state for next request",
+                  "pm.environment.set(\"calculated_state\", pm.response.json().project.state);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"CA\",\n  \"buildingType\": \"commercial\",\n  \"totalSqft\": 50000,\n  \"totalDevelopmentCost\": 25000000,\n  \"equityInvestment\": 7500000,\n  \"solarCapacityKw\": 250\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calculate",
+              "host": ["{{base_url}}"],
+              "path": ["calculate"]
+            },
+            "description": "Step 1: Calculate incentives for CA project (saves state to environment)"
+          }
+        }
+      ],
+      "description": "Common workflow examples and patterns"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "totalPrograms": 30007,
+  "tier1Programs": 19633,
+  "imported": 0,
+  "skipped": 0,
+  "errors": 0,
+  "duplicates": 0,
+  "stateDistribution": {
+    "National": 1372,
+    "AK": 154,
+    "AL": 289,
+    "AR": 126,
+    "AZ": 255,
+    "CA": 1197,
+    "CO": 548,
+    "CT": 404,
+    "DC": 159,
+    "DE": 296,
+    "FL": 355,
+    "GA": 476,
+    "GU": 4,
+    "HI": 316,
+    "IA": 324,
+    "ID": 278,
+    "IL": 663,
+    "IN": 369,
+    "KS": 121,
+    "KY": 322,
+    "LA": 371,
+    "MA": 336,
+    "MD": 425,
+    "ME": 379,
+    "MI": 575,
+    "MN": 291,
+    "MO": 341,
+    "MS": 89,
+    "MT": 262,
+    "NC": 489,
+    "ND": 112,
+    "NE": 301,
+    "NH": 189,
+    "NJ": 274,
+    "NM": 343,
+    "NV": 344,
+    "NY": 493,
+    "MP": 2,
+    "OH": 605,
+    "OK": 171,
+    "OR": 463,
+    "PA": 500,
+    "PR": 13,
+    "RI": 333,
+    "SC": 186,
+    "SD": 275,
+    "TN": 167,
+    "TX": 838,
+    "UT": 317,
+    "VA": 446,
+    "VI": 4,
+    "VT": 390,
+    "WA": 513,
+    "WI": 249,
+    "WV": 258,
+    "WY": 261
+  },
+  "avgValidationScore": 0.6967007698201627,
+  "urlCoverage": 99.83670476888726,
+  "samplePrograms": [
+    {
+      "id": "tier1-National-2025-community-grants-pcef-3",
+      "title": "2025 Community Grants - PCEF",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-3c-ren-commercial-energy-savings-5",
+      "title": "3C-REN Commercial Energy Savings",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-3c-ren-home-programs-6",
+      "title": "3C-REN Home Programs",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-3c-ren-training-programs-7",
+      "title": "3C-REN Training Programs",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-abag-power-gas-purchasing-10",
+      "title": "ABAG POWER Gas Purchasing",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-arise-grant-program-15",
+      "title": "ARISE Grant Program",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-active-transportation-funding-17",
+      "title": "Active Transportation Funding",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-active-transportation-funding-sacog-18",
+      "title": "Active Transportation Funding - SACOG",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-advanced-energy-fund-19",
+      "title": "Advanced Energy Fund",
+      "state": "National",
+      "score": 0.7000000000000001
+    },
+    {
+      "id": "tier1-National-alabama-energy-infrastructure-bank-26",
+      "title": "Alabama Energy Infrastructure Bank",
+      "state": "National",
+      "score": 0.7000000000000001
+    }
+  ]
+}

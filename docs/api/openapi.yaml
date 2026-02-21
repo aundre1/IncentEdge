@@ -1,0 +1,2026 @@
+openapi: 3.1.0
+info:
+  title: IncentEdge API
+  version: 1.0.0
+  description: |
+    # IncentEdge API Documentation
+
+    IncentEdge is an AI-powered incentive discovery, application, and monetization platform - Infrastructure's Bloomberg Terminal for Incentives.
+
+    ## Features
+    - **24,458+ verified incentive programs** across federal, state, local, and utility levels
+    - **AI-powered matching** using tiered LLM system (DeepSeek + Claude)
+    - **Direct Pay eligibility checking** for IRA Section 6417
+    - **Multi-format report generation** (PDF, HTML, JSON)
+    - **Real-time analytics** and portfolio tracking
+
+    ## Authentication
+    All authenticated endpoints require either:
+    - Session-based auth (via Supabase Auth cookies)
+    - API Key authentication (via `X-API-Key` header)
+
+    ## Rate Limiting
+    Rate limits vary by subscription tier:
+    - **Free**: 100 requests/hour
+    - **Starter**: 1,000 requests/hour
+    - **Professional**: 10,000 requests/hour
+    - **Team**: 50,000 requests/hour
+    - **Enterprise**: Custom limits
+
+    Rate limit information is returned in response headers:
+    - `X-RateLimit-Limit`: Maximum requests allowed
+    - `X-RateLimit-Remaining`: Requests remaining in current window
+    - `X-RateLimit-Reset`: Unix timestamp when limit resets
+
+    ## Error Handling
+    The API uses standard HTTP response codes:
+    - `200` - Success
+    - `201` - Created
+    - `400` - Bad Request (validation errors)
+    - `401` - Unauthorized (missing/invalid authentication)
+    - `403` - Forbidden (insufficient permissions)
+    - `404` - Not Found
+    - `429` - Rate Limit Exceeded
+    - `500` - Internal Server Error
+    - `503` - Service Unavailable
+
+    Error responses follow this format:
+    ```json
+    {
+      "error": "Error message",
+      "details": {},
+      "requestId": "req_abc123"
+    }
+    ```
+  contact:
+    name: IncentEdge Support
+    email: support@incentedge.com
+    url: https://incentedge.com/support
+  license:
+    name: Proprietary
+    url: https://incentedge.com/terms
+
+servers:
+  - url: https://incentedge.com/api
+    description: Production server
+  - url: http://localhost:3000/api
+    description: Development server
+
+tags:
+  - name: Health
+    description: Health check and system status endpoints
+  - name: Projects
+    description: Real estate project management
+  - name: Programs
+    description: Incentive program discovery and search
+  - name: Applications
+    description: Incentive application workflow management
+  - name: Calculate
+    description: Incentive calculation and estimation
+  - name: Reports
+    description: Report generation (PDF, HTML, JSON)
+  - name: Dashboard
+    description: Portfolio analytics and KPIs
+  - name: Analytics
+    description: Advanced analytics and insights
+  - name: Documents
+    description: Document management and extraction
+  - name: Compliance
+    description: Compliance tracking and certification
+  - name: Team
+    description: Team and user management
+  - name: Organizations
+    description: Organization settings and management
+  - name: Stripe
+    description: Payment and subscription management
+  - name: Integrations
+    description: Third-party integrations and webhooks
+  - name: Settings
+    description: User preferences and settings
+  - name: Contact
+    description: Contact form and support requests
+
+components:
+  securitySchemes:
+    SessionAuth:
+      type: apiKey
+      in: cookie
+      name: sb-access-token
+      description: Supabase session token (automatic via cookies)
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for programmatic access
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: Validation failed
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+        requestId:
+          type: string
+          description: Unique request identifier for support
+          example: req_abc123xyz
+
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page number
+          example: 1
+        limit:
+          type: integer
+          description: Items per page
+          example: 20
+        total:
+          type: integer
+          description: Total number of items
+          example: 150
+        totalPages:
+          type: integer
+          description: Total number of pages
+          example: 8
+        hasNextPage:
+          type: boolean
+          description: Whether there are more pages
+          example: true
+        hasPrevPage:
+          type: boolean
+          description: Whether there are previous pages
+          example: false
+
+    Project:
+      type: object
+      required:
+        - id
+        - name
+        - state
+        - sector_type
+        - building_type
+        - construction_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique project identifier
+          example: 550e8400-e29b-41d4-a716-446655440000
+        name:
+          type: string
+          description: Project name
+          example: Mount Vernon Mixed-Use
+        description:
+          type: string
+          nullable: true
+          description: Project description
+        sector_type:
+          type: string
+          enum: [real-estate, clean-energy, water, waste, transportation, industrial]
+          description: Primary sector
+          example: real-estate
+        building_type:
+          type: string
+          description: Building classification
+          example: mixed_use
+        construction_type:
+          type: string
+          enum: [new-construction, substantial-rehab, acquisition, refinance]
+          description: Construction type
+          example: new-construction
+        address_line1:
+          type: string
+          description: Street address
+          example: 225 South 4th Ave
+        city:
+          type: string
+          example: Mount Vernon
+        state:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: Two-letter state code
+          example: NY
+        zip_code:
+          type: string
+          description: ZIP code
+          example: "10550"
+        county:
+          type: string
+          nullable: true
+          example: Westchester
+        total_sqft:
+          type: number
+          nullable: true
+          description: Total square footage
+          example: 850000
+        total_units:
+          type: number
+          nullable: true
+          description: Total dwelling units
+          example: 747
+        affordable_units:
+          type: number
+          nullable: true
+          description: Affordable housing units
+          example: 224
+        total_development_cost:
+          type: number
+          nullable: true
+          description: Total development cost in USD
+          example: 588800000
+        hard_costs:
+          type: number
+          nullable: true
+        soft_costs:
+          type: number
+          nullable: true
+        target_certification:
+          type: string
+          nullable: true
+          example: LEED Gold
+        sustainability_tier:
+          type: string
+          enum: [tier_1_efficient, tier_2_high_performance, tier_3_net_zero, tier_3_triple_net_zero]
+          nullable: true
+        domestic_content_eligible:
+          type: boolean
+          nullable: true
+        prevailing_wage_commitment:
+          type: boolean
+          nullable: true
+        estimated_start_date:
+          type: string
+          format: date
+          nullable: true
+        estimated_completion_date:
+          type: string
+          format: date
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    IncentiveProgram:
+      type: object
+      required:
+        - id
+        - name
+        - category
+        - program_type
+      properties:
+        id:
+          type: string
+          format: uuid
+        external_id:
+          type: string
+          description: External program identifier
+          example: IRA-45L
+        name:
+          type: string
+          description: Program name
+          example: Section 45L New Energy Efficient Home Credit
+        short_name:
+          type: string
+          nullable: true
+          example: 45L Tax Credit
+        description:
+          type: string
+          description: Full program description
+        summary:
+          type: string
+          description: Brief summary
+        program_type:
+          type: string
+          enum: [tax_credit, tax_deduction, grant, rebate, loan, tax_exemption, tax_abatement]
+        category:
+          type: string
+          enum: [federal, state, local, utility]
+        subcategory:
+          type: string
+          nullable: true
+          example: IRA
+        sector_types:
+          type: array
+          items:
+            type: string
+        technology_types:
+          type: array
+          items:
+            type: string
+        building_types:
+          type: array
+          items:
+            type: string
+        jurisdiction_level:
+          type: string
+          enum: [federal, state, local, utility]
+        state:
+          type: string
+          nullable: true
+          minLength: 2
+          maxLength: 2
+        counties:
+          type: array
+          nullable: true
+          items:
+            type: string
+        municipalities:
+          type: array
+          nullable: true
+          items:
+            type: string
+        incentive_type:
+          type: string
+        amount_type:
+          type: string
+          enum: [fixed, percentage, per_unit, per_kw, per_sqft]
+        amount_fixed:
+          type: number
+          nullable: true
+        amount_percentage:
+          type: number
+          nullable: true
+        amount_per_unit:
+          type: number
+          nullable: true
+        amount_per_kw:
+          type: number
+          nullable: true
+        amount_per_sqft:
+          type: number
+          nullable: true
+        amount_min:
+          type: number
+          nullable: true
+        amount_max:
+          type: number
+          nullable: true
+        direct_pay_eligible:
+          type: boolean
+          description: IRA Section 6417 Direct Pay eligible
+        transferable:
+          type: boolean
+        domestic_content_bonus:
+          type: boolean
+        energy_community_bonus:
+          type: boolean
+        prevailing_wage_bonus:
+          type: boolean
+        low_income_bonus:
+          type: boolean
+        status:
+          type: string
+          enum: [active, inactive, expired, pending]
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        application_deadline:
+          type: string
+          format: date
+          nullable: true
+        administrator:
+          type: string
+        administering_agency:
+          type: string
+        source_url:
+          type: string
+          format: uri
+          nullable: true
+        application_url:
+          type: string
+          format: uri
+          nullable: true
+        application_complexity:
+          type: string
+          enum: [low, medium, high]
+        typical_processing_days:
+          type: integer
+          nullable: true
+        stackable:
+          type: boolean
+        eligibility_summary:
+          type: string
+          nullable: true
+        confidence_score:
+          type: number
+          minimum: 0
+          maximum: 1
+        popularity_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+
+    Application:
+      type: object
+      required:
+        - id
+        - project_id
+        - incentive_program_id
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        application_number:
+          type: string
+          description: Auto-generated application number
+          example: APP-2024-001234
+        project_id:
+          type: string
+          format: uuid
+        incentive_program_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [draft, in-progress, submitted, under-review, approved, partially-approved, rejected, withdrawn]
+        amount_requested:
+          type: number
+          nullable: true
+        amount_approved:
+          type: number
+          nullable: true
+        deadline:
+          type: string
+          format: date-time
+          nullable: true
+        submission_date:
+          type: string
+          format: date-time
+          nullable: true
+        decision_date:
+          type: string
+          format: date-time
+          nullable: true
+        fee_type:
+          type: string
+          enum: [fixed, success, none]
+          nullable: true
+        fee_amount:
+          type: number
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CalculateRequest:
+      type: object
+      required:
+        - state
+        - totalDevelopmentCost
+        - equityInvestment
+      properties:
+        name:
+          type: string
+          description: Project name (optional)
+        state:
+          type: string
+          minLength: 2
+          maxLength: 2
+          description: Two-letter state code
+          example: NY
+        county:
+          type: string
+          example: Westchester
+        municipality:
+          type: string
+          example: Mount Vernon
+        buildingType:
+          type: string
+          enum: [multifamily, commercial, mixed_use, industrial, residential]
+          example: multifamily
+        totalUnits:
+          type: integer
+          minimum: 0
+          example: 747
+        totalSqft:
+          type: integer
+          minimum: 0
+          example: 850000
+        affordableUnits:
+          type: integer
+          minimum: 0
+          example: 224
+        affordablePercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+          example: 30
+        totalDevelopmentCost:
+          type: number
+          minimum: 0
+          description: Total development cost in USD
+          example: 588800000
+        equityInvestment:
+          type: number
+          minimum: 0
+          description: Equity investment in USD
+          example: 150000000
+        projectedNOI:
+          type: number
+          description: Projected net operating income
+        holdPeriod:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 5
+          description: Investment hold period in years
+        sustainabilityTier:
+          type: string
+          enum: [tier_1_efficient, tier_2_high_performance, tier_3_net_zero]
+        solarCapacityKw:
+          type: number
+          minimum: 0
+          description: Solar installation capacity in kW
+        storageCapacityKwh:
+          type: number
+          minimum: 0
+          description: Battery storage capacity in kWh
+        entityType:
+          type: string
+          enum: [corporation, partnership, llc, nonprofit, tax_exempt]
+
+    CalculateResponse:
+      type: object
+      properties:
+        project:
+          type: object
+          description: Project parameters used for calculation
+        results:
+          type: object
+          properties:
+            incentives:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  category:
+                    type: string
+                  description:
+                    type: string
+                  estimatedValue:
+                    type: number
+                  confidence:
+                    type: number
+                  eligible:
+                    type: boolean
+                  notes:
+                    type: array
+                    items:
+                      type: string
+            totals:
+              type: object
+              properties:
+                federal:
+                  type: number
+                state:
+                  type: number
+                local:
+                  type: number
+                utility:
+                  type: number
+                total:
+                  type: number
+            roiImpact:
+              type: object
+              properties:
+                baseIRR:
+                  type: number
+                  description: Base case IRR without incentives (%)
+                enhancedIRR:
+                  type: number
+                  description: Enhanced IRR with incentives (%)
+                irrLift:
+                  type: number
+                  description: IRR improvement (percentage points)
+                equityMultipleLift:
+                  type: number
+                  description: Equity multiple improvement
+        meta:
+          type: object
+          properties:
+            calculatedAt:
+              type: string
+              format: date-time
+            responseTime:
+              type: string
+              example: 150ms
+            version:
+              type: string
+              example: "1.0.0"
+
+    DashboardStats:
+      type: object
+      properties:
+        totalProjects:
+          type: integer
+          example: 12
+        activeProjects:
+          type: integer
+          example: 8
+        completedProjects:
+          type: integer
+          example: 3
+        onHoldProjects:
+          type: integer
+          example: 1
+        totalDevelopmentCost:
+          type: number
+          example: 1500000000
+        totalPotentialIncentives:
+          type: number
+          example: 450000000
+        totalCapturedIncentives:
+          type: number
+          example: 125000000
+        netCost:
+          type: number
+          example: 1375000000
+        subsidyRate:
+          type: number
+          description: Percentage of TDC covered by incentives
+          example: 30.0
+        totalApplications:
+          type: integer
+          example: 45
+        pendingApplications:
+          type: integer
+          example: 15
+        approvedApplications:
+          type: integer
+          example: 25
+        successRate:
+          type: number
+          description: Approval rate percentage
+          example: 83.3
+        incentivesByCategory:
+          type: object
+          properties:
+            federal:
+              type: number
+            state:
+              type: number
+            local:
+              type: number
+            utility:
+              type: number
+        projectsByTier:
+          type: object
+          properties:
+            tier_1_efficient:
+              type: integer
+            tier_2_high_performance:
+              type: integer
+            tier_3_net_zero:
+              type: integer
+            tier_3_triple_net_zero:
+              type: integer
+        capturedThisMonth:
+          type: number
+        capturedThisQuarter:
+          type: number
+        capturedThisYear:
+          type: number
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: |
+        Returns the health status of the API and its dependencies.
+
+        - Use `?quick=true` for fast liveness check
+        - Use `?verbose=true` for detailed system metrics
+      tags:
+        - Health
+      parameters:
+        - name: quick
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Return only basic liveness status
+        - name: verbose
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Include detailed metrics and build information
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, unhealthy, alive]
+                    example: healthy
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                    example: "1.0.0"
+                  uptime:
+                    type: integer
+                    description: Uptime in seconds
+                  checks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        status:
+                          type: string
+                          enum: [pass, warn, fail]
+                        message:
+                          type: string
+                        lastChecked:
+                          type: string
+                          format: date-time
+                  metrics:
+                    type: object
+                    properties:
+                      memory:
+                        type: object
+                      cpu:
+                        type: object
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    head:
+      summary: Liveness Probe
+      description: Simple liveness check for load balancers
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is alive
+          headers:
+            X-Health-Status:
+              schema:
+                type: string
+                example: alive
+
+  /projects:
+    get:
+      summary: List Projects
+      description: Get all projects for the authenticated organization with optional filtering and pagination
+      tags:
+        - Projects
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [all, active, completed, on-hold, planning]
+          description: Filter by project status
+        - name: sector
+          in: query
+          schema:
+            type: string
+          description: Filter by sector type
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by name, description, or address
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Projects retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create Project
+      description: Create a new project
+      tags:
+        - Projects
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - state
+                - sector_type
+                - building_type
+                - construction_type
+                - address_line1
+                - city
+                - zip_code
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                description:
+                  type: string
+                sector_type:
+                  type: string
+                  enum: [real-estate, clean-energy, water, waste, transportation, industrial]
+                building_type:
+                  type: string
+                construction_type:
+                  type: string
+                  enum: [new-construction, substantial-rehab, acquisition, refinance]
+                address_line1:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                  minLength: 2
+                  maxLength: 2
+                zip_code:
+                  type: string
+                county:
+                  type: string
+                total_sqft:
+                  type: number
+                total_units:
+                  type: number
+                affordable_units:
+                  type: number
+                total_development_cost:
+                  type: number
+                hard_costs:
+                  type: number
+                soft_costs:
+                  type: number
+                target_certification:
+                  type: string
+                renewable_energy_types:
+                  type: array
+                  items:
+                    type: string
+                projected_energy_reduction_pct:
+                  type: number
+                domestic_content_eligible:
+                  type: boolean
+                prevailing_wage_commitment:
+                  type: boolean
+                estimated_start_date:
+                  type: string
+                  format: date
+                estimated_completion_date:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Project'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+
+  /projects/{id}:
+    get:
+      summary: Get Project
+      description: Get a single project by ID
+      tags:
+        - Projects
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Project retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Project'
+        '404':
+          description: Project not found
+
+    patch:
+      summary: Update Project
+      description: Update an existing project
+      tags:
+        - Projects
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Project updated successfully
+        '404':
+          description: Project not found
+
+    delete:
+      summary: Delete Project
+      description: Delete a project (soft delete)
+      tags:
+        - Projects
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Project deleted successfully
+        '404':
+          description: Project not found
+
+  /projects/analyze:
+    post:
+      summary: Analyze Project for Incentives
+      description: Run AI-powered incentive matching for a project
+      tags:
+        - Projects
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projectId
+              properties:
+                projectId:
+                  type: string
+                  format: uuid
+                forceRefresh:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Analysis completed
+        '404':
+          description: Project not found
+
+  /programs:
+    get:
+      summary: Search Incentive Programs
+      description: |
+        Search and filter the database of 24,458+ verified incentive programs.
+
+        Supports comprehensive filtering by:
+        - Geography (state, county, municipality)
+        - Category (federal, state, local, utility)
+        - Program type, sector, technology, building type
+        - IRA features (direct pay, transferable credits)
+        - Sustainability requirements
+      tags:
+        - Programs
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum: [federal, state, local, utility]
+        - name: state
+          in: query
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: Two-letter state code
+        - name: county
+          in: query
+          schema:
+            type: string
+        - name: municipality
+          in: query
+          schema:
+            type: string
+        - name: program_type
+          in: query
+          schema:
+            type: string
+            enum: [tax_credit, tax_deduction, grant, rebate, loan, tax_exemption, tax_abatement]
+        - name: sector
+          in: query
+          schema:
+            type: string
+        - name: technology
+          in: query
+          schema:
+            type: string
+        - name: building_type
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, inactive, expired, pending]
+            default: active
+        - name: direct_pay_eligible
+          in: query
+          schema:
+            type: boolean
+          description: Filter for IRA Direct Pay eligible programs
+        - name: transferable
+          in: query
+          schema:
+            type: boolean
+          description: Filter for transferable tax credits
+        - name: min_tier
+          in: query
+          schema:
+            type: string
+            enum: [tier_1_efficient, tier_2_high_performance, tier_3_net_zero, tier_3_triple_net_zero]
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Full-text search across program name, description, and administrator
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: sort_by
+          in: query
+          schema:
+            type: string
+            enum: [name, created_at, updated_at, amount_max, application_deadline, popularity_score]
+            default: popularity_score
+        - name: sort_order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: Programs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IncentiveProgram'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                  filters_applied:
+                    type: object
+                    description: Echo of applied filters
+          headers:
+            X-Fallback:
+              schema:
+                type: string
+                enum: ['true', 'false']
+              description: Indicates if fallback demo data was returned
+        '400':
+          description: Invalid query parameters
+
+  /programs/{id}:
+    get:
+      summary: Get Program Details
+      description: Get detailed information about a specific incentive program
+      tags:
+        - Programs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Program retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/IncentiveProgram'
+        '404':
+          description: Program not found
+
+  /programs/search:
+    post:
+      summary: Advanced Program Search
+      description: Advanced search with complex filters and AI-powered recommendations
+      tags:
+        - Programs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Natural language search query
+                filters:
+                  type: object
+                  additionalProperties: true
+                projectContext:
+                  type: object
+                  description: Optional project context for AI matching
+      responses:
+        '200':
+          description: Search results returned
+
+  /calculate:
+    post:
+      summary: Calculate Incentive Potential
+      description: |
+        Calculate estimated incentive values for a project based on parameters.
+
+        Returns:
+        - Matched incentive programs with estimated values
+        - ROI impact analysis (IRR lift, equity multiple)
+        - Confidence scores for each incentive
+        - Eligibility notes and requirements
+
+        **No authentication required** - This is a public estimation tool.
+      tags:
+        - Calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateRequest'
+            examples:
+              multifamily:
+                summary: Multifamily affordable housing project
+                value:
+                  state: NY
+                  county: Westchester
+                  buildingType: multifamily
+                  totalUnits: 300
+                  totalSqft: 350000
+                  affordableUnits: 90
+                  affordablePercentage: 30
+                  totalDevelopmentCost: 250000000
+                  equityInvestment: 60000000
+                  sustainabilityTier: tier_2_high_performance
+                  solarCapacityKw: 500
+              commercial:
+                summary: Commercial office building
+                value:
+                  state: CA
+                  municipality: San Francisco
+                  buildingType: commercial
+                  totalSqft: 150000
+                  totalDevelopmentCost: 120000000
+                  equityInvestment: 30000000
+                  sustainabilityTier: tier_3_net_zero
+                  solarCapacityKw: 750
+                  storageCapacityKwh: 1000
+      responses:
+        '200':
+          description: Calculation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculateResponse'
+              examples:
+                success:
+                  summary: Successful calculation
+                  value:
+                    project:
+                      state: NY
+                      buildingType: multifamily
+                      totalUnits: 300
+                      totalSqft: 350000
+                      totalDevelopmentCost: 250000000
+                      equityInvestment: 60000000
+                    results:
+                      incentives:
+                        - id: calc-45L
+                          name: Section 45L Tax Credit
+                          type: tax_credit
+                          category: federal
+                          description: "$5,000/unit for 300 units"
+                          estimatedValue: 1500000
+                          confidence: 0.95
+                          eligible: true
+                          notes:
+                            - Zero Energy Ready bonus applied
+                        - id: calc-179D
+                          name: Section 179D Deduction
+                          type: tax_deduction
+                          category: federal
+                          description: "$2.50/sqft for 350,000 sqft"
+                          estimatedValue: 875000
+                          confidence: 0.92
+                          eligible: true
+                          notes:
+                            - Prevailing wage requirement for full deduction
+                      totals:
+                        federal: 45000000
+                        state: 8500000
+                        local: 12000000
+                        utility: 450000
+                        total: 65950000
+                      roiImpact:
+                        baseIRR: 12.5
+                        enhancedIRR: 18.3
+                        irrLift: 5.8
+                        equityMultipleLift: 0.35
+                    meta:
+                      calculatedAt: "2024-02-16T12:00:00Z"
+                      responseTime: 145ms
+                      version: "1.0.0"
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Missing required fields: state, totalDevelopmentCost, equityInvestment"
+
+  /applications:
+    get:
+      summary: List Applications
+      description: Get all incentive applications for the organization
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+          description: Filter by status (comma-separated for multiple)
+        - name: project_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: program_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: sort_by
+          in: query
+          schema:
+            type: string
+            enum: [created_at, deadline, status, amount_requested, submission_date]
+            default: created_at
+        - name: sort_order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Applications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Application'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      summary: Create Application
+      description: Create a new incentive application
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - project_id
+                - incentive_program_id
+              properties:
+                project_id:
+                  type: string
+                  format: uuid
+                incentive_program_id:
+                  type: string
+                  format: uuid
+                incentive_match_id:
+                  type: string
+                  format: uuid
+                amount_requested:
+                  type: number
+                deadline:
+                  type: string
+                  format: date-time
+                fee_type:
+                  type: string
+                  enum: [fixed, success, none]
+                fee_amount:
+                  type: number
+                template_id:
+                  type: string
+                  format: uuid
+                start_workflow:
+                  type: boolean
+                  default: false
+      responses:
+        '201':
+          description: Application created successfully
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized
+
+  /applications/{id}:
+    get:
+      summary: Get Application
+      description: Get application details with tasks and comments
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Application retrieved successfully
+
+    patch:
+      summary: Update Application
+      description: Update application details
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Application updated
+
+    delete:
+      summary: Delete Application
+      description: Delete an application
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Application deleted
+
+  /applications/{id}/submit:
+    post:
+      summary: Submit Application
+      description: Submit application to the program administrator
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Application submitted successfully
+
+  /applications/{id}/status:
+    patch:
+      summary: Update Application Status
+      description: Change application status
+      tags:
+        - Applications
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum: [draft, in-progress, submitted, under-review, approved, partially-approved, rejected, withdrawn]
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: Status updated
+
+  /reports/generate:
+    post:
+      summary: Generate Report
+      description: |
+        Generate comprehensive incentive reports in multiple formats.
+
+        Supported report types:
+        - `executive_summary`: High-level overview with top incentives
+        - `full_analysis`: Complete analysis with all sections
+        - `incentive_matrix`: Detailed program matrix
+        - `application_checklist`: Phase-by-phase implementation checklist
+
+        Supported formats:
+        - `json`: Structured data (default)
+        - `html`: Printable HTML document
+        - `pdf`: PDF structure for client-side rendering
+        - `text`: Plain text format
+      tags:
+        - Reports
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projectName
+                - projectData
+              properties:
+                projectId:
+                  type: string
+                  format: uuid
+                projectName:
+                  type: string
+                projectData:
+                  type: object
+                  required:
+                    - state
+                    - buildingType
+                  properties:
+                    address:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    county:
+                      type: string
+                    buildingType:
+                      type: string
+                    totalUnits:
+                      type: number
+                    totalSqft:
+                      type: number
+                    affordablePercentage:
+                      type: number
+                    totalDevelopmentCost:
+                      type: number
+                    equityInvestment:
+                      type: number
+                    sustainabilityTier:
+                      type: string
+                    entityType:
+                      type: string
+                    taxExempt:
+                      type: boolean
+                reportType:
+                  type: string
+                  enum: [executive_summary, full_analysis, incentive_matrix, application_checklist]
+                  default: executive_summary
+                format:
+                  type: string
+                  enum: [json, html, pdf, text]
+                  default: json
+                includeCharts:
+                  type: boolean
+                  default: false
+                includeDirectPay:
+                  type: boolean
+                  default: true
+            examples:
+              executive_summary:
+                summary: Executive summary in JSON
+                value:
+                  projectName: Mount Vernon Mixed-Use
+                  projectData:
+                    city: Mount Vernon
+                    state: NY
+                    county: Westchester
+                    buildingType: mixed_use
+                    totalUnits: 747
+                    totalSqft: 850000
+                    affordablePercentage: 30
+                    totalDevelopmentCost: 588800000
+                    equityInvestment: 150000000
+                  reportType: executive_summary
+                  format: json
+              full_pdf:
+                summary: Full analysis as PDF structure
+                value:
+                  projectName: Yonkers Affordable Housing
+                  projectData:
+                    city: Yonkers
+                    state: NY
+                    buildingType: multifamily
+                    totalUnits: 312
+                    affordablePercentage: 100
+                    totalDevelopmentCost: 323800000
+                  reportType: full_analysis
+                  format: pdf
+                  includeCharts: true
+      responses:
+        '200':
+          description: Report generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  report:
+                    type: object
+                  meta:
+                    type: object
+            text/html:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid request
+
+  /dashboard:
+    get:
+      summary: Get Dashboard Stats
+      description: Get portfolio-wide KPIs and metrics for the organization
+      tags:
+        - Dashboard
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Dashboard stats retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DashboardStats'
+              examples:
+                success:
+                  value:
+                    data:
+                      totalProjects: 12
+                      activeProjects: 8
+                      completedProjects: 3
+                      onHoldProjects: 1
+                      totalDevelopmentCost: 1500000000
+                      totalPotentialIncentives: 450000000
+                      totalCapturedIncentives: 125000000
+                      netCost: 1375000000
+                      subsidyRate: 30.0
+                      totalApplications: 45
+                      pendingApplications: 15
+                      approvedApplications: 25
+                      successRate: 83.3
+                      incentivesByCategory:
+                        federal: 285000000
+                        state: 95000000
+                        local: 58000000
+                        utility: 12000000
+                      projectsByTier:
+                        tier_1_efficient: 5
+                        tier_2_high_performance: 4
+                        tier_3_net_zero: 2
+                        tier_3_triple_net_zero: 1
+                      capturedThisMonth: 8500000
+                      capturedThisQuarter: 45000000
+                      capturedThisYear: 125000000
+        '401':
+          description: Unauthorized
+
+  /dashboard/stats:
+    get:
+      summary: Get Detailed Stats
+      description: Get time-series analytics and trend data
+      tags:
+        - Dashboard
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Stats retrieved
+
+  /dashboard/activity:
+    get:
+      summary: Get Activity Feed
+      description: Get recent activity for the organization
+      tags:
+        - Dashboard
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Activity feed retrieved
+
+  /dashboard/alerts:
+    get:
+      summary: Get Alerts
+      description: Get critical alerts and deadlines
+      tags:
+        - Dashboard
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Alerts retrieved
+
+  /stripe/checkout:
+    post:
+      summary: Create Checkout Session
+      description: Create a Stripe checkout session for subscription
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - priceId
+                - successUrl
+                - cancelUrl
+              properties:
+                priceId:
+                  type: string
+                  description: Stripe price ID
+                successUrl:
+                  type: string
+                  format: uri
+                cancelUrl:
+                  type: string
+                  format: uri
+                customerId:
+                  type: string
+                trialDays:
+                  type: integer
+                  minimum: 0
+                  maximum: 30
+                  default: 14
+      responses:
+        '200':
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+
+  /stripe/portal:
+    post:
+      summary: Create Customer Portal Session
+      description: Create a Stripe customer portal session for subscription management
+      tags:
+        - Stripe
+      security:
+        - SessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - returnUrl
+              properties:
+                returnUrl:
+                  type: string
+                  format: uri
+      responses:
+        '200':
+          description: Portal session created
+
+  /contact:
+    post:
+      summary: Submit Contact Form
+      description: Submit a contact/support request
+      tags:
+        - Contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - subject
+                - message
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                company:
+                  type: string
+                phone:
+                  type: string
+                subject:
+                  type: string
+                message:
+                  type: string
+                  minLength: 10
+      responses:
+        '200':
+          description: Message sent successfully
+        '400':
+          description: Validation error
+
+  /organizations:
+    get:
+      summary: List Organizations
+      description: List organizations (admin only)
+      tags:
+        - Organizations
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Organizations retrieved
+
+    post:
+      summary: Create Organization
+      description: Create a new organization
+      tags:
+        - Organizations
+      security:
+        - SessionAuth: []
+      responses:
+        '201':
+          description: Organization created
+
+  /team:
+    get:
+      summary: List Team Members
+      description: Get all team members in the organization
+      tags:
+        - Team
+      security:
+        - SessionAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Team members retrieved
+
+    post:
+      summary: Invite Team Member
+      description: Send an invitation to join the organization
+      tags:
+        - Team
+      security:
+        - SessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - role
+              properties:
+                email:
+                  type: string
+                  format: email
+                role:
+                  type: string
+                  enum: [admin, member, viewer]
+      responses:
+        '201':
+          description: Invitation sent
+
+  /settings:
+    get:
+      summary: Get Settings
+      description: Get user preferences and settings
+      tags:
+        - Settings
+      security:
+        - SessionAuth: []
+      responses:
+        '200':
+          description: Settings retrieved
+
+    patch:
+      summary: Update Settings
+      description: Update user preferences
+      tags:
+        - Settings
+      security:
+        - SessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Settings updated

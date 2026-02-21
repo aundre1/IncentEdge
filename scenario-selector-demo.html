@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloomberg/CoStar Scenario Selector - IncentEdge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['SF Mono', 'Consolas', 'Monaco', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* =========================================================================
+       DESIGN SPECIFICATIONS - BLOOMBERG/COSTAR SCENARIO SELECTOR
+       =========================================================================
+
+       COLOR PALETTE (Institutional/Professional):
+
+       Light Theme:
+       - Container BG:     slate-50/50 (#f8fafc @ 50% opacity)
+       - Container Border: slate-200 (#e2e8f0)
+       - Muted Text:       slate-500 (#64748b)
+       - Default Text:     slate-700 (#334155)
+       - Selected Text:    slate-900 (#0f172a)
+       - Accent (selected): blue-500 (#3b82f6) @ 50% opacity for inset shadow
+
+       Dark Theme:
+       - Container BG:     slate-900/50 (#0f172a @ 50% opacity)
+       - Container Border: slate-700 (#334155)
+       - Muted Text:       slate-400 (#94a3b8)
+       - Default Text:     slate-200 (#e2e8f0)
+       - Selected Text:    slate-50 (#f8fafc)
+       - Accent (selected): blue-400 (#60a5fa) @ 60% opacity for inset shadow
+
+       TYPOGRAPHY:
+       - Font Family: SF Mono / Consolas / Monaco (monospace)
+       - Size (standard): 11px
+       - Size (compact): 10px
+       - Weight (default): 400 (normal)
+       - Weight (selected): 600 (semibold)
+       - Letter Spacing: tight (tracking-tight)
+       - Numbers: tabular-nums (fixed-width for alignment)
+
+       SPACING:
+       - Container Padding: 0 (items touch edges)
+       - Item Padding (standard): 8px horizontal, 4px vertical
+       - Item Padding (compact): 6px horizontal, 2px vertical
+       - Gap between label and value: 4px
+       - Border Radius: 4px on container, first/last items match
+
+       INTERACTIONS:
+       - Hover: Lighten background, darken text
+       - Selected: Inset top border accent (2px), darker background
+       - Transition: 100ms all properties
+       - Focus: Ring with blue-500 at 50% opacity
+
+       TOOLTIP:
+       - Delay: 150ms
+       - Background: slate-900 (dark in both themes for consistency)
+       - Border: slate-700
+       - Text: slate-100 (label), slate-400 (probability)
+       - Size: 11px
+
+       =========================================================================
+    */
+
+    /* Custom scrollbar for demo */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+    /* Scenario button base styles */
+    .scenario-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 100ms ease;
+      font-family: 'SF Mono', Consolas, Monaco, monospace;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Container styles */
+    .scenario-container {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 4px;
+      border-width: 1px;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+
+    /* Light theme */
+    .scenario-container.light {
+      border-color: #e2e8f0;
+      background-color: rgba(248, 250, 252, 0.5);
+    }
+
+    .scenario-btn.light {
+      color: #64748b;
+    }
+
+    .scenario-btn.light:hover:not(.selected) {
+      color: #334155;
+      background-color: #f1f5f9;
+    }
+
+    .scenario-btn.light.selected {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      box-shadow: inset 0 2px 0 0 rgba(59, 130, 246, 0.5);
+    }
+
+    .scenario-btn.light + .scenario-btn.light {
+      border-left: 1px solid #e2e8f0;
+    }
+
+    /* Dark theme */
+    .scenario-container.dark {
+      border-color: #334155;
+      background-color: rgba(15, 23, 42, 0.5);
+    }
+
+    .scenario-btn.dark {
+      color: #94a3b8;
+    }
+
+    .scenario-btn.dark:hover:not(.selected) {
+      color: #e2e8f0;
+      background-color: #1e293b;
+    }
+
+    .scenario-btn.dark.selected {
+      background-color: #1e293b;
+      color: #f8fafc;
+      box-shadow: inset 0 2px 0 0 rgba(96, 165, 250, 0.6);
+    }
+
+    .scenario-btn.dark + .scenario-btn.dark {
+      border-left: 1px solid #334155;
+    }
+
+    /* Tooltip */
+    .scenario-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 100ms ease;
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 11px;
+      white-space: nowrap;
+      z-index: 50;
+    }
+
+    .scenario-btn:hover .scenario-tooltip,
+    .scenario-btn:focus .scenario-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* Focus ring */
+    .scenario-btn:focus {
+      outline: none;
+      z-index: 10;
+    }
+
+    .scenario-btn:focus-visible {
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Abbreviation styling */
+    .scenario-abbrev {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Value styling */
+    .scenario-value {
+      font-weight: 400;
+    }
+
+    .selected .scenario-value {
+      font-weight: 600;
+    }
+
+    /* Size variants */
+    .scenario-btn.standard {
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+
+    .scenario-btn.compact {
+      padding: 2px 6px;
+      font-size: 10px;
+    }
+
+    .scenario-btn.micro {
+      padding: 2px 6px;
+      font-size: 10px;
+    }
+
+    /* Border radius on first/last */
+    .scenario-btn:first-child {
+      border-radius: 3px 0 0 3px;
+    }
+
+    .scenario-btn:last-child {
+      border-radius: 0 3px 3px 0;
+    }
+
+    .scenario-btn:only-child {
+      border-radius: 3px;
+    }
+
+    /* Demo header simulation */
+    .project-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom-width: 1px;
+    }
+
+    .project-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .actions-badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 min-h-screen">
+
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 right-4 z-50">
+    <button id="themeToggle" class="px-3 py-1.5 text-xs font-medium rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+      Toggle Theme
+    </button>
+  </div>
+
+  <div class="max-w-6xl mx-auto p-8">
+
+    <!-- Header -->
+    <div class="mb-12">
+      <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+        Bloomberg/CoStar Scenario Selector
+      </h1>
+      <p class="text-sm text-slate-600 dark:text-slate-400">
+        Institutional-grade compact inline scenario display for IncentEdge
+      </p>
+    </div>
+
+    <!-- ===================================================================
+         LIVE DEMO - PROJECT HEADER CONTEXT
+         =================================================================== -->
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+        Live Demo - In Context
+      </h2>
+
+      <!-- Light Theme Header -->
+      <div class="rounded-lg overflow-hidden shadow-lg mb-4">
+        <div class="project-header bg-white border-slate-200">
+          <span class="project-name text-slate-900">Hudson Yards Tower A</span>
+
+          <!-- SCENARIO SELECTOR - STANDARD -->
+          <div class="scenario-container light" role="tablist">
+            <button class="scenario-btn light standard" role="tab" data-scenario="cons">
+              <span class="scenario-abbrev">CONS</span>
+              <span class="scenario-value">$88.1M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Conservative</div>
+                <div class="text-slate-400">80% probability</div>
+              </div>
+            </button>
+            <button class="scenario-btn light standard selected" role="tab" data-scenario="real">
+              <span class="scenario-abbrev text-blue-600">REAL</span>
+              <span class="scenario-value">$156.1M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Realistic</div>
+                <div class="text-slate-400">65% probability</div>
+              </div>
+            </button>
+            <button class="scenario-btn light standard" role="tab" data-scenario="opt">
+              <span class="scenario-abbrev">OPT</span>
+              <span class="scenario-value">$204.5M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Optimistic</div>
+                <div class="text-slate-400">40% probability</div>
+              </div>
+            </button>
+            <button class="scenario-btn light standard" role="tab" data-scenario="best">
+              <span class="scenario-abbrev">BEST</span>
+              <span class="scenario-value">$252.2M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Best Case</div>
+                <div class="text-slate-400">20% probability</div>
+              </div>
+            </button>
+          </div>
+
+          <span class="actions-badge bg-amber-100 text-amber-700">3 Actions Required</span>
+        </div>
+      </div>
+
+      <!-- Dark Theme Header -->
+      <div class="rounded-lg overflow-hidden shadow-lg">
+        <div class="project-header bg-slate-900 border-slate-700">
+          <span class="project-name text-slate-100">Hudson Yards Tower A</span>
+
+          <!-- SCENARIO SELECTOR - STANDARD (DARK) -->
+          <div class="scenario-container dark" role="tablist">
+            <button class="scenario-btn dark standard" role="tab">
+              <span class="scenario-abbrev">CONS</span>
+              <span class="scenario-value">$88.1M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Conservative</div>
+                <div class="text-slate-400">80% probability</div>
+              </div>
+            </button>
+            <button class="scenario-btn dark standard selected" role="tab">
+              <span class="scenario-abbrev text-blue-400">REAL</span>
+              <span class="scenario-value">$156.1M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Realistic</div>
+                <div class="text-slate-400">65% probability</div>
+              </div>
+            </button>
+            <button class="scenario-btn dark standard" role="tab">
+              <span class="scenario-abbrev">OPT</span>
+              <span class="scenario-value">$204.5M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Optimistic</div>
+                <div class="text-slate-400">40% probability</div>
+              </div>
+            </button>
+            <button class="scenario-btn dark standard" role="tab">
+              <span class="scenario-abbrev">BEST</span>
+              <span class="scenario-value">$252.2M</span>
+              <div class="scenario-tooltip">
+                <div class="text-slate-100 font-medium">Best Case</div>
+                <div class="text-slate-400">20% probability</div>
+              </div>
+            </button>
+          </div>
+
+          <span class="actions-badge bg-amber-900/30 text-amber-400">3 Actions Required</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SIZE VARIANTS
+         =================================================================== -->
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+        Size Variants
+      </h2>
+
+      <div class="space-y-6">
+        <!-- Standard -->
+        <div class="flex items-center gap-4">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 w-20">Standard</span>
+          <div class="scenario-container light dark:hidden" role="tablist">
+            <button class="scenario-btn light standard">
+              <span class="scenario-abbrev">CONS</span>
+              <span class="scenario-value">$88.1M</span>
+            </button>
+            <button class="scenario-btn light standard selected">
+              <span class="scenario-abbrev text-blue-600">REAL</span>
+              <span class="scenario-value">$156.1M</span>
+            </button>
+            <button class="scenario-btn light standard">
+              <span class="scenario-abbrev">OPT</span>
+              <span class="scenario-value">$204.5M</span>
+            </button>
+            <button class="scenario-btn light standard">
+              <span class="scenario-abbrev">BEST</span>
+              <span class="scenario-value">$252.2M</span>
+            </button>
+          </div>
+          <div class="scenario-container dark hidden dark:flex" role="tablist">
+            <button class="scenario-btn dark standard">
+              <span class="scenario-abbrev">CONS</span>
+              <span class="scenario-value">$88.1M</span>
+            </button>
+            <button class="scenario-btn dark standard selected">
+              <span class="scenario-abbrev text-blue-400">REAL</span>
+              <span class="scenario-value">$156.1M</span>
+            </button>
+            <button class="scenario-btn dark standard">
+              <span class="scenario-abbrev">OPT</span>
+              <span class="scenario-value">$204.5M</span>
+            </button>
+            <button class="scenario-btn dark standard">
+              <span class="scenario-abbrev">BEST</span>
+              <span class="scenario-value">$252.2M</span>
+            </button>
+          </div>
+          <span class="text-[10px] text-slate-400">11px / py-1 px-2</span>
+        </div>
+
+        <!-- Compact -->
+        <div class="flex items-center gap-4">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 w-20">Compact</span>
+          <div class="scenario-container light dark:hidden" role="tablist">
+            <button class="scenario-btn light compact">
+              <span class="scenario-abbrev">CONS</span>
+              <span class="scenario-value">$88.1M</span>
+            </button>
+            <button class="scenario-btn light compact selected">
+              <span class="scenario-abbrev text-blue-600">REAL</span>
+              <span class="scenario-value">$156.1M</span>
+            </button>
+            <button class="scenario-btn light compact">
+              <span class="scenario-abbrev">OPT</span>
+              <span class="scenario-value">$204.5M</span>
+            </button>
+            <button class="scenario-btn light compact">
+              <span class="scenario-abbrev">BEST</span>
+              <span class="scenario-value">$252.2M</span>
+            </button>
+          </div>
+          <div class="scenario-container dark hidden dark:flex" role="tablist">
+            <button class="scenario-btn dark compact">
+              <span class="scenario-abbrev">CONS</span>
+              <span class="scenario-value">$88.1M</span>
+            </button>
+            <button class="scenario-btn dark compact selected">
+              <span class="scenario-abbrev text-blue-400">REAL</span>
+              <span class="scenario-value">$156.1M</span>
+            </button>
+            <button class="scenario-btn dark compact">
+              <span class="scenario-abbrev">OPT</span>
+              <span class="scenario-value">$204.5M</span>
+            </button>
+            <button class="scenario-btn dark compact">
+              <span class="scenario-abbrev">BEST</span>
+              <span class="scenario-value">$252.2M</span>
+            </button>
+          </div>
+          <span class="text-[10px] text-slate-400">10px / py-0.5 px-1.5</span>
+        </div>
+
+        <!-- Micro (values only) -->
+        <div class="flex items-center gap-4">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 w-20">Micro</span>
+          <div class="inline-flex items-center gap-px rounded-sm bg-slate-100 dark:bg-slate-800" role="tablist">
+            <button class="px-1.5 py-0.5 text-[10px] font-mono tabular-nums text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 first:rounded-l-sm last:rounded-r-sm transition-colors">$88.1M</button>
+            <button class="px-1.5 py-0.5 text-[10px] font-mono tabular-nums text-slate-900 dark:text-slate-100 font-semibold bg-white dark:bg-slate-700 shadow-sm rounded-sm">$156.1M</button>
+            <button class="px-1.5 py-0.5 text-[10px] font-mono tabular-nums text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 first:rounded-l-sm last:rounded-r-sm transition-colors">$204.5M</button>
+            <button class="px-1.5 py-0.5 text-[10px] font-mono tabular-nums text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 first:rounded-l-sm last:rounded-r-sm transition-colors">$252.2M</button>
+          </div>
+          <span class="text-[10px] text-slate-400">10px / values only</span>
+        </div>
+
+        <!-- Inline (slash-separated) -->
+        <div class="flex items-center gap-4">
+          <span class="text-xs font-medium text-slate-500 dark:text-slate-400 w-20">Inline</span>
+          <span class="inline-flex items-center text-[11px] font-mono">
+            <button class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:underline hover:decoration-dotted hover:underline-offset-2 transition-colors px-0.5">$88.1M</button>
+            <span class="text-slate-300 dark:text-slate-600 mx-0.5">/</span>
+            <button class="text-slate-900 dark:text-slate-100 font-semibold underline decoration-blue-500/50 underline-offset-2 px-0.5">$156.1M</button>
+            <span class="text-slate-300 dark:text-slate-600 mx-0.5">/</span>
+            <button class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:underline hover:decoration-dotted hover:underline-offset-2 transition-colors px-0.5">$204.5M</button>
+            <span class="text-slate-300 dark:text-slate-600 mx-0.5">/</span>
+            <button class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:underline hover:decoration-dotted hover:underline-offset-2 transition-colors px-0.5">$252.2M</button>
+          </span>
+          <span class="text-[10px] text-slate-400">11px / text flow</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         INTERACTION STATES
+         =================================================================== -->
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+        Interaction States
+      </h2>
+
+      <div class="grid grid-cols-2 gap-6">
+        <!-- Light Theme States -->
+        <div class="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+          <h3 class="text-xs font-medium text-slate-600 dark:text-slate-400 mb-4">Light Theme</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <button class="scenario-btn light standard" style="padding: 4px 8px; font-size: 11px; color: #64748b; font-family: monospace;">
+                <span class="font-semibold">CONS</span>
+                <span>$88.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-400">Default</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="scenario-btn light standard" style="padding: 4px 8px; font-size: 11px; color: #334155; background: #f1f5f9; font-family: monospace;">
+                <span class="font-semibold">CONS</span>
+                <span>$88.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-400">Hover</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="scenario-btn light standard selected" style="padding: 4px 8px; font-size: 11px; color: #0f172a; background: #f1f5f9; box-shadow: inset 0 2px 0 0 rgba(59, 130, 246, 0.5); font-family: monospace;">
+                <span class="font-semibold text-blue-600">REAL</span>
+                <span class="font-semibold">$156.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-400">Selected</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="scenario-btn light standard" style="padding: 4px 8px; font-size: 11px; color: #64748b; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); font-family: monospace;">
+                <span class="font-semibold">CONS</span>
+                <span>$88.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-400">Focus</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark Theme States -->
+        <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+          <h3 class="text-xs font-medium text-slate-400 mb-4">Dark Theme</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <button style="padding: 4px 8px; font-size: 11px; color: #94a3b8; font-family: monospace;">
+                <span class="font-semibold">CONS</span>
+                <span>$88.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-500">Default</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button style="padding: 4px 8px; font-size: 11px; color: #e2e8f0; background: #1e293b; font-family: monospace; border-radius: 2px;">
+                <span class="font-semibold">CONS</span>
+                <span>$88.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-500">Hover</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button style="padding: 4px 8px; font-size: 11px; color: #f8fafc; background: #1e293b; box-shadow: inset 0 2px 0 0 rgba(96, 165, 250, 0.6); font-family: monospace; border-radius: 2px;">
+                <span class="font-semibold" style="color: #60a5fa;">REAL</span>
+                <span class="font-semibold">$156.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-500">Selected</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <button style="padding: 4px 8px; font-size: 11px; color: #94a3b8; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); font-family: monospace; border-radius: 2px;">
+                <span class="font-semibold">CONS</span>
+                <span>$88.1M</span>
+              </button>
+              <span class="text-[10px] text-slate-500">Focus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SPECIFICATIONS
+         =================================================================== -->
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+        Design Specifications
+      </h2>
+
+      <div class="grid grid-cols-3 gap-6">
+        <!-- Typography -->
+        <div class="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+          <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-3">Typography</h3>
+          <div class="space-y-2 text-[11px]">
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Font Family</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">SF Mono</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Size (standard)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">11px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Size (compact)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">10px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Weight (default)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">400</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Weight (abbrev)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">600</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Weight (selected)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">600</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Letter Spacing</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">tight</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Numeric</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">tabular-nums</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spacing -->
+        <div class="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+          <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-3">Spacing</h3>
+          <div class="space-y-2 text-[11px]">
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Padding X (std)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">8px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Padding Y (std)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">4px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Padding X (cpt)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">6px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Padding Y (cpt)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">2px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Gap (abbrev/value)</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">4px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Border Radius</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">4px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Border Width</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">1px</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500 dark:text-slate-400">Accent Border</span>
+              <span class="text-slate-700 dark:text-slate-300 font-mono">2px inset</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colors -->
+        <div class="bg-white dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+          <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-3">Colors</h3>
+          <div class="space-y-2 text-[11px]">
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Container BG</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-slate-50 border border-slate-200"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">slate-50</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Border</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-slate-200 border border-slate-300"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">slate-200</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Text (muted)</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-slate-500"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">slate-500</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Text (selected)</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-slate-900"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">slate-900</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Accent</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-blue-500"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">blue-500</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Selected BG</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-slate-100 border border-slate-200"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">slate-100</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-500 dark:text-slate-400">Hover BG</span>
+              <div class="flex items-center gap-1">
+                <div class="w-3 h-3 rounded bg-slate-100 border border-slate-200"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-mono">slate-100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAILWIND CLASSES REFERENCE
+         =================================================================== -->
+    <section class="mb-12">
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+        Tailwind Classes Reference
+      </h2>
+
+      <div class="bg-slate-900 rounded-lg p-4 overflow-x-auto">
+        <pre class="text-[11px] text-slate-300 font-mono leading-relaxed"><code>// Container
+className="inline-flex items-center rounded border border-slate-200 dark:border-slate-700
+           bg-slate-50/50 dark:bg-slate-900/50 shadow-sm"
+
+// Button - Default State
+className="relative inline-flex items-center gap-1 px-2 py-1 text-[11px] font-mono
+           tracking-tight text-slate-500 dark:text-slate-400 transition-all duration-100
+           hover:text-slate-700 dark:hover:text-slate-200
+           hover:bg-slate-100 dark:hover:bg-slate-800
+           focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-500/50"
+
+// Button - Selected State
+className="... bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-50
+           shadow-[inset_0_2px_0_0_rgb(59_130_246_/_0.5)]
+           dark:shadow-[inset_0_2px_0_0_rgb(96_165_250_/_0.6)]"
+
+// Abbreviation
+className="font-semibold uppercase"
+
+// Value
+className="tabular-nums" // + "font-semibold" when selected
+
+// Selected Realistic accent color
+className="text-blue-600 dark:text-blue-400"
+
+// Divider (between items)
+className="border-l border-slate-200 dark:border-slate-700"
+
+// First/Last border radius
+className="first:rounded-l last:rounded-r"</code></pre>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         USAGE NOTES
+         =================================================================== -->
+    <section>
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+        Implementation Notes
+      </h2>
+
+      <div class="bg-white dark:bg-slate-900 rounded-lg p-6 border border-slate-200 dark:border-slate-700">
+        <div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
+          <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+            <li><strong>Confidence percentages:</strong> Hidden by default, shown on hover via tooltip. This maintains information density while keeping critical probability data accessible.</li>
+            <li><strong>Default selection:</strong> "Realistic" (REAL) is pre-selected with blue accent color to indicate it's the base case scenario.</li>
+            <li><strong>Value formatting:</strong> Use <code class="text-[10px] bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">$XXX.XM</code> format for consistency. Values under $100M show one decimal.</li>
+            <li><strong>Abbreviations:</strong> CONS, REAL, OPT, BEST - 4 characters max for alignment.</li>
+            <li><strong>Transitions:</strong> 100ms duration for snappy institutional feel.</li>
+            <li><strong>Accessibility:</strong> Use <code class="text-[10px] bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">role="tablist"</code> and <code class="text-[10px] bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">role="tab"</code> with <code class="text-[10px] bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">aria-selected</code> for screen readers.</li>
+            <li><strong>Keyboard navigation:</strong> Support arrow keys for moving between scenarios, Enter/Space to select.</li>
+            <li><strong>Total width:</strong> Approximately 280-320px for standard variant, 220-260px for compact.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // Interactive scenario selection
+    document.querySelectorAll('.scenario-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const container = this.closest('[role="tablist"]');
+        container.querySelectorAll('.scenario-btn').forEach(b => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-selected', 'false');
+          // Reset abbrev color
+          const abbrev = b.querySelector('.scenario-abbrev');
+          if (abbrev) {
+            abbrev.classList.remove('text-blue-600', 'text-blue-400');
+          }
+        });
+        this.classList.add('selected');
+        this.setAttribute('aria-selected', 'true');
+        // Add accent color to selected abbrev
+        const abbrev = this.querySelector('.scenario-abbrev');
+        if (abbrev && this.classList.contains('light')) {
+          abbrev.classList.add('text-blue-600');
+        } else if (abbrev) {
+          abbrev.classList.add('text-blue-400');
+        }
+      });
+    });
+
+    // Keyboard navigation
+    document.querySelectorAll('[role="tablist"]').forEach(tablist => {
+      tablist.addEventListener('keydown', (e) => {
+        const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+        const currentIndex = tabs.findIndex(t => t.classList.contains('selected'));
+
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          let newIndex = e.key === 'ArrowRight'
+            ? (currentIndex + 1) % tabs.length
+            : (currentIndex - 1 + tabs.length) % tabs.length;
+          tabs[newIndex].click();
+          tabs[newIndex].focus();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
