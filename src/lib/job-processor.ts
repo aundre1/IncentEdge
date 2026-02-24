@@ -500,23 +500,71 @@ const handleProgramSync: JobHandler = async (context) => {
 /**
  * Document Extraction Handler
  * AI-powered document processing and data extraction
+ * Routes to specialized extractors based on resource_type
  */
 const handleDocumentExtraction: JobHandler = async (context) => {
   const { job, supabase, updateProgress, log } = context;
-  const { document_id } = job;
+  const payload = job.payload as Record<string, unknown> | undefined;
+  const resourceType = (job as any).resource_type as string | undefined;
 
-  if (!document_id) {
+  await log('info', 'Starting document extraction', {
+    document_id: job.document_id,
+    resource_type: resourceType,
+  });
+
+  // Route to appropriate extractor based on payload or metadata
+  const resourceTypeFromPayload = (payload?.resource_type as string) || resourceType;
+
+  if (resourceTypeFromPayload === 'incentive_program') {
+    // Import here to avoid circular dependencies
+    const { processIncentiveExtraction } = await import('./incentive-extraction-worker');
+
+    try {
+      await updateProgress(10, 'Starting incentive program extraction...');
+
+      const result = await processIncentiveExtraction(job.id, job.organization_id || undefined);
+
+      if (!result.success) {
+        return {
+          success: false,
+          error: result.error || 'Incentive extraction failed',
+        };
+      }
+
+      await log('info', 'Incentive extraction completed', {
+        programs_extracted: result.programs_extracted,
+        programs_needing_review: result.programs_needing_review,
+      });
+
+      return {
+        success: true,
+        data: {
+          programs_extracted: result.programs_extracted,
+          programs_needing_review: result.programs_needing_review,
+        },
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      await log('error', `Incentive extraction failed: ${errorMessage}`);
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    }
+  }
+
+  // Generic document extraction (fallback)
+  if (!job.document_id) {
     return { success: false, error: 'No document_id provided' };
   }
 
-  await log('info', 'Starting document extraction', { document_id });
   await updateProgress(10, 'Loading document...');
 
   // Fetch document
   const { data: document, error: docError } = await supabase
     .from('documents')
     .select('*')
-    .eq('id', document_id)
+    .eq('id', job.document_id)
     .single();
 
   if (docError || !document) {
@@ -551,7 +599,7 @@ const handleDocumentExtraction: JobHandler = async (context) => {
       ai_processed: true,
       ai_processed_at: new Date().toISOString(),
     })
-    .eq('id', document_id);
+    .eq('id', job.document_id);
 
   await log('info', 'Document extraction completed', { confidence: 0.85 });
   await updateProgress(100, 'Complete');
