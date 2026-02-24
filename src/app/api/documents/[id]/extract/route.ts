@@ -8,6 +8,7 @@ import {
   ExtractionRequest,
 } from '@/types/documents';
 import { DocumentProcessor } from '@/lib/document-processor';
+import { IncentiveProgramProcessor } from '@/lib/incentive-program-processor';
 
 // ============================================================================
 // VALIDATION SCHEMA

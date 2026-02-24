@@ -24,6 +24,7 @@ export enum DocumentType {
   COMPLIANCE_REPORT = 'compliance_report',
   PERMIT = 'permit',
   CONTRACT = 'contract',
+  INCENTIVE_PROGRAM_SOURCE = 'incentive_program_source',
   OTHER = 'other',
 }
 
@@ -368,6 +369,7 @@ export type ExtractedData =
   | { type: 'site_plan'; data: SitePlanExtractedData }
   | { type: 'certification'; data: CertificationExtractedData }
   | { type: 'utility_bill'; data: UtilityBillExtractedData }
+  | { type: 'incentive_program'; data: Record<string, unknown> }
   | { type: 'other'; data: Record<string, unknown> };
 
 // ============================================================================
