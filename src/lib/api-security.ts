@@ -399,11 +399,9 @@ export function getCorsHeaders(
     if (config.credentials) {
       headers['Access-Control-Allow-Credentials'] = 'true';
     }
-  } else if (config.origins.includes('*') && !config.credentials) {
-    // Wildcard only allowed WITHOUT credentials
-    headers['Access-Control-Allow-Origin'] = '*';
   }
-  // If origin not in whitelist and not using wildcard, no CORS headers added
+  // SECURITY: Wildcard origin (*) is never allowed — use explicit origin list only
+  // If origin not in whitelist, no CORS headers are added (request will be blocked by browser)
 
   headers['Access-Control-Allow-Methods'] = config.methods.join(', ');
   headers['Access-Control-Allow-Headers'] = config.allowedHeaders.join(', ');

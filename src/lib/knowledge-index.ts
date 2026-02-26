@@ -465,8 +465,4 @@ export async function initializeKnowledgeIndex(): Promise<void> {
   }
 }
 
-// ============================================================================
-// EXPORTS
-// ============================================================================
-
-export { EmbeddingService, HybridSearchEngine };
+// Classes are already exported at declaration (export class ...) above

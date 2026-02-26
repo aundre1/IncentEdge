@@ -228,7 +228,7 @@ export async function PUT(request: NextRequest) {
           };
 
           const result = await checker.calculateEligibility(projectProfile);
-          return { project_id: projectId, ...result };
+          return { ...result, project_id: projectId };
         } catch (error) {
           return {
             project_id: projectId,

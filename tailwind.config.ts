@@ -10,8 +10,53 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // V41: Navy institutional palette (CoStar-inspired)
+        // V44: Deep institutional palette
+        deep: {
+          DEFAULT: '#112E3C',
+          50: '#F4F8F6',
+          100: '#E6F0EB',
+          200: '#D1E0D9',
+          300: '#BDD0C6',
+          400: '#8FB5A6',
+          500: '#5A7E7A',
+          600: '#2A4A54',
+          700: '#1A3B48',
+          800: '#0F2832',
+          900: '#112E3C',
+          950: '#0B1F28',
+        },
+        // V44: Primary accent — Teal
+        teal: {
+          DEFAULT: '#287A89',
+          50: '#F0FAFB',
+          100: '#D6F0F3',
+          200: '#ADE1E8',
+          300: '#7ACDD8',
+          400: '#4A99A8',
+          500: '#287A89',
+          600: '#1F6B78',
+          700: '#1A5A65',
+          800: '#164A53',
+          900: '#133D45',
+          950: '#0A2A30',
+        },
+        // V44: Sage green — secondary text & subtle elements
+        sage: {
+          DEFAULT: '#8FB5A6',
+          50: '#F4F8F6',
+          100: '#EFF5F2',
+          200: '#E6F0EB',
+          300: '#D1E0D9',
+          400: '#BDD0C6',
+          500: '#8FB5A6',
+          600: '#6A9A88',
+          700: '#4E7D6B',
+          800: '#3D6556',
+          900: '#2F4F43',
+        },
+        // V44: Navy (retained for secondary elements)
         navy: {
+          DEFAULT: '#1A2B4A',
           50: '#f8fafc',
           100: '#f1f5f9',
           200: '#e2e8f0',
@@ -24,40 +69,19 @@ const config: Config = {
           900: '#0f172a',
           950: '#020617',
         },
-        // V41: Primary accent - Blue
-        accent: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-        },
-        // V41: Secondary accent - Teal (Ask Us, success states)
-        teal: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
-          950: '#042f2e',
-        },
-        // V41: Category colors - Single Blue with opacity variations (institutional)
+        // V44: Category badge colors
         category: {
-          federal: '#1d4ed8',
-          state: '#2563eb',
-          local: '#3b82f6',
-          utility: '#60a5fa',
+          federal: '#1A2B4A',
+          state: '#287A89',
+          local: '#3D7A6A',
+          utility: '#4A99A8',
+        },
+        // V44: Data freshness
+        freshness: {
+          live: '#10B981',
+          fresh: '#059669',
+          stale: '#F59E0B',
+          outdated: '#EF4444',
         },
         // Shadcn UI variables
         background: 'hsl(var(--background))',
@@ -98,10 +122,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        // V41: IBM Plex fonts + Sora for headings
-        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
-        sora: ['Sora', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'monospace'],
+        sans: ['var(--font-sans)', 'IBM Plex Sans', 'system-ui', 'sans-serif'],
+        sora: ['var(--font-sora)', 'Sora', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'IBM Plex Mono', 'monospace'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -127,13 +150,11 @@ const config: Config = {
           '100%': { transform: 'translateX(-50%)' },
         },
         'logo-fade-in': {
-          '0%': { opacity: '0', transform: 'translateY(-8px) scale(0.98)', filter: 'blur(4px)' },
-          '30%': { opacity: '0.4', transform: 'translateY(-3px) scale(0.995)', filter: 'blur(2px)' },
-          '60%': { opacity: '0.8', transform: 'translateY(-1px) scale(0.998)', filter: 'blur(0.5px)' },
-          '100%': { opacity: '1', transform: 'translateY(0) scale(1)', filter: 'blur(0)' },
+          '0%': { opacity: '0', transform: 'translateY(-4px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'fade-in-up': {
-          from: { opacity: '0', transform: 'translateY(20px)' },
+          from: { opacity: '0', transform: 'translateY(10px)' },
           to: { opacity: '1', transform: 'translateY(0)' },
         },
       },
@@ -141,9 +162,9 @@ const config: Config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'pulse-ring': 'pulse-ring 2s infinite',
-        'ticker-scroll': 'ticker-scroll 60s linear infinite',
-        'logo-fade-in': 'logo-fade-in 3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards',
-        'fade-in-up': 'fade-in-up 0.4s ease-out forwards',
+        'ticker-scroll': 'ticker-scroll 90s linear infinite',
+        'logo-fade-in': 'logo-fade-in 1.5s ease 0.2s forwards',
+        'fade-in-up': 'fade-in-up 0.4s ease forwards',
       },
     },
   },

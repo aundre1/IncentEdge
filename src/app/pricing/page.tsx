@@ -454,17 +454,17 @@ export default function PricingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-8 bg-blue-900 dark:bg-slate-950">
+        <div className="container mx-auto px-4 text-center text-sm text-white">
           <p>&copy; {new Date().getFullYear()} IncentEdge. All rights reserved.</p>
           <div className="mt-2 flex items-center justify-center gap-4">
-            <Link href="/legal/privacy" className="hover:underline">
+            <Link href="/legal/privacy" className="hover:text-white/80 hover:underline">
               Privacy Policy
             </Link>
-            <Link href="/legal/terms" className="hover:underline">
+            <Link href="/legal/terms" className="hover:text-white/80 hover:underline">
               Terms of Service
             </Link>
-            <Link href="/contact" className="hover:underline">
+            <Link href="/contact" className="hover:text-white/80 hover:underline">
               Contact
             </Link>
           </div>

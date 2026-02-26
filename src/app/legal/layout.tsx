@@ -59,17 +59,17 @@ export default function LegalLayout({ children }: LegalLayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t">
-        <div className="container flex h-16 items-center justify-between px-4 text-sm text-muted-foreground">
+      <footer className="border-t bg-blue-900 dark:bg-slate-950">
+        <div className="container flex h-16 items-center justify-between px-4 text-sm text-white">
           <div>&copy; {currentYear} AoRa Development LLC. All rights reserved.</div>
           <div className="flex gap-4">
-            <Link href="/legal/privacy" className="hover:text-foreground">
+            <Link href="/legal/privacy" className="hover:text-white/80">
               Privacy
             </Link>
-            <Link href="/legal/terms" className="hover:text-foreground">
+            <Link href="/legal/terms" className="hover:text-white/80">
               Terms
             </Link>
-            <a href="mailto:legal@incentedge.com" className="hover:text-foreground">
+            <a href="mailto:legal@incentedge.com" className="hover:text-white/80">
               Contact
             </a>
           </div>

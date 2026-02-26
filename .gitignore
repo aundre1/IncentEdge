@@ -16,3 +16,4 @@ shared.deprecated/
 script.deprecated/
 incentedge_deliverables/
 .local/
+.vercel

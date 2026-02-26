@@ -21,13 +21,13 @@ const badgeVariants = cva(
         info:
           'border-transparent bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
         federal:
-          'border-transparent bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
+          'bg-[rgba(26,43,74,0.08)] text-[#1A2B4A] border-[rgba(26,43,74,0.15)] dark:bg-[rgba(26,43,74,0.3)] dark:text-sage-300',
         state:
-          'border-transparent bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
+          'bg-[rgba(40,122,137,0.08)] text-teal-600 border-[rgba(40,122,137,0.15)] dark:bg-[rgba(40,122,137,0.2)] dark:text-teal-300',
         local:
-          'border-transparent bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400',
+          'bg-[rgba(143,181,166,0.1)] text-[#3D7A6A] border-[rgba(143,181,166,0.2)] dark:bg-[rgba(143,181,166,0.15)] dark:text-sage-300',
         utility:
-          'border-transparent bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400',
+          'bg-[rgba(74,153,168,0.08)] text-teal-400 border-[rgba(74,153,168,0.15)] dark:bg-[rgba(74,153,168,0.15)] dark:text-teal-300',
       },
     },
     defaultVariants: {

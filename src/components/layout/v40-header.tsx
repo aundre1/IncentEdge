@@ -32,6 +32,7 @@ import {
   Zap,
   Send,
   Loader2,
+  PenLine,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
@@ -60,6 +61,7 @@ const navItems = [
   { href: '/discover', label: 'Discover', icon: Compass },
   { href: '/analysis', label: 'Analysis', icon: BarChart3 },
   { href: '/reports', label: 'Reports', icon: FileText },
+  { href: '/grant-writing', label: 'Grant Writing', icon: PenLine },
 ];
 
 const toolsItems = [

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { IBM_Plex_Sans, IBM_Plex_Mono, Sora } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // V41: IBM Plex Sans for body text
 const ibmPlexSans = IBM_Plex_Sans({
@@ -28,7 +29,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: 'IncentEdge V41 - Infrastructure\'s Bloomberg Terminal for Incentives',
+  title: 'IncentEdge — Incentive Intelligence Platform',
   description: 'AI-powered platform for incentive discovery, application, and monetization. Transform from minority to majority owner with integrated tax credit optimization.',
   keywords: ['incentives', 'tax credits', 'real estate', 'clean energy', 'grants', 'LIHTC', 'ITC', 'PTC', 'IRA'],
 };
@@ -41,15 +42,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* V41: Navy/Blue institutional favicon */}
+        {/* V44: Deep/Teal institutional favicon */}
         <link
           rel="icon"
           type="image/svg+xml"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230f172a'/><text x='16' y='22' text-anchor='middle' font-family='system-ui' font-weight='700' font-size='14' fill='%233b82f6'>IE</text></svg>"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23112E3C'/><text x='16' y='22' text-anchor='middle' font-family='system-ui' font-weight='700' font-size='14' fill='%234A99A8'>IE</text></svg>"
         />
       </head>
       <body className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${sora.variable} font-sans antialiased`}>
-        <Providers>{children}</Providers>
+        <ErrorBoundary section="App">
+          <Providers>{children}</Providers>
+        </ErrorBoundary>
       </body>
     </html>
   );

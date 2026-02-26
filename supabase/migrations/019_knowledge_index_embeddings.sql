@@ -331,7 +331,10 @@ ON v_eligible_programs(program_type);
 CREATE OR REPLACE FUNCTION refresh_eligible_programs_view()
 RETURNS void AS $$
 BEGIN
-  REFRESH MATERIALIZED VIEW CONCURRENTLY v_eligible_programs;
+  -- Use non-concurrent refresh during migration (no unique index required);
+  -- the trigger-based function uses CONCURRENTLY for runtime refreshes after
+  -- the view is populated and a unique index exists.
+  REFRESH MATERIALIZED VIEW v_eligible_programs;
 END;
 $$ LANGUAGE plpgsql;
 

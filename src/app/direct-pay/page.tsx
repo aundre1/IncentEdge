@@ -825,52 +825,52 @@ export default function DirectPayCalculatorPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t bg-slate-50 dark:bg-slate-950">
-        <div className="container px-4 py-12">
+      <footer className="border-t bg-blue-900 dark:bg-slate-950">
+        <div className="container px-4 py-12 text-white">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <Link href="/" className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600">
                   <Zap className="h-4 w-4 text-white" />
                 </div>
-                <span className="font-bold">IncentEdge</span>
+                <span className="font-bold text-white">IncentEdge</span>
               </Link>
-              <p className="mt-3 text-sm text-muted-foreground">
+              <p className="mt-3 text-sm text-white/80">
                 Infrastructure&apos;s Bloomberg Terminal for Incentives
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Product</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/discover" className="hover:text-foreground">Discover</Link></li>
-                <li><Link href="/analysis" className="hover:text-foreground">Analysis</Link></li>
-                <li><Link href="/reports" className="hover:text-foreground">Reports</Link></li>
+              <h4 className="font-semibold text-white mb-3">Product</h4>
+              <ul className="space-y-2 text-sm text-white/80">
+                <li><Link href="/discover" className="hover:text-white">Discover</Link></li>
+                <li><Link href="/analysis" className="hover:text-white">Analysis</Link></li>
+                <li><Link href="/reports" className="hover:text-white">Reports</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Resources</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/direct-pay" className="hover:text-foreground">Direct Pay Calculator</Link></li>
-                <li><a href={registrationInfo.portal} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">IRS Guidance</a></li>
+              <h4 className="font-semibold text-white mb-3">Resources</h4>
+              <ul className="space-y-2 text-sm text-white/80">
+                <li><Link href="/direct-pay" className="hover:text-white">Direct Pay Calculator</Link></li>
+                <li><a href={registrationInfo.portal} target="_blank" rel="noopener noreferrer" className="hover:text-white">IRS Guidance</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Company</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/privacy" className="hover:text-foreground">Privacy</Link></li>
-                <li><Link href="/terms" className="hover:text-foreground">Terms</Link></li>
+              <h4 className="font-semibold text-white mb-3">Company</h4>
+              <ul className="space-y-2 text-sm text-white/80">
+                <li><Link href="/privacy" className="hover:text-white">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-white">Terms</Link></li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+          <div className="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/80">
             <div>&copy; 2026 IncentEdge. All rights reserved.</div>
             <div className="flex items-center gap-1">
               <span>Powered by</span>
-              <span className="font-semibold text-emerald-600">24,805</span>
+              <span className="font-semibold text-emerald-400">24,805</span>
               <span>verified incentive programs</span>
             </div>
           </div>

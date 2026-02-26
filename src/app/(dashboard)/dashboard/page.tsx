@@ -18,13 +18,16 @@ import {
   CheckCircle2,
   FileSearch,
   Loader2,
+  Sparkles,
+  CircleDot,
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StatsCard } from '@/components/StatsCard';
 import { DirectPayBadge } from '@/components/DirectPayBadge';
-import { formatCurrency, formatCompactCurrency, formatRelativeTime } from '@/lib/utils';
+import { formatCompactCurrency, formatRelativeTime } from '@/lib/utils';
+import { useAuth } from '@/hooks/use-auth';
 
 interface DashboardStats {
   programCount: number;
@@ -57,9 +60,13 @@ const activityColors = {
 };
 
 export default function DashboardPage() {
+  const { profile, user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const displayName = profile?.full_name || user?.email?.split('@')[0] || 'there';
+  const isNewUser = !loading && stats?.projectsAnalyzed === 0;
 
   useEffect(() => {
     async function fetchDashboardStats() {
@@ -122,10 +129,10 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight font-sora text-navy-900 dark:text-white">
-            Dashboard
+            Welcome back, {displayName}
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            Welcome back! Here&apos;s your incentive discovery overview.
+            Here&apos;s your incentive discovery overview.
           </p>
         </div>
         <div className="flex gap-2">
@@ -176,6 +183,65 @@ export default function DashboardPage() {
           loading={loading}
         />
       </div>
+
+      {/* Getting Started Checklist — shown when no projects exist */}
+      {isNewUser && (
+        <Card className="card-v41 border-blue-200 dark:border-blue-800/50 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-900/10">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-blue-500" />
+              <CardTitle className="font-sora text-base">Getting Started</CardTitle>
+            </div>
+            <CardDescription>Complete these steps to unlock the full power of IncentEdge</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Link
+              href="/projects/new"
+              className="flex items-center gap-3 p-3 rounded-lg border border-navy-200 dark:border-navy-700 hover:border-blue-300 dark:hover:border-blue-700 transition-colors group"
+            >
+              <CircleDot className="h-5 w-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 transition-colors" />
+              <div className="flex-1">
+                <p className="font-medium text-navy-900 dark:text-white">Create your first project</p>
+                <p className="text-xs text-slate-500">Add a real estate project to start discovering incentives</p>
+              </div>
+              <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+            </Link>
+            <Link
+              href="/matching"
+              className="flex items-center gap-3 p-3 rounded-lg border border-navy-200 dark:border-navy-700 hover:border-blue-300 dark:hover:border-blue-700 transition-colors group"
+            >
+              <CircleDot className="h-5 w-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 transition-colors" />
+              <div className="flex-1">
+                <p className="font-medium text-navy-900 dark:text-white">Run incentive matching</p>
+                <p className="text-xs text-slate-500">Our AI matches your project to eligible programs</p>
+              </div>
+              <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+            </Link>
+            <Link
+              href="/green"
+              className="flex items-center gap-3 p-3 rounded-lg border border-navy-200 dark:border-navy-700 hover:border-blue-300 dark:hover:border-blue-700 transition-colors group"
+            >
+              <CircleDot className="h-5 w-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 transition-colors" />
+              <div className="flex-1">
+                <p className="font-medium text-navy-900 dark:text-white">Explore green incentives</p>
+                <p className="text-xs text-slate-500">IRA, clean energy, and sustainability programs</p>
+              </div>
+              <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+            </Link>
+            <Link
+              href="/discover"
+              className="flex items-center gap-3 p-3 rounded-lg border border-navy-200 dark:border-navy-700 hover:border-blue-300 dark:hover:border-blue-700 transition-colors group"
+            >
+              <CircleDot className="h-5 w-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 transition-colors" />
+              <div className="flex-1">
+                <p className="font-medium text-navy-900 dark:text-white">Browse the marketplace</p>
+                <p className="text-xs text-slate-500">Search {stats?.programCount ? stats.programCount.toLocaleString() : '24,000+'} incentive programs</p>
+              </div>
+              <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
+            </Link>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Main Content Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
@@ -315,7 +381,7 @@ export default function DashboardPage() {
                   <Search className="mr-3 h-4 w-4 text-purple-500" />
                   <div className="text-left">
                     <div className="font-medium">Browse Programs</div>
-                    <div className="text-xs text-slate-500">Explore 24,805 incentives</div>
+                    <div className="text-xs text-slate-500">Explore {stats?.programCount ? stats.programCount.toLocaleString() : '24,000+'} incentives</div>
                   </div>
                 </Link>
               </Button>
