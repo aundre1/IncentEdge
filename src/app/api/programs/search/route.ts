@@ -21,6 +21,11 @@ import { sanitizeSearchTerm, sanitizeQueryParams } from '@/lib/security/input-sa
 // Cache duration in seconds (1 minute for search results)
 const CACHE_MAX_AGE = 60;
 
+// Access control: limit results for unauthenticated users
+// They can browse one-by-one via autocomplete but not bulk download
+const PUBLIC_MAX_RESULTS = 8;
+const AUTH_MAX_RESULTS = 100;
+
 // Popular searches for suggestions
 const POPULAR_SEARCHES = [
   { term: '45L', label: 'Section 45L Tax Credit', category: 'federal' },
@@ -170,8 +175,8 @@ export async function GET(request: NextRequest) {
   const category = params.getEnum('category', ['all', 'federal', 'state', 'local', 'utility']);
   const sector = params.getString('sector', 50);
   const isSuggest = params.getBoolean('suggest') === true;
-  const limitRaw = params.getNumber('limit', { min: 1, max: 100, integer: true });
-  const limit = limitRaw || 20;
+  const limitRaw = params.getNumber('limit', { min: 1, max: PUBLIC_MAX_RESULTS, integer: true });
+  const limit = Math.min(limitRaw || PUBLIC_MAX_RESULTS, PUBLIC_MAX_RESULTS);
 
   // Return suggestions for autocomplete
   if (isSuggest) {
@@ -202,6 +207,7 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient();
 
     // Build search query
+    // Public search returns limited fields — no bulk data extraction
     let dbQuery = supabase
       .from('incentive_programs')
       .select(
@@ -217,8 +223,6 @@ export async function GET(request: NextRequest) {
         amount_type,
         state,
         status,
-        direct_pay_eligible,
-        transferable,
         popularity_score
       `,
         { count: 'exact' }

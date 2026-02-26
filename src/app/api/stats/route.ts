@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json(
         {
-          incentives_count: programCount || 24000,
+          incentives_count: programCount || 30007,
           awards_count: 8000000, // Historical awards data
           states_covered: 50,
           success_rate: 0.85, // 85% success rate
@@ -121,8 +121,8 @@ export async function GET(request: NextRequest) {
     const stats = {
       // Core counts
       incentives: {
-        total: programsResult.count || 24000,
-        active: programsResult.count || 24000,
+        total: programsResult.count || 30007,
+        active: programsResult.count || 30007,
         by_category: {
           federal: categoryBreakdown['federal'] || 0,
           state: categoryBreakdown['state'] || 0,
@@ -181,8 +181,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         incentives: {
-          total: 24000,
-          active: 24000,
+          total: 30007,
+          active: 30007,
           by_category: {
             federal: 500,
             state: 12000,
@@ -237,7 +237,7 @@ export async function HEAD(request: NextRequest) {
     status: 200,
     headers: {
       'X-Stats-Available': 'true',
-      'X-Incentives-Count': '24000',
+      'X-Incentives-Count': '30007',
       'X-Awards-Count': '8000000',
     },
   });

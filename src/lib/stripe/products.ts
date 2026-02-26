@@ -108,7 +108,7 @@ export const SOLO_TIER: ProductTier = {
   annualPriceInCents: 9180000, // $91,800 (10% discount)
   stripeAnnualPriceId: process.env.STRIPE_SOLO_ANNUAL_PRICE_ID || 'price_solo_annual',
   features: [
-    'Full incentive database access (24,458+ programs)',
+    'Full incentive database access (30,007+ programs)',
     'Up to 10 active projects',
     'Unlimited eligibility analyses',
     'AI-powered recommendations',

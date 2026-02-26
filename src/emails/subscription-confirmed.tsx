@@ -149,7 +149,7 @@ export const SubscriptionConfirmedEmail = ({
                 <strong>2. Run an Analysis</strong>
                 <br />
                 <span style={stepDescription}>
-                  Our AI will match your project with 24,000+ incentive programs
+                  Our AI will match your project with 30,000+ incentive programs
                 </span>
               </Text>
               <Text style={stepItem}>

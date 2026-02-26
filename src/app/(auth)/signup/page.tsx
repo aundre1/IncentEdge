@@ -25,7 +25,7 @@ const signupSchema = z.object({
 type SignupFormData = z.infer<typeof signupSchema>;
 
 const features = [
-  'Access 20,000+ incentive programs',
+  'Access 30,007+ incentive programs',
   'Sub-60 second eligibility screening',
   'AI-powered grant applications',
   '14-day free trial, no credit card required',

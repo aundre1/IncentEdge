@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client';
 
-export type OAuthProvider = 'google' | 'github';
+export type OAuthProvider = 'google' | 'linkedin_oidc';
 
 export interface OAuthSignInOptions {
   redirectTo?: string;
@@ -8,8 +8,6 @@ export interface OAuthSignInOptions {
 
 /**
  * Sign in with Google OAuth
- * @param options - Optional configuration including redirect URL
- * @returns Promise with error or undefined on success
  */
 export async function signInWithGoogle(options?: OAuthSignInOptions) {
   const supabase = createClient();
@@ -35,23 +33,21 @@ export async function signInWithGoogle(options?: OAuthSignInOptions) {
 }
 
 /**
- * Sign in with GitHub OAuth
- * @param options - Optional configuration including redirect URL
- * @returns Promise with error or undefined on success
+ * Sign in with LinkedIn OAuth (OIDC)
  */
-export async function signInWithGitHub(options?: OAuthSignInOptions) {
+export async function signInWithLinkedIn(options?: OAuthSignInOptions) {
   const supabase = createClient();
   const redirectTo = options?.redirectTo || `${window.location.origin}/auth/callback`;
 
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'github',
+    provider: 'linkedin_oidc',
     options: {
       redirectTo,
     },
   });
 
   if (error) {
-    console.error('GitHub OAuth error:', error.message);
+    console.error('LinkedIn OAuth error:', error.message);
     return { error };
   }
 
@@ -60,16 +56,13 @@ export async function signInWithGitHub(options?: OAuthSignInOptions) {
 
 /**
  * Generic OAuth sign in function
- * @param provider - The OAuth provider ('google' | 'github')
- * @param options - Optional configuration including redirect URL
- * @returns Promise with error or undefined on success
  */
 export async function signInWithOAuth(provider: OAuthProvider, options?: OAuthSignInOptions) {
   switch (provider) {
     case 'google':
       return signInWithGoogle(options);
-    case 'github':
-      return signInWithGitHub(options);
+    case 'linkedin_oidc':
+      return signInWithLinkedIn(options);
     default:
       return { error: { message: `Unsupported provider: ${provider}` } };
   }
@@ -77,8 +70,6 @@ export async function signInWithOAuth(provider: OAuthProvider, options?: OAuthSi
 
 /**
  * Get the OAuth callback URL with optional redirect parameter
- * @param redirect - Optional path to redirect to after authentication
- * @returns The full callback URL
  */
 export function getOAuthCallbackUrl(redirect?: string): string {
   const baseUrl = typeof window !== 'undefined'

@@ -82,7 +82,7 @@ export default function DashboardPage() {
         setError('Unable to load dashboard stats');
         // Set fallback demo data
         setStats({
-          programCount: 24805,
+          programCount: 30007,
           projectsAnalyzed: 12,
           totalValueFound: 4850000,
           averageMatchScore: 87,
@@ -235,7 +235,7 @@ export default function DashboardPage() {
               <CircleDot className="h-5 w-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 transition-colors" />
               <div className="flex-1">
                 <p className="font-medium text-navy-900 dark:text-white">Browse the marketplace</p>
-                <p className="text-xs text-slate-500">Search {stats?.programCount ? stats.programCount.toLocaleString() : '24,000+'} incentive programs</p>
+                <p className="text-xs text-slate-500">Search {stats?.programCount ? stats.programCount.toLocaleString() : '30,000+'} incentive programs</p>
               </div>
               <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
             </Link>
@@ -381,7 +381,7 @@ export default function DashboardPage() {
                   <Search className="mr-3 h-4 w-4 text-purple-500" />
                   <div className="text-left">
                     <div className="font-medium">Browse Programs</div>
-                    <div className="text-xs text-slate-500">Explore {stats?.programCount ? stats.programCount.toLocaleString() : '24,000+'} incentives</div>
+                    <div className="text-xs text-slate-500">Explore {stats?.programCount ? stats.programCount.toLocaleString() : '30,000+'} incentives</div>
                   </div>
                 </Link>
               </Button>

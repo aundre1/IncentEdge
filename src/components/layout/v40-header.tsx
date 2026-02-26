@@ -217,7 +217,7 @@ export function V40Header() {
               className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-400 bg-navy-800/50 border border-navy-700 rounded-lg hover:border-blue-500/50 hover:bg-navy-800 transition-all"
             >
               <Search className="w-4 h-4" />
-              <span className="flex-1 text-left">Search 24,000+ incentives...</span>
+              <span className="flex-1 text-left">Search 30,000+ incentives...</span>
               <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-navy-700 text-slate-400 rounded border border-navy-600">
                 <Command className="w-3 h-3" />K
               </kbd>
@@ -423,7 +423,7 @@ export function V40Header() {
               {searchQuery ? (
                 <span>Press <kbd className="px-1.5 py-0.5 bg-navy-700 rounded text-xs">Enter</kbd> to search for "{searchQuery}"</span>
               ) : (
-                'Start typing to search 24,000+ incentive programs...'
+                'Start typing to search 30,000+ incentive programs...'
               )}
             </p>
           </div>

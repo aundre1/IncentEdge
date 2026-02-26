@@ -68,7 +68,7 @@ export const WelcomeEmail = ({
 
             <Section style={featureList}>
               <Text style={featureItem}>
-                <strong>24,000+ Incentive Programs</strong> - Federal, state, local, and utility
+                <strong>30,000+ Incentive Programs</strong> - Federal, state, local, and utility
                 incentives covering tax credits, grants, rebates, and more
               </Text>
               <Text style={featureItem}>

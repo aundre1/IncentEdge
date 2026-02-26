@@ -127,7 +127,7 @@ export default function ApiDocsPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">24,458+ Programs</h3>
+                <h3 className="font-semibold text-gray-900">30,007+ Programs</h3>
                 <p className="text-sm text-gray-600">Verified incentive programs</p>
               </div>
             </div>

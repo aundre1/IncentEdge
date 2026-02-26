@@ -37,7 +37,7 @@ import type { EligibilityMatchedProgram } from '@/hooks/use-eligibility';
 // ============================================================================
 
 const ANALYSIS_MESSAGES = [
-  'Analyzing 24,458 programs...',
+  'Analyzing 30,007 programs...',
   'Evaluating federal tax credits...',
   'Checking state incentives...',
   'Scoring local programs...',
@@ -542,7 +542,7 @@ export default function MatchingPage() {
             Incentive Matching
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            AI-powered matching across 24,458+ verified programs
+            AI-powered matching across 30,007+ verified programs
           </p>
         </div>
 

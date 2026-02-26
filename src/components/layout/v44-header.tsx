@@ -176,7 +176,7 @@ export function V44Header() {
           {/* Left: Logo */}
           <Link href="/portfolio" className="flex items-center gap-3 shrink-0 group">
             {/* IE Mark */}
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-700 shadow-lg shadow-teal-500/20 group-hover:shadow-teal-500/30 transition-shadow">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-700 shadow-lg shadow-teal-500/20 group-hover:shadow-teal-500/30 transition-shadow ring-2 ring-teal-300/50">
               <span className="text-white font-sora font-bold text-base">IE</span>
             </div>
             {/* Brand Text */}
@@ -259,7 +259,7 @@ export function V44Header() {
             >
               <Search className="w-4 h-4 text-sage" />
               <span className="flex-1 text-left text-sage/70">
-                Search 3,847 incentive programs...
+                Search 30,007 incentive programs...
               </span>
               <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono bg-deep-700 text-sage rounded border border-deep-600">
                 <Command className="w-3 h-3" />K
@@ -394,7 +394,7 @@ export function V44Header() {
           <DialogHeader className="sr-only">
             <DialogTitle>Search Incentive Programs</DialogTitle>
             <DialogDescription>
-              Search across 3,847 incentive programs by name, state, or category.
+              Search across 30,007 incentive programs by name, state, or category.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSearch}>
@@ -461,7 +461,7 @@ export function V44Header() {
                   Press <kbd className="px-1.5 py-0.5 bg-deep-700 rounded text-xs font-mono text-sage">Enter</kbd> to search for &quot;{searchQuery}&quot;
                 </span>
               ) : (
-                'Start typing to search 3,847 incentive programs...'
+                'Start typing to search 30,007 incentive programs...'
               )}
             </p>
           </div>
