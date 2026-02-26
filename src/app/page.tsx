@@ -14,7 +14,7 @@ export default function HomePage() {
       <header className="sticky top-0 z-50 h-[72px] bg-gradient-to-b from-deep-900 to-deep-800 border-b border-teal-500/20">
         <div className="h-full max-w-[1400px] mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 opacity-0 animate-logo-fade-in">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-400 flex items-center justify-center font-sora font-extrabold text-[15px] text-white shadow-lg shadow-teal-500/30">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-400 flex items-center justify-center font-sora font-extrabold text-[15px] text-white shadow-lg shadow-teal-500/30 ring-1 ring-teal-300/40">
               IE
             </div>
             <div>
@@ -54,7 +54,7 @@ export default function HomePage() {
           <div className="relative max-w-[1200px] mx-auto px-6 py-24 md:py-32 text-center">
             <div className="inline-flex items-center rounded-full border border-teal-500/20 bg-teal-500/5 px-4 py-1.5 text-[12px] text-teal-300 mb-8">
               <Zap className="w-3.5 h-3.5 mr-2" />
-              Infrastructure&apos;s Bloomberg Terminal for Incentives
+              AI-Powered Incentive Intelligence — Every Sector, Every Program
             </div>
 
             <h1 className="font-sora text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
@@ -88,18 +88,21 @@ export default function HomePage() {
             </div>
 
             {/* Trust indicators */}
-            <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-[11px] text-sage-500 font-mono">
-              <span className="flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-teal-400" />
-                SOC 2 Compliant
+            <div className="flex flex-wrap items-center justify-center gap-8 mt-12 text-[13px] font-mono">
+              <span className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-teal-500/20 bg-teal-500/5">
+                <Shield className="w-4 h-4 text-teal-400" />
+                <span className="text-teal-300 font-semibold">SOC 2</span>
+                <span className="text-sage-300">Compliant</span>
               </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
-                92% AI Accuracy
+              <span className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-green-500/20 bg-green-500/5">
+                <CheckCircle2 className="w-4 h-4 text-green-400" />
+                <span className="text-green-300 font-semibold">92%</span>
+                <span className="text-sage-300">AI Accuracy</span>
               </span>
-              <span className="flex items-center gap-1.5">
-                <BarChart3 className="w-3.5 h-3.5 text-teal-400" />
-                24,458 Programs
+              <span className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-teal-500/20 bg-teal-500/5">
+                <BarChart3 className="w-4 h-4 text-teal-400" />
+                <span className="text-teal-300 font-semibold">24,458</span>
+                <span className="text-sage-300">Programs</span>
               </span>
             </div>
           </div>
