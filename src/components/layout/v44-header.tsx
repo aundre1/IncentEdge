@@ -31,7 +31,22 @@ import {
   Users,
   Send,
   Loader2,
+  ArrowRight,
+  TrendingUp,
+  PenLine,
+  Store,
+  BarChart2,
+  ClipboardList,
 } from 'lucide-react';
+
+interface SearchSuggestion {
+  id: string;
+  name: string;
+  category: string;
+  state?: string;
+  amount_max?: number;
+  program_type?: string;
+}
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -76,6 +91,13 @@ const moreResourcesItems = [
   { label: 'Success Stories', icon: Users, href: '/resources/success-stories' },
 ];
 
+const moreWorkflowItems = [
+  { label: 'Grant Writing AI', icon: PenLine, href: '/grant-writing' },
+  { label: 'Tax Credit Marketplace', icon: Store, href: '/marketplace' },
+  { label: 'Applications Tracker', icon: ClipboardList, href: '/applications' },
+  { label: 'Portfolio Analysis', icon: BarChart2, href: '/analysis' },
+];
+
 export function V44Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -85,10 +107,15 @@ export function V44Header() {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [askUsOpen, setAskUsOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchSuggestions, setSearchSuggestions] = React.useState<SearchSuggestion[]>([]);
+  const [searchLoading, setSearchLoading] = React.useState(false);
+  const [searchFocused, setSearchFocused] = React.useState(false);
   const [askUsQuestion, setAskUsQuestion] = React.useState('');
   const [askUsEmail, setAskUsEmail] = React.useState('');
   const [askUsSubmitting, setAskUsSubmitting] = React.useState(false);
   const [askUsSuccess, setAskUsSuccess] = React.useState(false);
+  const searchDebounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortControllerRef = React.useRef<AbortController | null>(null);
 
   // Keyboard shortcut for search (Cmd+K / Ctrl+K)
   React.useEffect(() => {
@@ -153,6 +180,54 @@ export function V44Header() {
     }
   };
 
+  // Live autocomplete search
+  React.useEffect(() => {
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    if (!searchQuery.trim() || searchQuery.length < 2) {
+      setSearchSuggestions([]);
+      setSearchLoading(false);
+      return;
+    }
+
+    setSearchLoading(true);
+    searchDebounceRef.current = setTimeout(async () => {
+      if (abortControllerRef.current) abortControllerRef.current.abort();
+      abortControllerRef.current = new AbortController();
+
+      try {
+        const res = await fetch('/api/programs/search/semantic', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: searchQuery.trim(), limit: 6 }),
+          signal: abortControllerRef.current.signal,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSearchSuggestions((data.results ?? []).slice(0, 6));
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setSearchSuggestions([]);
+        }
+      } finally {
+        setSearchLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    };
+  }, [searchQuery]);
+
+  // Reset suggestions on close
+  React.useEffect(() => {
+    if (!searchOpen) {
+      setSearchSuggestions([]);
+      setSearchQuery('');
+      setSearchLoading(false);
+    }
+  }, [searchOpen]);
+
   // Handle search submission
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,8 +235,24 @@ export function V44Header() {
       router.push(`/discover?q=${encodeURIComponent(searchQuery)}`);
       setSearchOpen(false);
       setSearchQuery('');
+      setSearchSuggestions([]);
     }
   };
+
+  const handleSuggestionClick = (suggestion: SearchSuggestion) => {
+    router.push(`/discover/${suggestion.id}`);
+    setSearchOpen(false);
+    setSearchQuery('');
+    setSearchSuggestions([]);
+  };
+
+  function formatAmount(amount?: number): string {
+    if (!amount) return '';
+    if (amount >= 1e9) return `$${(amount / 1e9).toFixed(1)}B`;
+    if (amount >= 1e6) return `$${(amount / 1e6).toFixed(1)}M`;
+    if (amount >= 1e3) return `$${(amount / 1e3).toFixed(0)}K`;
+    return `$${amount}`;
+  }
 
   const initials = profile?.full_name
     ? profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
@@ -240,6 +331,18 @@ export function V44Header() {
                   Resources
                 </DropdownMenuLabel>
                 {moreResourcesItems.map((item) => (
+                  <DropdownMenuItem key={item.href} asChild>
+                    <Link href={item.href} className="flex items-center gap-2 text-sage-300 hover:text-white hover:bg-teal-500/10 cursor-pointer">
+                      <item.icon className="w-4 h-4 text-teal-500" />
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator className="bg-deep-700" />
+                <DropdownMenuLabel className="text-sage-600 text-xs uppercase tracking-wider font-mono">
+                  Workflow
+                </DropdownMenuLabel>
+                {moreWorkflowItems.map((item) => (
                   <DropdownMenuItem key={item.href} asChild>
                     <Link href={item.href} className="flex items-center gap-2 text-sage-300 hover:text-white hover:bg-teal-500/10 cursor-pointer">
                       <item.icon className="w-4 h-4 text-teal-500" />
@@ -388,9 +491,9 @@ export function V44Header() {
         )}
       </header>
 
-      {/* Search Modal (Command Palette) */}
+      {/* Search Modal (Command Palette with Live Autocomplete) */}
       <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <DialogContent className="sm:max-w-2xl bg-deep border-deep-700 p-0">
+        <DialogContent className="sm:max-w-2xl bg-deep border-deep-700 p-0 overflow-hidden">
           <DialogHeader className="sr-only">
             <DialogTitle>Search Incentive Programs</DialogTitle>
             <DialogDescription>
@@ -399,7 +502,11 @@ export function V44Header() {
           </DialogHeader>
           <form onSubmit={handleSearch}>
             <div className="flex items-center border-b border-deep-700 px-4">
-              <Search className="w-5 h-5 text-sage" />
+              {searchLoading ? (
+                <Loader2 className="w-5 h-5 text-teal-400 animate-spin shrink-0" />
+              ) : (
+                <Search className="w-5 h-5 text-sage shrink-0" />
+              )}
               <Input
                 placeholder="Search incentives by name, state, category..."
                 value={searchQuery}
@@ -412,59 +519,118 @@ export function V44Header() {
               </kbd>
             </div>
           </form>
-          {/* Quick filter badges */}
-          <div className="px-4 py-3 border-b border-deep-800">
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSearchQuery('federal')}
-                className="text-xs px-3 py-1.5 rounded-full bg-deep-800 text-sage border border-deep-700 hover:border-teal-500/40 hover:text-teal-300 transition-colors"
-              >
-                Federal
-              </button>
-              <button
-                onClick={() => setSearchQuery('state')}
-                className="text-xs px-3 py-1.5 rounded-full bg-deep-800 text-sage border border-deep-700 hover:border-teal-500/40 hover:text-teal-300 transition-colors"
-              >
-                State
-              </button>
-              <button
-                onClick={() => setSearchQuery('tax credit')}
-                className="text-xs px-3 py-1.5 rounded-full bg-deep-800 text-sage border border-deep-700 hover:border-teal-500/40 hover:text-teal-300 transition-colors"
-              >
-                Tax Credits
-              </button>
-              <button
-                onClick={() => setSearchQuery('grant')}
-                className="text-xs px-3 py-1.5 rounded-full bg-deep-800 text-sage border border-deep-700 hover:border-teal-500/40 hover:text-teal-300 transition-colors"
-              >
-                Grants
-              </button>
-              <button
-                onClick={() => setSearchQuery('NY')}
-                className="text-xs px-3 py-1.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 hover:border-teal-500/40 transition-colors"
-              >
-                New York
-              </button>
-              <button
-                onClick={() => setSearchQuery('IRA')}
-                className="text-xs px-3 py-1.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 hover:border-teal-500/40 transition-colors"
-              >
-                IRA Programs
-              </button>
+
+          {/* Live autocomplete results */}
+          {searchSuggestions.length > 0 && (
+            <div className="border-b border-deep-700">
+              <div className="px-4 pt-3 pb-1">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-sage/60">
+                  Live Results
+                </p>
+              </div>
+              <div className="max-h-72 overflow-y-auto">
+                {searchSuggestions.map((suggestion) => (
+                  <button
+                    key={suggestion.id}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-teal-500/10 transition-colors text-left group"
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-deep-800 border border-deep-700 group-hover:border-teal-500/40">
+                      <TrendingUp className="w-3.5 h-3.5 text-teal-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-white truncate">
+                        {suggestion.name}
+                      </p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-xs text-sage/70 truncate">
+                          {suggestion.category}
+                        </span>
+                        {suggestion.state && (
+                          <>
+                            <span className="text-sage/30">·</span>
+                            <span className="text-xs text-sage/70">{suggestion.state}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      {suggestion.amount_max && (
+                        <p className="text-xs font-mono font-semibold text-teal-400">
+                          {formatAmount(suggestion.amount_max)}
+                        </p>
+                      )}
+                      <ArrowRight className="w-3.5 h-3.5 text-sage/40 group-hover:text-teal-400 transition-colors ml-auto mt-0.5" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="px-4 py-2 border-t border-deep-800">
+                <button
+                  onClick={handleSearch}
+                  className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+                >
+                  See all results for &quot;{searchQuery}&quot; →
+                </button>
+              </div>
             </div>
-          </div>
-          {/* Search hints */}
-          <div className="p-6 text-center">
-            <p className="text-sage/60 text-sm">
-              {searchQuery ? (
-                <span>
-                  Press <kbd className="px-1.5 py-0.5 bg-deep-700 rounded text-xs font-mono text-sage">Enter</kbd> to search for &quot;{searchQuery}&quot;
-                </span>
-              ) : (
-                'Start typing to search 30,007 incentive programs...'
-              )}
-            </p>
-          </div>
+          )}
+
+          {/* Quick filter badges — shown when no query */}
+          {!searchQuery && (
+            <div className="px-4 py-3 border-b border-deep-800">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-sage/60 mb-2">
+                Quick Filters
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: 'Federal', q: 'federal programs' },
+                  { label: 'State Programs', q: 'state incentive' },
+                  { label: 'Tax Credits', q: 'tax credit' },
+                  { label: 'Grants', q: 'grant funding' },
+                  { label: 'New York', q: 'New York incentive' },
+                  { label: 'IRA / Clean Energy', q: 'IRA clean energy' },
+                  { label: 'Affordable Housing', q: 'affordable housing LIHTC' },
+                  { label: 'Solar', q: 'solar investment credit' },
+                ].map(({ label, q }) => (
+                  <button
+                    key={label}
+                    onClick={() => setSearchQuery(q)}
+                    className="text-xs px-3 py-1.5 rounded-full bg-deep-800 text-sage border border-deep-700 hover:border-teal-500/40 hover:text-teal-300 transition-colors"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Loading state */}
+          {searchLoading && searchSuggestions.length === 0 && (
+            <div className="px-4 py-6 text-center">
+              <Loader2 className="w-5 h-5 animate-spin text-teal-500 mx-auto mb-2" />
+              <p className="text-sage/60 text-sm">Searching 30,007 programs...</p>
+            </div>
+          )}
+
+          {/* Empty state / hints */}
+          {!searchLoading && searchSuggestions.length === 0 && (
+            <div className="p-6 text-center">
+              <p className="text-sage/60 text-sm">
+                {searchQuery && searchQuery.length >= 2 ? (
+                  <span>
+                    No matches — press{' '}
+                    <kbd className="px-1.5 py-0.5 bg-deep-700 rounded text-xs font-mono text-sage">Enter</kbd>{' '}
+                    to search on the full database
+                  </span>
+                ) : searchQuery ? (
+                  'Type at least 2 characters to see suggestions...'
+                ) : (
+                  'Start typing to instantly search 30,007 incentive programs'
+                )}
+              </p>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
