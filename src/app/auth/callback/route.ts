@@ -21,7 +21,34 @@ export async function GET(request: Request) {
   // Exchange code for session
   if (code) {
     const supabase = await createClient();
-    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+    const { data: sessionData, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (!exchangeError && sessionData?.session?.user) {
+      // Sync name from OAuth provider metadata if profile has no name yet.
+      // Google sends 'name', LinkedIn sends 'full_name' — check both.
+      const user = sessionData.session.user;
+      const metaName: string | null =
+        user.user_metadata?.full_name ||
+        user.user_metadata?.name ||
+        null;
+
+      if (metaName) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('id', user.id)
+          .single();
+
+        if (!profile?.full_name || profile.full_name.trim() === '') {
+          await supabase
+            .from('profiles')
+            .update({ full_name: metaName })
+            .eq('id', user.id);
+        }
+      }
+
+      return NextResponse.redirect(`${origin}${redirect}`);
+    }
 
     if (!exchangeError) {
       return NextResponse.redirect(`${origin}${redirect}`);

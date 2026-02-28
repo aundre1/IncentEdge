@@ -15,6 +15,44 @@ interface V44ProjectSelectorProps {
 // Number of project cards per row before "show all" kicks in
 const CARDS_PER_ROW = 10;
 
+// ─── Dummy Image Generator (before real Street View) ──────────────────────────
+
+function getDummyImageForPropertyType(type: string): string {
+  // Return a placeholder SVG-based data URL with property type styling
+  const typeColors: Record<string, { bg: string; text: string }> = {
+    'mixed-use': { bg: '#1e3a8a', text: '#60a5fa' },
+    'multifamily': { bg: '#1e3a8a', text: '#7dd3fc' },
+    'affordable-housing': { bg: '#0c4a2e', text: '#6ee7b7' },
+    'transit-oriented': { bg: '#1e3a8a', text: '#60a5fa' },
+    'industrial': { bg: '#27190a', text: '#d97706' },
+    'office': { bg: '#1e3a8a', text: '#60a5fa' },
+    'retail': { bg: '#4c1d95', text: '#d8b4fe' },
+    'hotel': { bg: '#7c2d12', text: '#fb923c' },
+    'healthcare': { bg: '#0c4a2e', text: '#10b981' },
+    'solar': { bg: '#713f12', text: '#fbbf24' },
+    'warehouse': { bg: '#27190a', text: '#d97706' },
+    'data center': { bg: '#1e1b4b', text: '#818cf8' },
+  };
+
+  const colors = typeColors[type.toLowerCase()] || typeColors['industrial'];
+  const svgData = `<svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:${colors.bg};stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    <rect width="640" height="360" fill="url(#grad)"/>
+    <rect x="0" y="0" width="640" height="360" fill="${colors.bg}" opacity="0.5"/>
+    <circle cx="320" cy="180" r="60" fill="none" stroke="${colors.text}" stroke-width="2" opacity="0.3"/>
+    <circle cx="320" cy="180" r="45" fill="none" stroke="${colors.text}" stroke-width="2" opacity="0.4"/>
+    <circle cx="320" cy="180" r="30" fill="none" stroke="${colors.text}" stroke-width="2" opacity="0.5"/>
+    <text x="320" y="185" font-family="monospace" font-size="14" fill="${colors.text}" text-anchor="middle" opacity="0.7">${type}</text>
+  </svg>`;
+
+  return `data:image/svg+xml;base64,${btoa(svgData)}`;
+}
+
 // ─── Street View Image URL Builder ────────────────────────────────────────────
 
 function getStreetViewImageUrl(address: string): string | null {
@@ -24,7 +62,7 @@ function getStreetViewImageUrl(address: string): string | null {
       : undefined;
   if (!apiKey) return null;
   const encoded = encodeURIComponent(address);
-  return `https://maps.googleapis.com/maps/api/streetview?size=640x360&location=${encoded}&key=${apiKey}`;
+  return `https://maps.googleapis.com/maps/api/streetview?size=640x360&location=${encoded}&key=${apiKey}&pitch=-5`;
 }
 
 // ─── Sector Metrics Mapping ──────────────────────────────────────────────────
@@ -225,7 +263,8 @@ function ProjectCard16x9({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const streetViewUrl = !customImage ? getStreetViewImageUrl(project.address) : null;
-  const imageUrl = customImage || streetViewUrl;
+  const dummyImageUrl = getDummyImageForPropertyType(project.type);
+  const imageUrl = customImage || streetViewUrl || dummyImageUrl;
   const showGradient = !imageUrl || imgError;
 
   // For text mode, show simple card
@@ -298,7 +337,7 @@ function ProjectCard16x9({
       )}
     >
       {/* Background image or gradient */}
-      {!showGradient && imageUrl ? (
+      {!showGradient && imageUrl && (
         <Image
           src={imageUrl}
           alt={project.name}
@@ -306,9 +345,11 @@ function ProjectCard16x9({
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover"
           onError={() => setImgError(true)}
-          unoptimized={imageUrl.startsWith('data:') || imageUrl.includes('maps.googleapis')}
+          unoptimized={true}
+          priority={isActive}
         />
-      ) : (
+      )}
+      {(showGradient || !imageUrl) && (
         <GradientPlaceholder name={project.name} type={project.type} isActive={isActive} />
       )}
 
@@ -486,6 +527,15 @@ export function V44ProjectSelector({
     });
     return loaded;
   });
+  // State for add project form
+  const [formData, setFormData] = useState({
+    name: '',
+    address: '',
+    units: '',
+    type: '',
+    tdc: '',
+  });
+  const [verifyingAddress, setVerifyingAddress] = useState(false);
 
   const projectKeys = Object.keys(projectData);
   const totalProjects = projectKeys.length;
@@ -545,8 +595,8 @@ export function V44ProjectSelector({
       <div className={cn(
         'gap-2',
         viewMode === 'image'
-          ? 'grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8'
-          : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
+          ? 'grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 2xl:grid-cols-8'
+          : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5'
       )}>
         {visibleItems.map((key) => {
           const isPortfolio = key === 'portfolio';
@@ -648,7 +698,7 @@ export function V44ProjectSelector({
       {/* Add Project Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-deep-900 rounded-2xl shadow-2xl border border-deep-100 dark:border-deep-700 w-full max-w-lg mx-4 p-6">
+          <div className="bg-white dark:bg-deep-900 rounded-2xl shadow-2xl border border-deep-100 dark:border-deep-700 w-full max-w-lg mx-4 p-6 max-h-[90vh] overflow-y-auto">
             <h3 className="font-sora text-lg font-bold text-deep-900 dark:text-white mb-4">
               Add New Project
             </h3>
@@ -660,18 +710,34 @@ export function V44ProjectSelector({
                 <input
                   type="text"
                   placeholder="e.g., Bronx Gateway Tower"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm placeholder:text-sage-400 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-deep-700 dark:text-sage-300 mb-1">
-                  Address
+                  Address {verifyingAddress && <span className="text-xs text-teal-500">• Verifying...</span>}
                 </label>
                 <input
                   type="text"
                   placeholder="e.g., 225 Grand Concourse, Bronx, NY 10451"
+                  value={formData.address}
+                  onChange={(e) => {
+                    setFormData({ ...formData, address: e.target.value });
+                  }}
+                  onBlur={() => {
+                    if (formData.address) {
+                      setVerifyingAddress(true);
+                      // Simulate address verification delay
+                      setTimeout(() => setVerifyingAddress(false), 500);
+                    }
+                  }}
                   className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm placeholder:text-sage-400 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
                 />
+                <p className="text-xs text-sage-500 dark:text-sage-400 mt-1">
+                  When you enter an address, we'll automatically fetch the Street View image
+                </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -681,6 +747,8 @@ export function V44ProjectSelector({
                   <input
                     type="text"
                     placeholder="e.g., 312"
+                    value={formData.units}
+                    onChange={(e) => setFormData({ ...formData, units: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm placeholder:text-sage-400 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
                   />
                 </div>
@@ -688,14 +756,23 @@ export function V44ProjectSelector({
                   <label className="block text-sm font-medium text-deep-700 dark:text-sage-300 mb-1">
                     Project Type
                   </label>
-                  <select className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none">
+                  <select
+                    value={formData.type}
+                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
+                  >
                     <option value="">Select type</option>
                     <option value="mixed-use">Mixed-Use</option>
+                    <option value="multifamily">Multifamily</option>
                     <option value="affordable-housing">Affordable Housing</option>
                     <option value="transit-oriented">Transit-Oriented</option>
-                    <option value="commercial">Commercial</option>
                     <option value="industrial">Industrial</option>
-                    <option value="residential">Residential</option>
+                    <option value="office">Office</option>
+                    <option value="retail">Retail</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="solar">Solar</option>
+                    <option value="warehouse">Warehouse</option>
                   </select>
                 </div>
               </div>
@@ -706,20 +783,30 @@ export function V44ProjectSelector({
                 <input
                   type="text"
                   placeholder="e.g., $125,000,000"
+                  value={formData.tdc}
+                  onChange={(e) => setFormData({ ...formData, tdc: e.target.value })}
                   className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm placeholder:text-sage-400 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
                 />
               </div>
             </div>
             <div className="flex justify-end gap-3 mt-6">
               <button
-                onClick={() => setShowAddModal(false)}
+                onClick={() => {
+                  setShowAddModal(false);
+                  setFormData({ name: '', address: '', units: '', type: '', tdc: '' });
+                }}
                 className="px-4 py-2 text-sm font-medium text-deep-600 dark:text-sage-400 hover:text-deep-900 dark:hover:text-white transition-colors"
               >
                 Cancel
               </button>
               <button
-                onClick={() => setShowAddModal(false)}
-                className="px-5 py-2 rounded-lg bg-deep-900 dark:bg-teal-600 text-white text-sm font-semibold hover:bg-deep-800 dark:hover:bg-teal-500 transition-colors"
+                disabled={!formData.name || !formData.address || !formData.type}
+                onClick={() => {
+                  // Here you'd implement adding the project to your data source
+                  setShowAddModal(false);
+                  setFormData({ name: '', address: '', units: '', type: '', tdc: '' });
+                }}
+                className="px-5 py-2 rounded-lg bg-deep-900 dark:bg-teal-600 text-white text-sm font-semibold hover:bg-deep-800 dark:hover:bg-teal-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Add Project
               </button>

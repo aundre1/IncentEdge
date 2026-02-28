@@ -93,7 +93,7 @@ const STATE_DATA: Record<string, StateData> = {
     rebates: 6,
     info: 'New York leads the nation in affordable housing investment with $25B committed over 5 years.',
     programs: [
-      { id: 'ny-421a', name: 'Affordable New York (421-a)', type: 'Tax Credit', amount: '$1M – $25M', agency: 'NYC HPD', description: 'Real property tax exemption for multifamily residential construction with affordable units in NYC.' },
+      { id: 'ny-485x', name: '485-x Affordable Neighborhoods Tax Exemption', type: 'Tax Credit', amount: '$1M – $30M', agency: 'NYC HPD', description: 'Active program replacing expired 421-a. Up to 40-year property tax exemption for new NYC multifamily with min. 25% affordable units. No sunset date. Prevailing wage required for 100+ unit projects.' },
       { id: 'ny-htf', name: 'NYS Housing Trust Fund', type: 'Grant', amount: '$100K – $2M', agency: 'DHCR', description: 'State grants for construction or rehabilitation of affordable housing for low-income New Yorkers.' },
       { id: 'ny-lihtc', name: 'NY State LIHTC Supplement', type: 'Tax Credit', amount: '$300K – $5M', agency: 'HFA / DHCR', description: 'Additional state credit layered with federal LIHTC for qualified affordable housing projects.' },
       { id: 'ny-mwbe', name: 'M/WBE Construction Incentive', type: 'Grant', amount: '$50K – $500K', agency: 'DASNY', description: 'Grant incentive for projects meeting M/WBE participation thresholds on state-funded construction.' },

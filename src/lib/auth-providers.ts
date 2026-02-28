@@ -1,3 +1,11 @@
+// LinkedIn OIDC Setup:
+// 1. Go to https://developer.linkedin.com/apps → Create App
+// 2. Add product: "Sign In with LinkedIn using OpenID Connect"
+// 3. Get Client ID and Client Secret
+// 4. Go to Supabase: Authentication → Providers → LinkedIn (OIDC) → Enable
+// 5. Paste Client ID and Client Secret
+// 6. Add Callback URL to LinkedIn: https://pzmunszcxmmncppbufoj.supabase.co/auth/v1/callback
+
 import { createClient } from '@/lib/supabase/client';
 
 export type OAuthProvider = 'google' | 'linkedin_oidc';
@@ -17,10 +25,9 @@ export async function signInWithGoogle(options?: OAuthSignInOptions) {
     provider: 'google',
     options: {
       redirectTo,
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
-      },
+      // NOTE: Do NOT set access_type:'offline' or prompt:'consent' here.
+      // Supabase PKCE flow manages refresh tokens internally.
+      // Those params cause a stale-code-verifier error on first login.
     },
   });
 

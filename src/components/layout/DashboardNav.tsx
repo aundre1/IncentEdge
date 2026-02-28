@@ -49,18 +49,18 @@ type Tab = {
 // ============================================================================
 
 const TABS: Tab[] = [
-  { id: 'portfolio',      label: 'Portfolio',      href: '/portfolio',      icon: Briefcase },
-  { id: 'discover',       label: 'Discover',       href: '/discover',       icon: Compass   },
-  { id: 'matching',       label: 'Matching',       href: '/matching',       icon: Sparkles  },
-  { id: 'reports',        label: 'Reports',        href: '/reports',        icon: FileText  },
-  { id: 'grant-writing',  label: 'Grant Writing',  href: '/grant-writing',  icon: PenLine   },
+  { id: 'portfolio',      label: 'Portfolio',               href: '/portfolio',      icon: Briefcase },
+  { id: 'matching',       label: 'Incentive Intelligence',  href: '/matching',       icon: Sparkles  },
+  { id: 'grant-writing',  label: 'Grant Writing AI',        href: '/grant-writing',  icon: PenLine   },
+  { id: 'reports',        label: 'Reports',                 href: '/reports',        icon: FileText  },
 ];
 
 const MORE_ITEMS = [
-  { id: 'marketplace', label: 'Marketplace',      href: '/marketplace', icon: ArrowLeftRight },
-  { id: 'green',       label: 'Green Incentives', href: '/green',       icon: Leaf           },
-  { id: 'tools',       label: 'Tools',            href: '/tools',       icon: Wrench         },
-  { id: 'resources',   label: 'Resources',        href: '/resources',   icon: BookOpen       },
+  { id: 'discover',    label: 'Discover Programs',  href: '/discover',    icon: Compass        },
+  { id: 'green',       label: 'Green Incentives',   href: '/green',       icon: Leaf           },
+  { id: 'tools',       label: 'Tools',              href: '/tools',       icon: Wrench         },
+  { id: 'resources',   label: 'Resources',          href: '/resources',   icon: BookOpen       },
+  { id: 'marketplace', label: 'Tax Credit Market',  href: '/marketplace', icon: ArrowLeftRight },
 ];
 
 // ============================================================================

@@ -174,19 +174,19 @@ const DEMO_MATCHES = [
     complexity: 'medium',
   },
   {
-    programId: 'local-421a',
-    programName: 'NYC 421-a Tax Exemption',
+    programId: 'local-485x',
+    programName: '485-x Affordable Neighborhoods for New Yorkers Tax Exemption',
     category: 'local',
     matchScore: 78,
     eligibilityStatus: 'review_needed',
-    estimatedValue: { min: 5000000, max: 25000000, expected: 15000000 },
+    estimatedValue: { min: 5000000, max: 30000000, expected: 18000000 },
     requirements: [
-      { requirement: 'NYC location', status: 'met', notes: '' },
-      { requirement: '25-30% affordable', status: 'review_needed', notes: 'Zone-dependent' },
-      { requirement: 'Construction wages', status: 'pending', notes: 'Wage requirements apply' },
+      { requirement: 'NYC location (5 boroughs)', status: 'met', notes: '' },
+      { requirement: 'Minimum 25% affordable units', status: 'review_needed', notes: 'AMI thresholds vary by track and borough' },
+      { requirement: 'Prevailing wage (100+ unit projects)', status: 'pending', notes: 'Required for buildings over 100 units — both construction and ongoing building services' },
     ],
-    nextSteps: ['Confirm project zone', 'Verify affordability requirements', 'Engage HPD pre-application'],
-    applicationDeadline: '2026-06-15',
+    nextSteps: ['Confirm track (A vs B) based on affordability depth', 'Verify AMI targeting by unit type', 'Engage NYC HPD for pre-application meeting'],
+    applicationDeadline: 'Rolling — no sunset date',
     complexity: 'high',
   },
 ];
@@ -231,7 +231,7 @@ function analyzeProject(project: AnalysisRequest) {
 
   // Filter by municipality
   if (project.state === 'NY' && project.municipality !== 'New York City') {
-    matches = matches.filter((m) => m.programId !== 'local-421a');
+    matches = matches.filter((m) => m.programId !== 'local-485x');
     if (project.county === 'Westchester') {
       matches.push({
         programId: 'local-PILOT',

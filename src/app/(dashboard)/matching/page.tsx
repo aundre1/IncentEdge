@@ -30,7 +30,118 @@ import { IncentiveMatcher } from '@/components/dashboard/incentive-matcher';
 import { createClient } from '@/lib/supabase/client';
 import { useEligibility } from '@/hooks/use-eligibility';
 import type { Project, IncentiveProgram } from '@/types';
-import type { EligibilityMatchedProgram } from '@/hooks/use-eligibility';
+import type { EligibilityMatchedProgram, EligibilityResult } from '@/hooks/use-eligibility';
+import {
+  projectData,
+  allIncentives,
+  type Incentive as DemoIncentive,
+} from '@/data/incentives';
+
+// ============================================================================
+// DEMO DATA HELPERS
+// ============================================================================
+
+/** Convert the projectData entries into Project objects the page can use. */
+function buildDemoProjects(): Project[] {
+  return Object.entries(projectData).map(([key, info]) => {
+    const unitsNum = parseInt(info.units.replace(/\D/g, ''), 10);
+    const tierMap: Record<string, string> = {
+      'Tier 1': 'tier_1_efficient',
+      'Tier 2': 'tier_2_high_performance',
+      'Tier 3': 'tier_3_net_zero',
+    };
+    return {
+      id: key,
+      organization_id: 'demo',
+      name: info.name,
+      description: null,
+      address_line1: info.address,
+      city: info.address.split(',')[1]?.trim() ?? null,
+      state: 'NY',
+      zip_code: info.address.match(/\d{5}/)?.[0] ?? null,
+      county: 'Westchester',
+      census_tract: null,
+      latitude: null,
+      longitude: null,
+      sector_type: 'real-estate',
+      building_type: info.type,
+      construction_type: 'new-construction',
+      total_units: unitsNum,
+      affordable_units: Math.round(unitsNum * 0.3),
+      affordable_breakdown: null,
+      total_sqft: unitsNum * 900,
+      capacity_mw: null,
+      total_development_cost: info.tdc * 1_000_000,
+      hard_costs: null,
+      soft_costs: null,
+      target_certification: tierMap[info.tier] ?? null,
+      renewable_energy_types: ['solar', 'storage'],
+      projected_energy_reduction_pct: 50,
+      domestic_content_eligible: true,
+      prevailing_wage_commitment: true,
+      project_status: 'active',
+      estimated_start_date: null,
+      estimated_completion_date: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    } satisfies Project;
+  });
+}
+
+/** Convert a demo Incentive to EligibilityMatchedProgram. */
+function demoIncentiveToMatched(inc: DemoIncentive): EligibilityMatchedProgram {
+  const bonusOpportunities: Record<string, number> = {};
+  if (inc.type === 'federal' && inc.prob >= 80) {
+    bonusOpportunities['domestic_content'] = inc.amount * 0.1 * 1_000_000;
+    bonusOpportunities['energy_community'] = inc.amount * 0.1 * 1_000_000;
+  }
+
+  const stackableWith: Record<string, string[]> = {
+    'lihtc-4': ['Section 48 ITC', 'HCR Gap Financing'],
+    's48-itc': ['179D Deduction', 'Section 45L'],
+    'nmtc': ['LIHTC 4%', 'HCR Gap Financing'],
+    'ida-pilot': ['IDA Sales Tax Exemption', 'IDA Mortgage Tax Exemption'],
+  };
+
+  return {
+    program_id: inc.id,
+    program_name: inc.fullName ?? inc.program,
+    match_confidence: inc.prob / 100,
+    estimated_value_best: inc.amount * 1_000_000,
+    bonus_opportunities: bonusOpportunities,
+    stacking_opportunities: stackableWith[inc.id] ?? [],
+    reasons: [inc.desc, `Administered by ${inc.agency}`],
+  };
+}
+
+/** Build a full EligibilityResult from demo data for a given project key. */
+function buildDemoResult(projectKey: string): EligibilityResult {
+  const incentives = allIncentives[projectKey] ?? [];
+  const matchingPrograms = incentives.map(demoIncentiveToMatched);
+
+  const totalPotentialValue = matchingPrograms.reduce(
+    (sum, p) => sum + p.estimated_value_best,
+    0
+  );
+  const stackingBonus = totalPotentialValue * 0.15;
+
+  const recommendations = [
+    'Prioritize LIHTC and IDA applications — highest confidence and largest value.',
+    'Bundle Section 48 ITC with energy community and domestic content adders for maximum federal credit.',
+    'Submit IDA PILOT application within 60 days to lock in property tax abatement.',
+    'Layer Con Edison utility incentives on top of state NYSERDA programs — both are stackable.',
+  ];
+
+  return {
+    project_id: projectKey,
+    total_programs_analyzed: 30007,
+    matching_programs: matchingPrograms,
+    total_potential_value: totalPotentialValue,
+    total_potential_with_stacking: totalPotentialValue + stackingBonus,
+    recommendations,
+    last_calculated_at: new Date().toISOString(),
+  };
+}
 
 // ============================================================================
 // ANIMATED PROGRESS INDICATOR
@@ -294,6 +405,13 @@ function EligibilityResults({
 // MAIN PAGE
 // ============================================================================
 
+/** Returns a promise that rejects after `ms` milliseconds. */
+function timeout(ms: number): Promise<never> {
+  return new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
+  );
+}
+
 export default function MatchingPage() {
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
@@ -301,6 +419,8 @@ export default function MatchingPage() {
   const [pageLoading, setPageLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [pageError, setPageError] = useState<string | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [demoResult, setDemoResult] = useState<EligibilityResult | null>(null);
 
   // Fallback: keep IncentiveMatcher data only if eligibility API hard-fails
   const [fallbackIncentives, setFallbackIncentives] = useState<IncentiveProgram[]>([]);
@@ -319,21 +439,45 @@ export default function MatchingPage() {
     const supabase = createClient();
 
     try {
-      const { data: projectsData, error: projectsError } = await supabase
+      const projectsQuery = supabase
         .from('projects')
         .select('*')
         .order('created_at', { ascending: false });
 
+      const { data: projectsData, error: projectsError } = await Promise.race([
+        projectsQuery,
+        timeout(5000),
+      ]);
+
       if (projectsError) throw projectsError;
 
-      setProjects(projectsData ?? []);
-
-      if (projectsData && projectsData.length > 0 && !selectedProjectId) {
-        setSelectedProjectId(projectsData[0].id);
+      if (!projectsData || projectsData.length === 0) {
+        // No projects returned — fall back to demo
+        const demoProjects = buildDemoProjects();
+        const firstKey = demoProjects[0].id;
+        setProjects(demoProjects);
+        setIsDemoMode(true);
+        setDemoResult(buildDemoResult(firstKey));
+        if (!selectedProjectId) {
+          setSelectedProjectId(firstKey);
+        }
+      } else {
+        setProjects(projectsData);
+        setIsDemoMode(false);
+        if (!selectedProjectId) {
+          setSelectedProjectId(projectsData[0].id);
+        }
       }
     } catch (err) {
-      console.error('Error loading projects:', err);
-      setPageError('Failed to load projects. Please try again.');
+      console.warn('Projects load failed or timed out, switching to demo mode:', err);
+      const demoProjects = buildDemoProjects();
+      const firstKey = demoProjects[0].id;
+      setProjects(demoProjects);
+      setIsDemoMode(true);
+      setDemoResult(buildDemoResult(firstKey));
+      if (!selectedProjectId) {
+        setSelectedProjectId(firstKey);
+      }
     } finally {
       setPageLoading(false);
     }
@@ -347,13 +491,22 @@ export default function MatchingPage() {
   // ---- trigger eligibility check when project selection changes ----
   useEffect(() => {
     if (!selectedProjectId) return;
+
+    if (isDemoMode) {
+      // In demo mode: build results from local data immediately
+      setDemoResult(buildDemoResult(selectedProjectId));
+      resetEligibility();
+      return;
+    }
+
     setUseFallback(false);
+    setDemoResult(null);
     void checkEligibility(selectedProjectId);
-  }, [selectedProjectId, checkEligibility]);
+  }, [selectedProjectId, isDemoMode, checkEligibility, resetEligibility]);
 
   // ---- if eligibility API errors, load fallback incentives once ----
   useEffect(() => {
-    if (!eligibilityError) return;
+    if (!eligibilityError || isDemoMode) return;
 
     setUseFallback(true);
 
@@ -405,15 +558,17 @@ export default function MatchingPage() {
         setFallbackIncentives(incentivesData ?? []);
       }
     })();
-  }, [eligibilityError, fallbackIncentives.length]);
+  }, [eligibilityError, isDemoMode, fallbackIncentives.length]);
 
   // ---- refresh handler ----
   async function handleRefresh() {
     setRefreshing(true);
     resetEligibility();
     setUseFallback(false);
+    setDemoResult(null);
+    setIsDemoMode(false);
     await loadProjects();
-    if (selectedProjectId) {
+    if (selectedProjectId && !isDemoMode) {
       await checkEligibility(selectedProjectId);
     }
     setRefreshing(false);
@@ -423,10 +578,11 @@ export default function MatchingPage() {
   function handleExport() {
     if (!selectedProject) return;
 
+    const activeResult = isDemoMode ? demoResult : result;
     let csvContent: string;
 
-    if (result && !useFallback) {
-      const rows = result.matching_programs.map((p) => {
+    if (activeResult && !useFallback) {
+      const rows = activeResult.matching_programs.map((p) => {
         const confidence = `${Math.round(p.match_confidence * 100)}%`;
         const stackingCount = p.stacking_opportunities.length;
         return [
@@ -459,6 +615,9 @@ export default function MatchingPage() {
   function handleViewIncentive(id: string) {
     router.push(`/discover/${id}`);
   }
+
+  // The result to render (live API result or demo result)
+  const activeResult = isDemoMode ? demoResult : result;
 
   // ============================================================================
   // RENDER — loading / error / empty states
@@ -537,13 +696,25 @@ export default function MatchingPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-sora">
-            Incentive Matching
-          </h1>
-          <p className="text-slate-500 dark:text-slate-400">
-            AI-powered matching across 30,007+ verified programs
-          </p>
+        <div className="flex items-center gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-sora">
+                Incentive Matching
+              </h1>
+              {isDemoMode && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-amber-400 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20"
+                >
+                  Demo Mode
+                </Badge>
+              )}
+            </div>
+            <p className="text-slate-500 dark:text-slate-400">
+              AI-powered matching across 30,007+ verified programs
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
@@ -555,6 +726,7 @@ export default function MatchingPage() {
               onValueChange={(id) => {
                 setSelectedProjectId(id);
                 resetEligibility();
+                setDemoResult(null);
               }}
             >
               <SelectTrigger className="w-[280px] bg-white dark:bg-navy-800 border-slate-200 dark:border-navy-700">
@@ -595,7 +767,7 @@ export default function MatchingPage() {
             variant="outline"
             size="icon"
             onClick={handleExport}
-            disabled={!result && !useFallback}
+            disabled={!activeResult && !useFallback}
             className="border-slate-200 dark:border-navy-700"
           >
             <Download className="w-4 h-4" />
@@ -669,11 +841,20 @@ export default function MatchingPage() {
       {/* ---- Results area ---- */}
       {selectedProject && (
         <>
-          {/* Eligibility API loading state */}
-          {eligibilityLoading && <EligibilityLoader />}
+          {/* Demo mode: show results (or loader if result not yet built) */}
+          {isDemoMode && demoResult && (
+            <EligibilityResults
+              result={demoResult}
+              projectName={selectedProject.name}
+            />
+          )}
+          {isDemoMode && !demoResult && <EligibilityLoader />}
 
-          {/* Eligibility API error → show fallback banner + IncentiveMatcher */}
-          {!eligibilityLoading && useFallback && eligibilityError && (
+          {/* Live mode: eligibility API loading state */}
+          {!isDemoMode && eligibilityLoading && <EligibilityLoader />}
+
+          {/* Live mode: eligibility API error → show fallback banner + IncentiveMatcher */}
+          {!isDemoMode && !eligibilityLoading && useFallback && eligibilityError && (
             <>
               <Card className="card-v41 border-amber-500/20 bg-amber-500/5">
                 <CardContent className="flex items-center gap-3 py-4">
@@ -709,16 +890,16 @@ export default function MatchingPage() {
             </>
           )}
 
-          {/* Eligibility API success */}
-          {!eligibilityLoading && !useFallback && result && (
+          {/* Live mode: eligibility API success */}
+          {!isDemoMode && !eligibilityLoading && !useFallback && result && (
             <EligibilityResults
               result={result}
               projectName={selectedProject.name}
             />
           )}
 
-          {/* No results yet and not loading (e.g. just mounted, waiting for effect) */}
-          {!eligibilityLoading && !result && !eligibilityError && (
+          {/* Live mode: no results yet and not loading */}
+          {!isDemoMode && !eligibilityLoading && !result && !eligibilityError && (
             <Card className="card-v41">
               <CardContent className="flex flex-col items-center py-12">
                 <Sparkles className="w-10 h-10 text-slate-300 dark:text-slate-600" />

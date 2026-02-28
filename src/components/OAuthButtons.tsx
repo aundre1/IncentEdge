@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signInWithOAuth, getOAuthCallbackUrl, type OAuthProvider } from '@/lib/auth-providers';
 
@@ -33,6 +33,56 @@ const LinkedInIcon = () => (
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
   </svg>
 );
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+/**
+ * Returns true if the error message indicates the OAuth provider has not been
+ * configured / enabled in Supabase yet. This is distinct from a user-caused
+ * error and should show a "Coming Soon" UI instead of a generic error message.
+ */
+function isProviderNotEnabled(message: string): boolean {
+  const lower = message.toLowerCase();
+  return (
+    lower.includes('provider') ||
+    lower.includes('not enabled') ||
+    lower.includes('unsupported_provider') ||
+    lower.includes('validation_failed') ||
+    lower.includes('oauth provider') ||
+    lower.includes('not supported')
+  );
+}
+
+// ============================================================================
+// LINKEDIN COMING SOON TOOLTIP
+// ============================================================================
+
+function LinkedInComingSoonBadge({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <div className="mt-2 flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 dark:border-blue-800/50 dark:bg-blue-950/30 px-3 py-2 text-sm">
+      <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600 dark:text-blue-400" />
+      <div className="flex-1">
+        <p className="font-medium text-blue-800 dark:text-blue-200">LinkedIn sign-in coming soon</p>
+        <p className="mt-0.5 text-xs text-blue-600 dark:text-blue-400">
+          Use Google or email to sign in for now. LinkedIn OIDC requires additional setup.
+        </p>
+      </div>
+      <button
+        onClick={onDismiss}
+        className="ml-1 flex-shrink-0 text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 text-xs leading-none"
+        aria-label="Dismiss"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+// ============================================================================
+// OAUTH BUTTON
+// ============================================================================
 
 export interface OAuthButtonProps {
   provider: OAuthProvider;
@@ -66,13 +116,25 @@ export function OAuthButton({
 }: OAuthButtonProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  // When LinkedIn returns a "provider not enabled" error, switch to "Coming Soon" mode
+  const [linkedInSetupRequired, setLinkedInSetupRequired] = React.useState(false);
+  const [showSetupBanner, setShowSetupBanner] = React.useState(false);
 
   const config = providerConfig[provider];
   const Icon = config.icon;
   const actionText = variant === 'signin' ? 'Continue with' : 'Sign up with';
   const isButtonLoading = loading || isLoading;
 
+  const isLinkedIn = provider === 'linkedin_oidc';
+  const showAsComingSoon = isLinkedIn && linkedInSetupRequired;
+
   const handleClick = async () => {
+    // If already determined to be a "Coming Soon" provider, show the banner instead
+    if (showAsComingSoon) {
+      setShowSetupBanner(true);
+      return;
+    }
+
     if (onClick) {
       onClick();
       return;
@@ -86,9 +148,18 @@ export function OAuthButton({
       const result = await signInWithOAuth(provider, { redirectTo: callbackUrl });
 
       if (result.error) {
-        setError(result.error.message);
+        const msg = result.error.message || '';
+
+        // LinkedIn-specific: provider not configured in Supabase
+        if (isLinkedIn && isProviderNotEnabled(msg)) {
+          setLinkedInSetupRequired(true);
+          setShowSetupBanner(true);
+        } else {
+          setError(msg);
+        }
         setIsLoading(false);
       }
+      // On success the browser will redirect — no need to setIsLoading(false)
     } catch (err) {
       setError('An unexpected error occurred');
       setIsLoading(false);
@@ -97,28 +168,51 @@ export function OAuthButton({
 
   return (
     <div className="w-full">
-      <Button
-        type="button"
-        variant="outline"
-        className={`w-full ${className || ''}`}
-        onClick={handleClick}
-        disabled={disabled || isButtonLoading}
-      >
-        {isButtonLoading ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <span className="mr-2">
-            <Icon />
-          </span>
-        )}
-        {actionText} {config.name}
-      </Button>
+      <div className="relative">
+        <Button
+          type="button"
+          variant="outline"
+          className={`w-full ${showAsComingSoon ? 'opacity-70' : ''} ${className || ''}`}
+          onClick={handleClick}
+          disabled={disabled || isButtonLoading}
+          aria-label={showAsComingSoon ? `${config.name} — Coming Soon` : `${actionText} ${config.name}`}
+        >
+          {isButtonLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <span className="mr-2">
+              <Icon />
+            </span>
+          )}
+          {showAsComingSoon ? (
+            <span className="flex items-center gap-2">
+              {actionText} {config.name}
+              <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                Soon
+              </span>
+            </span>
+          ) : (
+            `${actionText} ${config.name}`
+          )}
+        </Button>
+      </div>
+
+      {/* Generic error (non-provider-setup errors) */}
       {error && (
         <p className="mt-1 text-sm text-destructive">{error}</p>
+      )}
+
+      {/* LinkedIn setup-required banner */}
+      {isLinkedIn && showSetupBanner && (
+        <LinkedInComingSoonBadge onDismiss={() => setShowSetupBanner(false)} />
       )}
     </div>
   );
 }
+
+// ============================================================================
+// OAUTH BUTTONS GROUP
+// ============================================================================
 
 export interface OAuthButtonsProps {
   loading?: boolean;

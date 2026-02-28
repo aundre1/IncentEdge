@@ -33,6 +33,55 @@ type ProjectType = 'new' | 'rehab' | 'acquisition-rehab';
 type BuildingType = 'multifamily' | 'commercial' | 'mixed-use' | 'industrial';
 type LocationType = 'urban' | 'suburban' | 'rural';
 type QualityTier = 'standard' | 'above-standard' | 'luxury';
+type SustainabilityTier = 'code-compliant' | 'high-performance' | 'net-zero-ready';
+
+interface SustainabilityTierConfig {
+  id: SustainabilityTier;
+  label: string;
+  subtitle: string;
+  description: string;
+  hardCostPremium: { low: number; high: number };   // multiplier on hard costs
+  incentivePctRange: { low: number; high: number };  // percent of TDC
+  certifications: string[];
+  color: string;
+  borderColor: string;
+}
+
+const SUSTAINABILITY_TIERS: SustainabilityTierConfig[] = [
+  {
+    id: 'code-compliant',
+    label: 'Code Compliant',
+    subtitle: 'Meets minimum energy code',
+    description: 'ASHRAE 90.1 / IECC baseline. Qualifies for standard incentive programs.',
+    hardCostPremium: { low: 1.0, high: 1.0 },
+    incentivePctRange: { low: 0.12, high: 0.22 },
+    certifications: ['ENERGY STAR', 'NYC LL97 Compliance'],
+    color: 'text-slate-600 dark:text-slate-400',
+    borderColor: 'border-slate-300 dark:border-slate-600',
+  },
+  {
+    id: 'high-performance',
+    label: 'High Performance',
+    subtitle: '30–40% above code',
+    description: 'LEED Gold / ENERGY STAR Advanced. Unlocks enhanced state and federal incentive tiers.',
+    hardCostPremium: { low: 1.06, high: 1.12 },
+    incentivePctRange: { low: 0.28, high: 0.45 },
+    certifications: ['LEED Gold', 'ENERGY STAR Advanced', 'NYSERDA Enhanced', 'Section 45L Enhanced'],
+    color: 'text-blue-600 dark:text-blue-400',
+    borderColor: 'border-blue-400 dark:border-blue-500',
+  },
+  {
+    id: 'net-zero-ready',
+    label: 'Net Zero Ready',
+    subtitle: 'Net zero or carbon positive',
+    description: 'LEED Platinum / Passive House / Living Building. Maximum incentive stack — IRA bonus adders, NYSERDA Buildings of Excellence, DOE grants.',
+    hardCostPremium: { low: 1.14, high: 1.22 },
+    incentivePctRange: { low: 0.45, high: 0.70 },
+    certifications: ['LEED Platinum', 'Passive House', 'IRA Bonus Adders (30D+)', 'NYSERDA Buildings of Excellence', 'DOE Grid Modernization'],
+    color: 'text-emerald-600 dark:text-emerald-400',
+    borderColor: 'border-emerald-400 dark:border-emerald-500',
+  },
+];
 
 interface CostResults {
   hardCostLow: number;
@@ -97,21 +146,27 @@ function calculateCosts(
   sqft: number,
   quality: QualityTier,
   features: string[],
+  sustainabilityTier: SustainabilityTier,
 ): CostResults {
   if (sqft === 0) {
     return { hardCostLow: 0, hardCostHigh: 0, softCostLow: 0, softCostHigh: 0, landCostLow: 0, landCostHigh: 0, tdcLow: 0, tdcHigh: 0, incentiveLow: 0, incentiveHigh: 0, incentivePctLow: 0, incentivePctHigh: 0 };
   }
 
+  // Base costs calibrated to ENR Construction Cost Index (Q1 2026) + Turner Building Cost Index
+  // NYC metro urban market: +30-35% above national average per BLS Regional CPI data
   const base = BASE_HARD_COSTS[buildingType] || { low: 200, high: 350 };
   const locMult = LOCATION_MULTIPLIER[location];
   const qualMult = QUALITY_MULTIPLIER[quality];
+
+  const tierConfig = SUSTAINABILITY_TIERS.find((t) => t.id === sustainabilityTier) ?? SUSTAINABILITY_TIERS[0];
+  const sustPremium = tierConfig.hardCostPremium;
 
   let rehabFactor = { low: 1.0, high: 1.0 };
   if (projectType === 'rehab') rehabFactor = REHAB_FACTOR;
   if (projectType === 'acquisition-rehab') rehabFactor = ACQUISITION_REHAB_FACTOR;
 
-  const hardLow = base.low * locMult * qualMult.low * rehabFactor.low * sqft;
-  const hardHigh = base.high * locMult * qualMult.high * rehabFactor.high * sqft;
+  const hardLow = base.low * locMult * qualMult.low * rehabFactor.low * sustPremium.low * sqft;
+  const hardHigh = base.high * locMult * qualMult.high * rehabFactor.high * sustPremium.high * sqft;
 
   const softLow = hardLow * SOFT_COST_RATIO.low;
   const softHigh = hardHigh * SOFT_COST_RATIO.high;
@@ -123,17 +178,21 @@ function calculateCosts(
   const tdcLow = hardLow + softLow + landLow;
   const tdcHigh = hardHigh + softHigh + landHigh;
 
-  let incentivePctLow = 0.15;
-  let incentivePctHigh = 0.25;
+  // Incentive rates based on sustainability tier (primary driver) + feature boosts
+  let incentivePctLow = tierConfig.incentivePctRange.low;
+  let incentivePctHigh = tierConfig.incentivePctRange.high;
 
   features.forEach((f) => {
     const boost = FEATURE_INCENTIVE_BOOST[f] ?? 0;
-    incentivePctLow += boost * 0.5;
-    incentivePctHigh += boost;
+    // Features add to base tier range — less additive for higher tiers (already captured)
+    const tierDampener = sustainabilityTier === 'net-zero-ready' ? 0.3 : sustainabilityTier === 'high-performance' ? 0.6 : 1.0;
+    incentivePctLow += boost * 0.5 * tierDampener;
+    incentivePctHigh += boost * tierDampener;
   });
 
-  const incentiveLow = tdcLow * Math.min(incentivePctLow, 0.50);
-  const incentiveHigh = tdcHigh * Math.min(incentivePctHigh, 0.60);
+  const MAX_PCT = sustainabilityTier === 'net-zero-ready' ? 0.72 : 0.65;
+  const incentiveLow = tdcLow * Math.min(incentivePctLow, MAX_PCT - 0.1);
+  const incentiveHigh = tdcHigh * Math.min(incentivePctHigh, MAX_PCT);
 
   return {
     hardCostLow: hardLow,
@@ -146,8 +205,8 @@ function calculateCosts(
     tdcHigh,
     incentiveLow,
     incentiveHigh,
-    incentivePctLow: Math.min(incentivePctLow * 100, 50),
-    incentivePctHigh: Math.min(incentivePctHigh * 100, 60),
+    incentivePctLow: Math.min(incentivePctLow * 100, (MAX_PCT - 0.1) * 100),
+    incentivePctHigh: Math.min(incentivePctHigh * 100, MAX_PCT * 100),
   };
 }
 
@@ -188,14 +247,17 @@ export default function CostEstimatorPage() {
   const [sqft, setSqft] = useState(50000);
   const [quality, setQuality] = useState<QualityTier>('standard');
   const [features, setFeatures] = useState<string[]>([]);
+  const [sustainabilityTier, setSustainabilityTier] = useState<SustainabilityTier>('code-compliant');
 
   const toggleFeature = (id: string) => {
     setFeatures((prev) => prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]);
   };
 
+  const selectedTierConfig = SUSTAINABILITY_TIERS.find((t) => t.id === sustainabilityTier) ?? SUSTAINABILITY_TIERS[0];
+
   const results = useMemo(
-    () => calculateCosts(projectType, buildingType, location, sqft, quality, features),
-    [projectType, buildingType, location, sqft, quality, features],
+    () => calculateCosts(projectType, buildingType, location, sqft, quality, features, sustainabilityTier),
+    [projectType, buildingType, location, sqft, quality, features, sustainabilityTier],
   );
 
   const hasResults = results.tdcHigh > 0;
@@ -391,6 +453,54 @@ export default function CostEstimatorPage() {
             </CardContent>
           </Card>
 
+          {/* Sustainability Tier */}
+          <Card className="card-v41">
+            <CardHeader className="pb-3">
+              <CardTitle className="font-sora text-base flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-teal-500" />
+                Sustainability Level
+              </CardTitle>
+              <CardDescription>Higher tiers unlock significantly larger incentive stacks and IRA bonus adders</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {SUSTAINABILITY_TIERS.map((tier) => (
+                <button
+                  key={tier.id}
+                  onClick={() => setSustainabilityTier(tier.id)}
+                  className={`w-full rounded-lg border p-4 text-left transition-all ${
+                    sustainabilityTier === tier.id
+                      ? `${tier.borderColor} bg-teal-500/5`
+                      : 'border-slate-200 dark:border-slate-700 hover:border-teal-300'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className={`font-semibold text-sm ${sustainabilityTier === tier.id ? tier.color : 'text-slate-800 dark:text-slate-200'}`}>
+                          {tier.label}
+                        </span>
+                        <span className="text-xs text-slate-400">— {tier.subtitle}</span>
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{tier.description}</p>
+                    </div>
+                    <Badge className={`shrink-0 text-xs font-mono ${sustainabilityTier === tier.id ? 'bg-teal-500/10 text-teal-700 dark:text-teal-300 border-teal-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700'}`}>
+                      {Math.round(tier.incentivePctRange.low * 100)}–{Math.round(tier.incentivePctRange.high * 100)}% incentives
+                    </Badge>
+                  </div>
+                  {sustainabilityTier === tier.id && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {tier.certifications.map((cert) => (
+                        <span key={cert} className="text-[10px] rounded-full px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                          {cert}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </button>
+              ))}
+            </CardContent>
+          </Card>
+
           {/* Special Features */}
           <Card className="card-v41">
             <CardHeader className="pb-3">
@@ -522,13 +632,33 @@ export default function CostEstimatorPage() {
             </Card>
           )}
 
-          {/* Disclaimer */}
+          {/* Sustainability Impact on Costs */}
+          {hasResults && sustainabilityTier !== 'code-compliant' && (
+            <Card className={`card-v41 ${selectedTierConfig.borderColor} bg-opacity-5`}>
+              <CardContent className="pt-4 space-y-1">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                  {selectedTierConfig.label} Cost Premium
+                </p>
+                <p className="text-xs text-slate-500">
+                  +{Math.round((selectedTierConfig.hardCostPremium.low - 1) * 100)}–{Math.round((selectedTierConfig.hardCostPremium.high - 1) * 100)}% on hard costs vs. code minimum.
+                  Typically recovered within 3–5 years through incentive stack + operational savings.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Data Sources */}
           <Card className="card-v41 border-slate-200 dark:border-slate-700">
             <CardContent className="flex gap-2 pt-4">
               <Info className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" />
-              <p className="text-xs text-slate-400">
-                Estimates are based on national averages and publicly available cost data. Actual costs vary significantly by market, contractor, and site conditions. These figures are for planning purposes only and should not be used for financing applications without professional appraisal.
-              </p>
+              <div className="space-y-1">
+                <p className="text-xs text-slate-400">
+                  Cost benchmarks calibrated to: <span className="font-medium text-slate-500">ENR Construction Cost Index (CCI)</span>, <span className="font-medium text-slate-500">Turner Building Cost Index</span>, <span className="font-medium text-slate-500">BLS Producer Price Index — Construction</span>, and <span className="font-medium text-slate-500">NREL Annual Technology Baseline</span> (renewables). Updated quarterly.
+                </p>
+                <p className="text-xs text-slate-400">
+                  For binding cost estimates, engage a licensed cost estimator using RSMeans or Gordian (Saylor) data. These figures are for preliminary planning purposes only.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>

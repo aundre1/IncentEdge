@@ -93,17 +93,17 @@ const EXPORT_PROGRAMS = [
     sourceUrl: 'https://hcr.ny.gov/lihtc',
   },
   {
-    id: 'NYC-421A',
-    name: 'NYC 421-a Tax Exemption',
+    id: 'NYC-485X',
+    name: 'NYC 485-x Affordable Neighborhoods for New Yorkers Tax Exemption',
     category: 'Local',
     type: 'Tax Exemption',
-    value: '35-year exemption',
-    deadline: '2026-06-15',
-    eligibility: 'NYC new construction with affordability',
+    value: 'Up to 40-year exemption',
+    deadline: 'Rolling (active program)',
+    eligibility: 'NYC new multifamily construction with min. 25% affordable units; prevailing wage required for 100+ unit projects',
     directPay: 'N/A',
     transferable: 'N/A',
-    administrator: 'HPD',
-    sourceUrl: 'https://www.nyc.gov/site/hpd/services-and-information/tax-incentives-421a.page',
+    administrator: 'NYC HPD',
+    sourceUrl: 'https://www.nyc.gov/site/hpd/services-and-information/tax-incentives-485x.page',
   },
   {
     id: 'WEST-IDA',
@@ -193,7 +193,7 @@ function filterPrograms(
       (p) =>
         p.category === 'Federal' ||
         p.id.startsWith(filters.state!.toUpperCase()) ||
-        (filters.state === 'NY' && ['NYC-421A', 'WEST-IDA', 'CONED-MF', 'NGRID-EE'].includes(p.id))
+        (filters.state === 'NY' && ['NYC-485X', 'WEST-IDA', 'CONED-MF', 'NGRID-EE'].includes(p.id))
     );
   }
 

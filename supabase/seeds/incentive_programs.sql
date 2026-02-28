@@ -349,9 +349,9 @@ INSERT INTO incentive_programs (
 ),
 
 (
-    'NY 421-a Affordable Housing Tax Exemption',
-    'NY-421A-001',
-    'Property tax exemption for new multifamily construction in NYC that includes affordable units. Replaced by 485-x in 2024 with enhanced affordability requirements.',
+    'NY 421-a Affordable Housing Tax Exemption (EXPIRED)',
+    'NY-421A-001-EXPIRED',
+    'EXPIRED PROGRAM — Do not recommend. Replaced by 485-x in April 2024. Was a property tax exemption for new multifamily construction in NYC that included affordable units. Valid for projects commenced before June 15, 2022 only.',
     'tax_abatement',
     'local',
     ARRAY['affordable_housing'],
@@ -367,20 +367,20 @@ INSERT INTO incentive_programs (
     true,
     ARRAY['multifamily'],
     ARRAY['apartment'],
-    'Apply through HPD. Must meet affordability set-aside requirements.',
-    'https://www.nyc.gov/site/hpd/services-and-information/tax-incentives-702.page',
+    'EXPIRED — Not applicable for new projects. See 485-x program for active replacement.',
+    'https://www.nyc.gov/site/hpd/services-and-information/tax-incentives-421a.page',
     '1971-01-01',
-    '2024-06-15',
+    '2022-06-15',
     NULL,
-    false, -- Expired, replaced by 485-x
+    false, -- Expired June 2022
     false,
-    ARRAY['NYC', '421-a', 'property_tax', 'affordable', 'multifamily']
+    ARRAY['NYC', '421-a', 'property_tax', 'affordable', 'multifamily', 'expired']
 ),
 
 (
-    'NY 485-x Affordable Housing Tax Exemption',
+    'NY 485-x Affordable Neighborhoods for New Yorkers Tax Exemption',
     'NY-485X-001',
-    'Replacement for 421-a program. Property tax exemption for new multifamily construction in NYC with enhanced affordability requirements. Requires prevailing wage for construction workers.',
+    'Active program replacing expired 421-a. Up to 40-year property tax exemption for new multifamily construction in NYC (5 boroughs). Minimum 25% of units must be affordable. Signed April 20, 2024. Two tracks: Track A (Class A residential, various AMI levels) and Track B (deeper affordability). Buildings with 100+ units must pay prevailing wages for both construction workers and ongoing building services staff. No sunset date.',
     'tax_abatement',
     'local',
     ARRAY['affordable_housing'],

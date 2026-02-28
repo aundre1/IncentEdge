@@ -28,6 +28,7 @@ import {
 import { createClient } from '@/lib/supabase/client';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 import { CategoryBadge } from '@/components/ui/CategoryBadge';
+import { allIncentives } from '@/data/incentives';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -108,6 +109,66 @@ const PROGRAM_LEVELS = [
 const STALE_PLACEHOLDER_DATE = new Date('2025-01-01');
 
 // ---------------------------------------------------------------------------
+// Demo data helpers
+// ---------------------------------------------------------------------------
+
+/** Build a flat list of Incentive-shaped objects from the demo data. */
+function buildDemoIncentives(): Incentive[] {
+  let idx = 1;
+  const result: Incentive[] = [];
+
+  const typeToCategory: Record<string, string> = {
+    federal: 'Tax Credit',
+    state: 'Grant',
+    local: 'Property Tax',
+    utility: 'Rebate',
+  };
+
+  const typeToSource: Record<string, string> = {
+    federal: 'Federal',
+    state: 'State',
+    local: 'Local',
+    utility: 'Utility',
+  };
+
+  for (const projectIncentives of Object.values(allIncentives)) {
+    for (const inc of projectIncentives) {
+      // De-duplicate by id — use a string id cast to number via idx
+      result.push({
+        id: idx++,
+        title: inc.fullName ?? inc.program,
+        agency: inc.agency,
+        program_type: inc.type,
+        state: 'NY',
+        funding_amount: inc.amount * 1_000_000,
+        category: typeToCategory[inc.type] ?? 'Other',
+        source: typeToSource[inc.type] ?? 'Other',
+        description: inc.desc,
+      });
+    }
+  }
+
+  return result;
+}
+
+// De-duplicate by title so programs shared across projects appear once
+function deduplicateDemoIncentives(incentives: Incentive[]): Incentive[] {
+  const seen = new Set<string>();
+  return incentives.filter((inc) => {
+    if (seen.has(inc.title)) return false;
+    seen.add(inc.title);
+    return true;
+  });
+}
+
+/** Returns a promise that rejects after `ms` milliseconds. */
+function timeout(ms: number): Promise<never> {
+  return new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -182,6 +243,7 @@ export default function DiscoverPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   // Mode: 'ai' when query is entered, 'browse' otherwise
   const [searchMode, setSearchMode] = useState<SearchMode>('browse');
@@ -213,7 +275,36 @@ export default function DiscoverPage() {
   }, [searchQuery]);
 
   // ------------------------------------------------------------------
-  // Browse mode — Supabase direct query (unchanged from original)
+  // Demo fallback: load local data instead of Supabase
+  // ------------------------------------------------------------------
+  const loadDemoIncentives = useCallback(() => {
+    const all = deduplicateDemoIncentives(buildDemoIncentives());
+
+    // Apply client-side filters
+    let filtered = all;
+    if (selectedState) {
+      filtered = filtered.filter((inc) => inc.state === selectedState);
+    }
+    if (selectedCategory) {
+      filtered = filtered.filter((inc) => inc.category === selectedCategory);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (inc) =>
+          inc.title.toLowerCase().includes(q) ||
+          inc.agency.toLowerCase().includes(q) ||
+          (inc.description ?? '').toLowerCase().includes(q)
+      );
+    }
+
+    setIncentives(filtered.slice(0, 50));
+    setTotalCount(filtered.length);
+    setIsDemoMode(true);
+  }, [selectedState, selectedCategory, searchQuery]);
+
+  // ------------------------------------------------------------------
+  // Browse mode — Supabase direct query with 5-second timeout
   // ------------------------------------------------------------------
   const browseIncentives = useCallback(async () => {
     setLoading(true);
@@ -232,18 +323,25 @@ export default function DiscoverPage() {
 
     query = query.limit(50);
 
-    const { data, error, count } = await query;
+    try {
+      const { data, error, count } = await Promise.race([query, timeout(5000)]);
 
-    if (!error && data) {
-      setIncentives(data as Incentive[]);
-      setTotalCount(count ?? 0);
-    } else {
-      console.error('Error fetching incentives:', error);
-      setIncentives([]);
+      if (!error && data && data.length > 0) {
+        setIncentives(data as Incentive[]);
+        setTotalCount(count ?? 0);
+        setIsDemoMode(false);
+      } else {
+        // Error or empty result — fall back to demo
+        console.warn('Browse incentives returned no data or errored, switching to demo mode:', error);
+        loadDemoIncentives();
+      }
+    } catch (err) {
+      console.warn('Browse incentives timed out or failed, switching to demo mode:', err);
+      loadDemoIncentives();
     }
 
     setLoading(false);
-  }, [selectedState, selectedCategory]);
+  }, [selectedState, selectedCategory, loadDemoIncentives]);
 
   // ------------------------------------------------------------------
   // AI mode — semantic search API
@@ -255,15 +353,18 @@ export default function DiscoverPage() {
     setFallbackActive(false);
 
     try {
-      const response = await fetch('/api/programs/search/semantic', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: searchQuery.trim(),
-          ...(selectedState ? { location: selectedState } : {}),
-          maxResults: 30,
+      const response = await Promise.race([
+        fetch('/api/programs/search/semantic', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: searchQuery.trim(),
+            ...(selectedState ? { location: selectedState } : {}),
+            maxResults: 30,
+          }),
         }),
-      });
+        timeout(5000),
+      ]);
 
       if (!response.ok) {
         throw new Error(`Semantic search returned ${response.status}`);
@@ -273,32 +374,17 @@ export default function DiscoverPage() {
       setSemanticResults(data.results);
       setSemanticTotal(data.total);
       setSearchTimeMs(data.searchTime);
+      setIsDemoMode(false);
     } catch (err) {
-      console.error('Semantic search failed, falling back to Supabase:', err);
+      console.error('Semantic search failed or timed out, falling back to demo data:', err);
       setFallbackActive(true);
-      // Fall back to direct Supabase query so the page stays useful
-      const supabase = createClient();
-      let query = supabase
-        .from('incentive_awards')
-        .select('*', { count: 'exact' })
-        .or(`title.ilike.%${searchQuery}%,agency.ilike.%${searchQuery}%`);
-
-      if (selectedState) query = query.eq('state', selectedState);
-      if (selectedCategory) query = query.eq('category', selectedCategory);
-
-      query = query.limit(50);
-
-      const { data, count } = await query;
-      if (data) {
-        setIncentives(data as Incentive[]);
-        setTotalCount(count ?? 0);
-      }
-      // Switch rendering to browse mode so we show the fallback cards
+      // Switch rendering to browse mode so we show fallback cards
       setSearchMode('browse');
+      loadDemoIncentives();
     }
 
     setLoading(false);
-  }, [searchQuery, selectedState, selectedCategory]);
+  }, [searchQuery, selectedState, loadDemoIncentives]);
 
   // ------------------------------------------------------------------
   // Initial load + debounced re-fetch on filter change
@@ -313,11 +399,15 @@ export default function DiscoverPage() {
       if (searchMode === 'ai') {
         semanticSearch();
       } else {
-        browseIncentives();
+        if (isDemoMode) {
+          loadDemoIncentives();
+        } else {
+          browseIncentives();
+        }
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [searchQuery, selectedState, selectedCategory, searchMode, semanticSearch, browseIncentives]);
+  }, [searchQuery, selectedState, selectedCategory, searchMode, semanticSearch, browseIncentives, isDemoMode, loadDemoIncentives]);
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -532,6 +622,14 @@ export default function DiscoverPage() {
                   Using cached results
                 </Badge>
               )}
+              {isDemoMode && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-amber-400 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20"
+                >
+                  Demo Mode
+                </Badge>
+              )}
             </p>
           )}
         </div>
@@ -652,7 +750,7 @@ export default function DiscoverPage() {
             </div>
           )
         ) : /* ----------------------------------------------------------------
-             * Browse mode results (Supabase direct)
+             * Browse mode results (Supabase direct or demo fallback)
              * -------------------------------------------------------------- */
         incentives.length === 0 ? (
           <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
@@ -694,6 +792,12 @@ export default function DiscoverPage() {
                           </p>
                         </div>
                       </div>
+
+                      {incentive.description && (
+                        <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                          {incentive.description}
+                        </p>
+                      )}
 
                       <div className="flex flex-wrap items-center gap-2 text-sm">
                         <CategoryBadge category={incentive.category || 'Other'} />

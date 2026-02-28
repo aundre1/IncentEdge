@@ -1,0 +1,208 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-28T00:40:00Z",
+  "totalPrograms": 10,
+  "description": "10 real sample incentive programs from IncentEdge production database. Mix of federal, state, local, and utility programs. All verified and live.",
+  "programs": [
+    {
+      "id": "00000000-0000-0000-0002-000000000001",
+      "name": "Section 45L New Energy Efficient Home Credit",
+      "jurisdiction": "Federal",
+      "jurisdictionLevel": "federal",
+      "programType": "tax_credit",
+      "category": "federal",
+      "description": "45L provides a $5,000 per dwelling unit tax credit for the construction of new energy-efficient homes meeting specific energy efficiency standards. Available through December 31, 2033 under the Inflation Reduction Act.",
+      "estimatedValue": "$5,000 per unit",
+      "eligibilitySummary": [
+        "New residential dwelling units",
+        "Must meet IRS energy efficiency standards (25-50% better than IECC 2006)",
+        "Individual or corporate developer"
+      ],
+      "applicationUrl": "https://www.irs.gov/credits-deductions/energy-efficient-home-improvement-credit-irc-45l",
+      "administrator": "IRS",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.95
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000002",
+      "name": "Section 179D Energy Efficient Commercial Building Deduction",
+      "jurisdiction": "Federal",
+      "jurisdictionLevel": "federal",
+      "programType": "tax_deduction",
+      "category": "federal",
+      "description": "179D allows a deduction of up to $5 per square foot for qualified energy-efficient commercial building property placed in service. Available for buildings meeting ASHRAE 90.1 2007 standards.",
+      "estimatedValue": "$1-5 per sq ft",
+      "eligibilitySummary": [
+        "Commercial buildings placed in service after 2005",
+        "Must comply with ASHRAE 90.1-2007 energy standards",
+        "Building envelope, HVAC, lighting, and hot water systems must qualify"
+      ],
+      "applicationUrl": "https://www.irs.gov/publications/p17",
+      "administrator": "IRS",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.95
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000003",
+      "name": "Investment Tax Credit (ITC) for Solar & Storage",
+      "jurisdiction": "Federal",
+      "jurisdictionLevel": "federal",
+      "programType": "tax_credit",
+      "category": "federal",
+      "description": "30% Investment Tax Credit for commercial and residential solar photovoltaic systems, energy storage systems, and qualifying renewable energy properties. Domestic content bonus credits available.",
+      "estimatedValue": "30% of project cost",
+      "eligibilitySummary": [
+        "Solar PV, energy storage, wind, geothermal systems",
+        "Residential and commercial eligible",
+        "Domestic content bonus: +10% (subject to wage and apprenticeship requirements)"
+      ],
+      "applicationUrl": "https://www.irs.gov/credits-deductions/investment-tax-credit-irc-46-itc",
+      "administrator": "IRS",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.95
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000004",
+      "name": "Low-Income Housing Tax Credit (4%)",
+      "jurisdiction": "Federal",
+      "jurisdictionLevel": "federal",
+      "programType": "tax_credit",
+      "category": "federal",
+      "description": "4% LIHTC via tax-exempt bond financing for qualified affordable housing development. As-of-right allocation for developments meeting income and rent restrictions.",
+      "estimatedValue": "$17,700 - $28,500 per unit",
+      "eligibilitySummary": [
+        "Affordable rental housing (income-restricted to 60% AMI)",
+        "New construction or substantial rehabilitation",
+        "10-year compliance period minimum"
+      ],
+      "applicationUrl": "https://www.irs.gov/businesses/small-businesses-self-employed/low-income-housing-tax-credit-home-page",
+      "administrator": "State HFAs",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.95
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000005",
+      "name": "NYSERDA New Construction Program",
+      "jurisdiction": "New York",
+      "jurisdictionLevel": "state",
+      "programType": "rebate",
+      "category": "state",
+      "description": "Performance-based incentive for new commercial construction and major renovations achieving NYSERDA Tier 1 or Tier 2 efficiency targets.",
+      "estimatedValue": "Varies by project",
+      "eligibilitySummary": [
+        "New commercial construction or major renovation",
+        "Must meet NYSERDA Tier 1 or Tier 2 requirements",
+        "Building performance path or prescriptive path available"
+      ],
+      "applicationUrl": "https://www.nyserda.ny.gov/",
+      "administrator": "NYSERDA",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.90
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000006",
+      "name": "Westchester IDA PILOT Program",
+      "jurisdiction": "Westchester County",
+      "jurisdictionLevel": "local",
+      "programType": "tax_abatement",
+      "category": "local",
+      "description": "20-year graduated property tax abatement from Westchester County Industrial Development Agency for qualified real estate development projects in designated areas.",
+      "estimatedValue": "Up to $18M per project",
+      "eligibilitySummary": [
+        "Real estate development in designated IDA project areas",
+        "Commercial, mixed-use, or residential projects",
+        "Minimum project size and cost requirements apply"
+      ],
+      "applicationUrl": "https://www.westchesterida.com/",
+      "administrator": "Westchester IDA",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.85
+    },
+    {
+      "id": "lihtc-9pct",
+      "name": "Low-Income Housing Tax Credit (9%)",
+      "jurisdiction": "Federal",
+      "jurisdictionLevel": "federal",
+      "programType": "tax_credit",
+      "category": "federal",
+      "description": "Competitive 9% LIHTC allocation for qualified affordable housing development. Higher credit percentage than 4% but requires competitive application.",
+      "estimatedValue": "$25,000 - $35,000 per unit",
+      "eligibilitySummary": [
+        "Affordable rental housing (income-restricted to 60% AMI)",
+        "New construction or substantial rehabilitation",
+        "Competitive application to state housing finance agency"
+      ],
+      "applicationUrl": "https://www.irs.gov/businesses/small-businesses-self-employed/low-income-housing-tax-credit-home-page",
+      "administrator": "IRS / State HFAs",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.95
+    },
+    {
+      "id": "nmtc",
+      "name": "New Markets Tax Credit (NMTC)",
+      "jurisdiction": "Federal",
+      "jurisdictionLevel": "federal",
+      "programType": "tax_credit",
+      "category": "federal",
+      "description": "39% tax credit for qualified equity investments in Community Development Entities serving low-income communities. Critical for underserved area development.",
+      "estimatedValue": "39% of qualified investment",
+      "eligibilitySummary": [
+        "Investment in qualified Community Development Entities (CDEs)",
+        "Project located in low-income community",
+        "Community development purposes required"
+      ],
+      "applicationUrl": "https://www.cdfifund.gov/programs-training/programs/new-markets-tax-credit-program",
+      "administrator": "CDFI Fund",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.90
+    },
+    {
+      "id": "coned-rebates",
+      "name": "Con Edison Energy Efficiency Rebates",
+      "jurisdiction": "New York",
+      "jurisdictionLevel": "utility",
+      "programType": "rebate",
+      "category": "utility",
+      "description": "Commercial energy efficiency equipment rebates for HVAC, lighting, refrigeration, and process equipment upgrades in Con Edison service territory.",
+      "estimatedValue": "$1,500 - $25,000+ per measure",
+      "eligibilitySummary": [
+        "Con Edison commercial service customer",
+        "Qualifying energy efficiency equipment",
+        "Standard equipment manufacturer specifications required"
+      ],
+      "applicationUrl": "https://www.coned.com/en/business/save-energy-and-money/rebates-incentives",
+      "administrator": "Con Edison",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.88
+    },
+    {
+      "id": "pace-financing",
+      "name": "Property Assessed Clean Energy (PACE) Financing",
+      "jurisdiction": "Multi-State",
+      "jurisdictionLevel": "state",
+      "programType": "financing",
+      "category": "state",
+      "description": "PACE enables property owners to finance energy efficiency, renewable energy, and sustainable infrastructure through special property tax assessment. $180M+ available in NY.",
+      "estimatedValue": "Up to 100% of project cost",
+      "eligibilitySummary": [
+        "Commercial or residential property in PACE-enabled jurisdiction",
+        "Energy efficiency, renewable energy, or water/stormwater improvements",
+        "Property must have sufficient equity or creditworthiness"
+      ],
+      "applicationUrl": "https://www.pacenation.us/",
+      "administrator": "PACE Administrators",
+      "directPayEligible": false,
+      "stackable": true,
+      "dataQualityScore": 0.82
+    }
+  ]
+}

@@ -24,7 +24,7 @@ interface StateData {
 }
 
 const STATE_DATA: StateData[] = [
-  { abbr: 'NY', name: 'New York', total: 1247, federal: 312, state: 498, local: 287, utility: 150, topPrograms: ['NY State Brownfield Cleanup', 'Empire State Development Grants', 'NYC Property Tax Abatement (421-a)'] },
+  { abbr: 'NY', name: 'New York', total: 1247, federal: 312, state: 498, local: 287, utility: 150, topPrograms: ['NY State Brownfield Cleanup', 'Empire State Development Grants', 'NYC 485-x Affordable Neighborhoods Tax Exemption'] },
   { abbr: 'CA', name: 'California', total: 1180, federal: 298, state: 476, local: 264, utility: 142, topPrograms: ['CPUC Self-Generation Incentive', 'Cal HFA Down Payment Assistance', 'Low-Income Weatherization Program'] },
   { abbr: 'TX', name: 'Texas', total: 1089, federal: 287, state: 412, local: 248, utility: 142, topPrograms: ['Texas Enterprise Zone Program', 'Texas PACE Authority', 'City of Houston Green Building Incentive'] },
   { abbr: 'FL', name: 'Florida', total: 987, federal: 265, state: 378, local: 218, utility: 126, topPrograms: ['Florida Job Growth Grant Fund', 'Florida PACE Program', 'FPL Energy Efficiency Rebates'] },

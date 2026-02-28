@@ -1,11 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Building2, Leaf, DollarSign, Clock, Shield, Zap, BarChart3, CheckCircle2, Search, ChevronRight } from 'lucide-react';
+import { ArrowRight, Building2, Leaf, DollarSign, Clock, Shield, Zap, BarChart3, CheckCircle2, ChevronRight } from 'lucide-react';
 import { V44Ticker } from '@/components/layout/v44-ticker';
-import { IncentiveSearchAutocomplete } from '@/components/IncentiveSearchAutocomplete';
+import RegistrationModal from '@/components/RegistrationModal';
+import { PRICING_TIERS } from '@/lib/stripe';
+import sampleIncentivesData from '@/data/sample-incentives.json';
 
 export default function HomePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const scrollToSamples = () => {
+    const element = document.getElementById('sample-results');
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-deep-950">
       {/* Ticker */}
@@ -57,8 +66,7 @@ export default function HomePage() {
               </div>
 
               <h1 className="font-sora text-4xl md:text-5xl lg:text-[56px] font-bold tracking-tight text-deep-900 dark:text-white leading-[1.1] mb-6">
-                The incentive intelligence platform for{' '}
-                <span className="text-teal-500">infrastructure investors</span>
+                Find Your Incentives in 60 Seconds
               </h1>
 
               <p className="text-lg text-deep-500 dark:text-sage-400 mb-10 leading-relaxed max-w-2xl">
@@ -66,27 +74,19 @@ export default function HomePage() {
                 What takes consultants 200+ hours, IncentEdge delivers in under 60 seconds.
               </p>
 
-              {/* Search Bar */}
-              <div className="mb-10">
-                <IncentiveSearchAutocomplete
-                  variant="hero"
-                  placeholder="Search 30,007 programs — try &quot;NYSERDA&quot;, &quot;ITC&quot;, or &quot;solar&quot;..."
-                />
-              </div>
-
               <div className="flex flex-col sm:flex-row items-start gap-4">
+                <button
+                  onClick={scrollToSamples}
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-teal-600 dark:bg-teal-600 text-white text-[14px] font-semibold hover:bg-teal-700 dark:hover:bg-teal-500 transition-colors"
+                >
+                  See Free Sample
+                  <ArrowRight className="w-4 h-4" />
+                </button>
                 <Link
                   href="/signup"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-deep-900 dark:bg-teal-600 text-white text-[14px] font-semibold hover:bg-deep-800 dark:hover:bg-teal-500 transition-colors"
-                >
-                  Start Free Trial
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/demo"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-deep-200 dark:border-deep-700 text-deep-700 dark:text-sage-300 text-[14px] font-semibold hover:bg-deep-50 dark:hover:bg-deep-800 transition-colors"
                 >
-                  Watch Demo
+                  Start Free Trial
                 </Link>
               </div>
             </div>
@@ -99,8 +99,8 @@ export default function HomePage() {
             {[
               { label: 'TAM', value: '$500B+', desc: 'Annual incentive market' },
               { label: 'Programs', value: '30,007+', desc: 'Federal, state & local' },
-              { label: 'Success Rate', value: '85%', desc: 'Application approval' },
-              { label: 'Time Savings', value: '99.5%', desc: 'vs manual research' },
+              { label: 'Time Saved', value: '100+ Hours', desc: 'Per project analyzed' },
+              { label: 'Accuracy', value: '92%', desc: 'AI-powered matching' },
             ].map((stat) => (
               <div key={stat.label} className="px-6 py-8 text-center">
                 <div className="font-mono text-2xl font-bold text-deep-900 dark:text-white">{stat.value}</div>
@@ -111,61 +111,169 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Features */}
-        <section className="max-w-[1200px] mx-auto px-6 py-20">
+        {/* Sample Results Section */}
+        <section id="sample-results" className="max-w-[1200px] mx-auto px-6 py-20">
           <div className="mb-14">
-            <h2 className="font-sora text-2xl md:text-3xl font-bold text-deep-900 dark:text-deep-100">Three Integrated Silos</h2>
-            <p className="mt-3 text-deep-500 dark:text-sage-500 max-w-xl">
-              The only platform that integrates discovery, application, and monetization into a single workflow.
+            <h2 className="font-sora text-3xl md:text-4xl font-bold text-deep-900 dark:text-deep-100 mb-2">
+              10 Programs Your Project May Qualify For
+            </h2>
+            <p className="text-deep-500 dark:text-sage-400 max-w-2xl">
+              Here's a sample of incentive opportunities we found based on common renewable energy and efficiency projects.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                icon: Building2,
-                title: 'Discovery Engine',
-                desc: 'AI-powered analysis of 30,007+ programs with sub-60 second eligibility screening across all 50 states.',
-                color: 'text-teal-500',
-                bg: 'bg-teal-50 dark:bg-teal-900/20',
-                border: 'border-teal-100 dark:border-teal-800/30',
-              },
-              {
-                icon: Leaf,
-                title: 'Application Services',
-                desc: 'AI-generated applications with 85% success rate, trained on millions of winning applications.',
-                color: 'text-emerald-600',
-                bg: 'bg-emerald-50 dark:bg-emerald-900/20',
-                border: 'border-emerald-100 dark:border-emerald-800/30',
-              },
-              {
-                icon: DollarSign,
-                title: 'Monetization Marketplace',
-                desc: 'Connect with 50+ institutional buyers. Get 95-97 cents on the dollar vs 70-85 traditional.',
-                color: 'text-deep-600 dark:text-sage-300',
-                bg: 'bg-deep-50 dark:bg-deep-800/50',
-                border: 'border-deep-100 dark:border-deep-700',
-              },
-            ].map((feature) => (
+
+          {/* Incentive Cards Grid */}
+          <div className="grid gap-6 md:grid-cols-2 mb-12">
+            {sampleIncentivesData.programs.map((incentive) => (
               <div
-                key={feature.title}
-                className={`rounded-xl border ${feature.border} ${feature.bg} p-6 hover:shadow-sm transition-all`}
+                key={incentive.id}
+                className="rounded-xl border border-deep-100 dark:border-deep-800 bg-white dark:bg-deep-900 p-6 hover:shadow-md transition-all hover:border-teal-200 dark:hover:border-teal-700"
               >
-                <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white dark:bg-deep-900 shadow-sm border border-deep-100 dark:border-deep-700`}>
-                  <feature.icon className={`h-5 w-5 ${feature.color}`} />
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="font-sora font-semibold text-lg text-deep-900 dark:text-deep-100">
+                      {incentive.name}
+                    </h3>
+                  </div>
+                  <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-teal-100 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300">
+                    {incentive.jurisdiction}
+                  </span>
                 </div>
-                <h3 className="mt-4 font-sora text-lg font-semibold text-deep-900 dark:text-deep-100">{feature.title}</h3>
-                <p className="mt-2 text-sm text-deep-500 dark:text-sage-500 leading-relaxed">
-                  {feature.desc}
+
+                <p className="text-sm text-deep-600 dark:text-sage-400 mb-4 leading-relaxed">
+                  {incentive.description}
                 </p>
-                <Link
-                  href="/signup"
-                  className={`inline-flex items-center gap-1 mt-4 text-sm font-medium ${feature.color} hover:underline`}
-                >
-                  Learn more
-                  <ChevronRight className="h-3.5 w-3.5" />
-                </Link>
+
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                    {incentive.estimatedValue}
+                  </span>
+                  <span className="text-xs text-deep-500 dark:text-sage-500">estimated value</span>
+                </div>
+
+                <div className="flex items-center justify-between pt-3 border-t border-deep-100 dark:border-deep-800">
+                  <span className="text-xs font-medium text-deep-500 dark:text-sage-400">
+                    {incentive.programType}
+                  </span>
+                  <button className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 transition-colors">
+                    Learn More
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* CTA Section Below Samples */}
+          <div className="bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl border border-teal-100 dark:border-teal-800 p-12 text-center">
+            <h3 className="font-sora text-2xl md:text-3xl font-bold text-deep-900 dark:text-deep-100 mb-3">
+              Get Your Full Analysis
+            </h3>
+            <p className="text-deep-600 dark:text-sage-400 mb-8 max-w-xl mx-auto">
+              Download a comprehensive PDF report with all matching incentives, eligibility analysis, and next steps for your specific project.
+            </p>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-teal-600 hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[14px] font-semibold transition-colors"
+            >
+              Download Full Report
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="border-t border-deep-100 dark:border-deep-800 bg-deep-50/50 dark:bg-deep-900/30">
+          <div className="max-w-[1200px] mx-auto px-6 py-20">
+            <div className="mb-14 text-center">
+              <h2 className="font-sora text-3xl md:text-4xl font-bold text-deep-900 dark:text-deep-100 mb-2">
+                Simple, Transparent Pricing
+              </h2>
+              <p className="text-deep-500 dark:text-sage-400 max-w-2xl mx-auto">
+                Choose the plan that fits your portfolio. All plans include a 14-day free trial with no credit card required.
+              </p>
+            </div>
+
+            {/* Pricing Cards */}
+            <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto mb-12">
+              {PRICING_TIERS.map((tier) => (
+                <div
+                  key={tier.id}
+                  className={`rounded-xl border p-8 transition-all ${
+                    tier.highlighted
+                      ? 'border-teal-500 bg-white dark:bg-deep-800 shadow-lg shadow-teal-500/10 ring-2 ring-teal-500/30'
+                      : 'border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-900'
+                  }`}
+                >
+                  {tier.highlighted && (
+                    <div className="inline-block mb-4 px-3 py-1 rounded-full bg-teal-100 dark:bg-teal-900/30 text-xs font-semibold text-teal-700 dark:text-teal-300">
+                      Most Popular
+                    </div>
+                  )}
+
+                  <h3 className="font-sora text-2xl font-bold text-deep-900 dark:text-deep-100 mb-2">
+                    {tier.name}
+                  </h3>
+                  <p className="text-deep-500 dark:text-sage-400 text-sm mb-6">
+                    {tier.description}
+                  </p>
+
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold text-deep-900 dark:text-white">
+                      ${tier.monthlyPrice}
+                    </span>
+                    <span className="text-deep-500 dark:text-sage-400 ml-2">/month</span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      if (tier.id === 'enterprise') {
+                        window.location.href = '/contact?plan=enterprise';
+                      } else {
+                        window.location.href = '/signup';
+                      }
+                    }}
+                    className={`w-full py-3 rounded-lg font-semibold transition-colors mb-8 ${
+                      tier.highlighted
+                        ? 'bg-teal-600 hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-500 text-white'
+                        : 'bg-deep-100 hover:bg-deep-200 dark:bg-deep-800 dark:hover:bg-deep-700 text-deep-900 dark:text-deep-100'
+                    }`}
+                  >
+                    {tier.id === 'enterprise' ? 'Contact Sales' : 'Start Free Trial'}
+                  </button>
+
+                  <ul className="space-y-4">
+                    {tier.features.slice(0, 6).map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-deep-600 dark:text-sage-400">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* Value Props */}
+            <div className="mt-16 grid gap-8 md:grid-cols-3">
+              {[
+                { icon: Zap, title: 'Save 100+ Hours', desc: 'Per project on incentive research' },
+                { icon: Building2, title: '30,007+ Programs', desc: 'Verified across all 50 states' },
+                { icon: Shield, title: 'Enterprise Security', desc: 'SOC 2 compliant encryption' },
+              ].map((prop, i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-teal-100 dark:bg-teal-900/30">
+                      <prop.icon className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-deep-900 dark:text-deep-100">{prop.title}</h3>
+                    <p className="text-sm text-deep-500 dark:text-sage-400">{prop.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -192,7 +300,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* Final CTA */}
         <section className="border-t border-deep-100 dark:border-deep-800">
           <div className="max-w-[1200px] mx-auto px-6 py-20 text-center">
             <h2 className="font-sora text-2xl md:text-3xl font-bold text-deep-900 dark:text-deep-100">
@@ -211,6 +319,9 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+
+      {/* Registration Modal */}
+      <RegistrationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* Footer */}
       <footer className="border-t border-deep-100 dark:border-deep-800 bg-white dark:bg-deep-950">

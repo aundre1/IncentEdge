@@ -121,13 +121,13 @@ const FALLBACK_INCENTIVES = {
   ],
   local: [
     {
-      id: 'calc-421a',
-      name: '421-a Tax Exemption',
+      id: 'calc-485x',
+      name: '485-x Affordable Neighborhoods Tax Exemption',
       type: 'tax_exemption',
       category: 'local',
-      description: 'NYC property tax exemption',
+      description: 'NYC property tax exemption — successor to expired 421-a. Up to 40-year exemption for projects with min. 25% affordable units. Prevailing wage required for 100+ unit projects.',
       estimatedValue: 0,
-      years: 35,
+      years: 40,
       municipalities: ['New York City'],
       confidence: 0.82,
     },
@@ -349,14 +349,14 @@ function calculateIncentiveValues(project: ProjectInput) {
 
   // Local incentives
   if (state === 'NY' && project.municipality === 'New York City') {
-    // 421-a
-    const estimatedTaxSavings = totalDevelopmentCost * 0.015 * 35; // Rough estimate
+    // 485-x (replaced expired 421-a in April 2024)
+    const estimatedTaxSavings = totalDevelopmentCost * 0.015 * 40; // Up to 40-year exemption
     results.incentives.push({
-      id: 'calc-421a',
-      name: '421-a Tax Exemption',
+      id: 'calc-485x',
+      name: '485-x Affordable Neighborhoods Tax Exemption',
       type: 'tax_exemption',
       category: 'local',
-      description: '35-year property tax exemption',
+      description: 'Up to 40-year property tax exemption (replaced expired 421-a). Requires min. 25% affordable units and prevailing wage for 100+ unit projects.',
       estimatedValue: estimatedTaxSavings,
       confidence: 0.82,
       eligible: effectiveAffordable >= 25,

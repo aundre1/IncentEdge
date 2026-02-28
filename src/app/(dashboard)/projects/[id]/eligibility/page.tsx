@@ -102,7 +102,7 @@ const eligibilityResultsByProject: Record<string, {
       { id: 'p1', name: 'Low-Income Housing Tax Credit (LIHTC)', agency: 'NY HCR', confidence: 95, estimated_value: 18000000, match_reason: '60% affordable units meets 9% LIHTC threshold', stacking_count: 4, category: 'Tax Credit' },
       { id: 'p2', name: 'HUD HOME Investment Partnerships', agency: 'HUD', confidence: 88, estimated_value: 4500000, match_reason: 'Mixed-income with affordable component in priority area', stacking_count: 3, category: 'Grant' },
       { id: 'p3', name: 'NY State Affordable Housing Program', agency: 'NYSHCR', confidence: 85, estimated_value: 6200000, match_reason: '120 affordable units qualifies for state AHP subsidy', stacking_count: 3, category: 'Grant' },
-      { id: 'p4', name: '421-a Tax Exemption (Enhanced)', agency: 'NYS Legislature', confidence: 82, estimated_value: 9800000, match_reason: 'Residential over retail base — 35-year exemption eligible', stacking_count: 2, category: 'Property Tax' },
+      { id: 'p4', name: '485-x Affordable Neighborhoods Tax Exemption', agency: 'NYC HPD', confidence: 82, estimated_value: 12000000, match_reason: 'Min. 25% affordable units qualifies for 40-year exemption — replaces expired 421-a', stacking_count: 2, category: 'Property Tax' },
       { id: 'p5', name: 'Community Development Block Grant', agency: 'HUD / Westchester', confidence: 75, estimated_value: 2100000, match_reason: 'Serves low/moderate income residents in CRA area', stacking_count: 2, category: 'Grant' },
       { id: 'p6', name: 'Federal Historic Tax Credit', agency: 'IRS / NPS', confidence: 62, estimated_value: 3800000, match_reason: 'Historic district adjacency enables 20% ITC', stacking_count: 2, category: 'Tax Credit' },
       { id: 'p7', name: 'NY Energy Efficiency Incentive', agency: 'NYSERDA', confidence: 71, estimated_value: 800000, match_reason: 'LEED Silver certification triggers utility incentive', stacking_count: 1, category: 'Rebate' },
@@ -111,7 +111,7 @@ const eligibilityResultsByProject: Record<string, {
       'Increase affordable units to 80%+ to qualify for deeper LIHTC basis boost',
       'File for Opportunity Zone designation — Mount Vernon census tract may qualify for 10% bonus',
       'Add Passive House certification to unlock additional NYSERDA incentives',
-      'Consider Prevailing Wage election to maximize 421-a benefit period from 25 to 35 years',
+      'Prevailing wage commitment unlocks full 40-year 485-x exemption — critical for projects over 100 units',
     ],
   },
   '2': {

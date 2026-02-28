@@ -84,7 +84,7 @@ const FEATURED_STORY: FeaturedStory = {
   stack: [
     { name: 'LIHTC 4% + 9% Credits', amount: 18200000 },
     { name: 'Section 48 ITC Solar', amount: 4100000 },
-    { name: 'NYS Affordable NY (421-a)', amount: 3800000 },
+    { name: 'NYC 485-x Tax Exemption', amount: 3800000 },
     { name: 'Energy Community Bonus Adder', amount: 1200000 },
   ],
   quote: 'Before IncentEdge, I was leaving money on the table and didn\'t even know it. The platform found $27M in incentives I would have needed a team of consultants to uncover. That stack is what made me a majority partner.',
@@ -99,7 +99,7 @@ const CASE_STUDIES: CaseStudy[] = [
     projectType: 'Affordable Housing (120 units)',
     totalIncentives: '$19.4M',
     totalIncentivesRaw: 19400000,
-    keyInsight: 'LIHTC + Direct Pay + 421-a stack reduced equity requirement by 65%',
+    keyInsight: 'LIHTC + Direct Pay + 485-x stack reduced equity requirement by 65%',
     category: 'Affordable Housing',
   },
   {

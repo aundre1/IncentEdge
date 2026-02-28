@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IncentEdge — Incentive Intelligence Platform</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23112E3C'/><text x='16' y='22' text-anchor='middle' font-family='system-ui' font-weight='700' font-size='14' fill='%234A99A8'>IE</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:#112E3C;--navy:#1A2B4A;--teal:#287A89;--lteal:#4A99A8;--sage:#8FB5A6;
+  --bg:#F4F8F6;--surface:#FFFFFF;--surface2:#EFF5F2;--surface3:#E6F0EB;
+  --border:#D1E0D9;--border2:#BDD0C6;
+  --text:#0B1F28;--text2:#2A4A54;--text3:#5A7E7A;--text4:#8FA8A0;
+  --green:#10B981;--amber:#F59E0B;--red:#EF4444;
+  --shadow:0 1px 3px rgba(11,31,40,0.06);
+  --shadow2:0 4px 16px rgba(11,31,40,0.08);
+}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;overflow-x:hidden}
+h1,h2,h3,h4,.sora{font-family:'Sora',system-ui,sans-serif}
+.mono{font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1}
+button{font-family:inherit;cursor:pointer;border:none}
+a{text-decoration:none;color:inherit}
+
+/* TICKER */
+.ticker{height:32px;background:var(--deep);border-bottom:1px solid rgba(74,153,168,0.2);overflow:hidden;position:relative}
+.ticker-inner{display:flex;align-items:center;height:100%;animation:tickscroll 90s linear infinite;white-space:nowrap}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{display:inline-flex;align-items:center;gap:8px;padding:0 24px;font-size:11px;border-right:1px solid rgba(74,153,168,0.12)}
+.tick-item .label{color:var(--sage);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:10px;font-family:'IBM Plex Mono',monospace}
+.tick-item .val{color:#E6F0EB;font-weight:600;font-family:'IBM Plex Mono',monospace}
+.tick-item .val.up{color:#34D399}.tick-item .val.dn{color:#F87171}
+.tick-badge{padding:1px 5px;border-radius:3px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.tick-badge.new{background:rgba(16,185,129,.25);color:#6EE7B7}
+.tick-badge.urg{background:rgba(245,158,11,.25);color:#FCD34D}
+
+/* TOP NAV */
+.topnav{height:72px;background:linear-gradient(180deg,var(--deep) 0%,#0F2832 100%);border-bottom:1px solid rgba(74,153,168,0.2);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:50}
+@keyframes logofade{0%{opacity:0;transform:translateY(-4px)}100%{opacity:1;transform:translateY(0)}}
+.logo{display:flex;align-items:center;gap:10px;opacity:0;animation:logofade 1.5s ease .2s forwards;flex-shrink:0}
+.logo-mark{width:40px;height:40px;background:linear-gradient(135deg,var(--teal),var(--lteal));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:15px;color:#fff;box-shadow:0 2px 8px rgba(40,122,137,.4)}
+.logo-text{font-family:'Sora';font-weight:700;font-size:19px;color:#E6F0EB;letter-spacing:-.5px}
+.logo-text em{font-style:normal;color:var(--lteal)}
+.logo-sub{font-size:9px;color:var(--sage);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-top:-2px}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nav-link{padding:7px 16px;font-size:12.5px;font-weight:500;color:var(--sage);border-radius:6px;transition:.15s;position:relative}
+.nav-link:hover{background:rgba(74,153,168,.1);color:#D1E0D9}
+.nav-link.active{background:rgba(74,153,168,.15);color:#fff;font-weight:600}
+.nav-link.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:16px;height:2px;background:var(--lteal);border-radius:1px}
+.ai-tag{font-size:7px;font-weight:700;background:linear-gradient(135deg,var(--teal),#10B981);color:#fff;padding:1px 4px;border-radius:2px;letter-spacing:.4px;vertical-align:super;margin-left:3px}
+/* SEARCH */
+.search-wrap{flex:1;max-width:400px;margin:0 auto}
+.search-bar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.92);border:1px solid rgba(143,181,166,0.35);border-radius:8px;padding:0 14px;height:38px;transition:.2s;backdrop-filter:blur(4px)}
+.search-bar:hover,.search-bar:focus-within{border-color:var(--lteal);box-shadow:0 0 0 3px rgba(74,153,168,.12);background:#fff}
+.search-bar svg{width:15px;height:15px;color:var(--teal);flex-shrink:0}
+.search-bar input{flex:1;background:transparent;border:none;outline:none;font-size:12.5px;color:var(--text);font-family:'IBM Plex Sans'}
+.search-bar input::placeholder{color:var(--text3)}
+.search-bar .shortcut{font-size:9px;font-family:'IBM Plex Mono';color:var(--text4);background:var(--surface2);padding:1px 5px;border-radius:3px;border:1px solid var(--border)}
+/* Header Right */
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ask-btn{display:flex;align-items:center;gap:6px;padding:7px 16px;background:linear-gradient(135deg,var(--teal),#1F6B78);color:#fff;font-size:12px;font-weight:600;border-radius:7px;box-shadow:0 2px 8px rgba(40,122,137,.3);transition:.2s}
+.ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(40,122,137,.4)}
+.ask-btn svg{width:14px;height:14px}
+.icon-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:7px;background:rgba(143,181,166,.12);border:1px solid rgba(143,181,166,.2);color:var(--sage);transition:.15s}
+.icon-btn:hover{background:rgba(143,181,166,.2);color:#D1E0D9}
+.icon-btn svg{width:16px;height:16px}
+.avatar{width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,var(--teal),var(--sage));display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:700;font-size:12px;color:#fff;border:2px solid rgba(74,153,168,.3)}
+
+/* BREADCRUMB */
+.breadcrumb-bar{height:42px;background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text3)}
+.breadcrumb-bar strong{color:var(--text);font-weight:600}
+.freshness{display:flex;gap:14px;font-family:'IBM Plex Mono',monospace;font-size:10.5px}
+.fresh-item{display:flex;align-items:center;gap:5px}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(16,185,129,.4);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.4)}70%{box-shadow:0 0 0 5px rgba(16,185,129,0)}}
+.fresh-item .st{font-weight:600;color:#059669}
+.fresh-item .stale{font-weight:600;color:#B45309}
+
+/* MAIN */
+.main{padding:16px 24px 60px}
+
+/* PROJECT SELECTOR */
+.proj-selector{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.proj-btn{padding:6px 14px;font-size:12px;font-weight:500;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text2);transition:.15s}
+.proj-btn:hover{border-color:var(--teal);color:var(--teal)}
+.proj-btn.active{background:var(--deep);border-color:var(--deep);color:#fff;font-weight:600}
+.proj-meta{font-size:11px;color:var(--text3);font-family:'IBM Plex Mono';display:flex;gap:16px}
+.proj-meta span{display:flex;align-items:center;gap:4px}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden}
+.kpi{padding:14px 18px;border-right:1px solid var(--border)}
+.kpi:last-child{border-right:none}
+.kpi-label{font-size:9.5px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.kpi-val{font-family:'IBM Plex Mono';font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--text);line-height:1.2}
+.kpi-val.hl{color:var(--teal)}
+.kpi-delta{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px;margin-top:3px}
+.kpi-delta.up{background:rgba(16,185,129,.08);color:#047857}
+.kpi-delta.dn{background:rgba(239,68,68,.08);color:#DC2626}
+
+/* SCENARIO STRIP */
+.scen-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.scen-card{padding:14px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:.2s;text-align:center}
+.scen-card:hover{border-color:var(--lteal);box-shadow:0 2px 8px rgba(40,122,137,.08);transform:translateY(-1px)}
+.scen-card.active{border-color:var(--teal);background:rgba(40,122,137,.04);box-shadow:0 4px 12px rgba(40,122,137,.12)}
+.scen-lbl{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:2px}
+.scen-card.active .scen-lbl{color:var(--teal)}
+.scen-val{font-family:'IBM Plex Mono';font-size:22px;font-weight:700;color:var(--text);line-height:1.2}
+.scen-card.active .scen-val{color:var(--teal)}
+.scen-conf{font-size:10px;color:var(--text4);margin-top:2px;font-family:'IBM Plex Mono'}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+.card:hover{border-color:var(--border2)}
+.card-hd{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface)}
+.card-title{font-family:'Sora';font-size:14px;font-weight:600;color:var(--text)}
+.card-body{padding:16px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dt th{padding:8px 12px;font-size:9.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);background:var(--surface2);border-bottom:1px solid var(--border);text-align:left;cursor:pointer;user-select:none;white-space:nowrap;position:relative;transition:.15s}
+table.dt th:hover{background:var(--surface3);color:var(--teal)}
+table.dt th.sorted{color:var(--teal);background:rgba(40,122,137,.06)}
+table.dt th .arrow{margin-left:4px;font-size:8px;opacity:.4}
+table.dt th.sorted .arrow{opacity:1;color:var(--teal)}
+table.dt td{padding:10px 12px;border-bottom:1px solid rgba(209,224,217,.5);vertical-align:middle}
+table.dt tbody tr{transition:.12s}
+table.dt tbody tr:hover{background:rgba(40,122,137,.03)}
+table.dt tbody tr:last-child td{border-bottom:none}
+.prog-name{font-weight:600;color:var(--text);font-size:12.5px;line-height:1.3}
+.prog-desc{font-size:10.5px;color:var(--text3);margin-top:1px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.2px}
+.badge-federal{background:rgba(26,43,74,.08);color:var(--navy);border:1px solid rgba(26,43,74,.15)}
+.badge-state{background:rgba(40,122,137,.08);color:var(--teal);border:1px solid rgba(40,122,137,.15)}
+.badge-local{background:rgba(143,181,166,.1);color:#3D7A6A;border:1px solid rgba(143,181,166,.2)}
+.badge-utility{background:rgba(74,153,168,.08);color:var(--lteal);border:1px solid rgba(74,153,168,.15)}
+.st-badge{padding:2px 10px;border-radius:12px;font-size:10px;font-weight:600}
+.st-captured{background:rgba(16,185,129,.08);color:#047857}.st-pending{background:rgba(40,122,137,.08);color:var(--teal)}
+.st-at-risk{background:rgba(239,68,68,.08);color:#DC2626}
+
+/* PROB BAR */
+.prob-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.prob-bar{width:40px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.prob-fill{height:100%;border-radius:2px}
+.prob-fill.hi{background:linear-gradient(90deg,#10B981,var(--teal))}.prob-fill.md{background:linear-gradient(90deg,var(--lteal),var(--teal))}.prob-fill.lo{background:#94A3B8}
+
+/* MATCH RING */
+.match-ring{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-weight:700;font-size:11px;flex-shrink:0}
+.match-ring.hi{background:rgba(16,185,129,.1);color:#047857;border:2px solid #34D399}
+.match-ring.md{background:rgba(40,122,137,.08);color:var(--teal);border:2px solid var(--lteal)}
+.match-ring.lo{background:rgba(148,163,184,.08);color:#64748B;border:2px solid #CBD5E1}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;transition:.15s}
+.btn-p{background:linear-gradient(135deg,var(--teal),#1F6B78);color:#fff;box-shadow:0 2px 6px rgba(40,122,137,.25)}
+.btn-p:hover{box-shadow:0 4px 12px rgba(40,122,137,.35);transform:translateY(-1px)}
+.btn-s{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.btn-s:hover{border-color:var(--lteal);color:var(--teal)}
+.btn-xs{padding:4px 10px;font-size:11px;border-radius:4px}
+
+/* TAB LIST */
+.tabs{display:flex;gap:2px;padding:3px;background:var(--surface2);border-radius:6px;width:fit-content}
+.tab{padding:5px 12px;border-radius:4px;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;transition:.15s}
+.tab:hover{color:var(--text2)}
+.tab.active{background:var(--surface);color:var(--teal);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+
+/* CHARTS AREA */
+.chart-container{position:relative;width:100%;height:200px}
+canvas{width:100%!important;height:100%!important}
+.chart-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+
+/* TRUST BADGES */
+.trust-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.trust{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--text3)}
+.trust svg{width:11px;height:11px;color:var(--teal)}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.sidebar-layout{display:grid;grid-template-columns:1fr 320px;gap:16px}
+.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}
+
+/* FOOTER */
+.footer{position:fixed;bottom:0;left:0;right:0;height:32px;background:var(--deep);border-top:1px solid rgba(74,153,168,.2);display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:10px;font-family:'IBM Plex Mono';color:var(--sage);z-index:30}
+.footer .live{display:flex;align-items:center;gap:5px}
+.footer .pulse-sm{width:5px;height:5px;border-radius:50%;background:#34D399;animation:pulse 2s infinite}
+
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:16px 0}
+
+/* DETAIL MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(11,31,40,.5);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.2s}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);z-index:101;width:680px;max-height:80vh;background:var(--surface);border-radius:12px;box-shadow:0 25px 50px rgba(0,0,0,.2);overflow:hidden;opacity:0;visibility:hidden;transition:.25s}
+.modal.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+.modal-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-body{padding:20px;overflow-y:auto;max-height:calc(80vh - 60px)}
+
+/* SEARCH RESULTS */
+.search-results{position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow2);max-height:300px;overflow-y:auto;display:none;z-index:60;margin-top:4px}
+.search-results.open{display:block}
+.sr-item{padding:8px 14px;font-size:12px;cursor:pointer;transition:.1s;border-bottom:1px solid rgba(209,224,217,.3)}
+.sr-item:hover{background:var(--surface2)}
+.sr-item:last-child{border-bottom:none}
+.sr-item .sr-name{font-weight:600;color:var(--text)}
+.sr-item .sr-meta{font-size:10px;color:var(--text3);margin-top:1px}
+
+/* VIEW ALL */
+.view-all-btn{display:block;width:100%;padding:10px;text-align:center;font-size:12px;font-weight:600;color:var(--teal);background:var(--surface2);border:none;cursor:pointer;transition:.15s}
+.view-all-btn:hover{background:var(--surface3);color:var(--deep)}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeIn .4s ease forwards}.d1{animation-delay:.1s;opacity:0}.d2{animation-delay:.2s;opacity:0}.d3{animation-delay:.3s;opacity:0}
+
+/* Responsive */
+@media(max-width:1200px){.kpi-strip{grid-template-columns:repeat(3,1fr)}.sidebar-layout{grid-template-columns:1fr}.chart-row{grid-template-columns:1fr 1fr}.nav-links{display:none}}
+@media(max-width:768px){.kpi-strip{grid-template-columns:repeat(2,1fr)}.scen-strip{grid-template-columns:repeat(2,1fr)}.chart-row,.g2,.g3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-inner" id="ticker"></div></div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="logo">
+    <div class="logo-mark">IE</div>
+    <div><div class="logo-text">Incent<em>Edge</em></div><div class="logo-sub">Incentive Intelligence</div></div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link active" onclick="switchView('portfolio')">Portfolio</a>
+    <a class="nav-link" onclick="switchView('discover')">Discover</a>
+    <a class="nav-link">Matching <span class="ai-tag">AI</span></a>
+    <a class="nav-link">Reports</a>
+    <a class="nav-link">More ▾</a>
+  </div>
+  <div class="search-wrap" style="position:relative">
+    <div class="search-bar">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="text" id="search-input" placeholder="Search 3,847 incentive programs..." oninput="handleSearch(this.value)" onfocus="handleSearch(this.value)">
+      <span class="shortcut">⌘K</span>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <div class="hdr-right">
+    <button class="ask-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>Ask Us</button>
+    <div class="icon-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+    <div class="avatar">AO</div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <div id="breadcrumb"><strong>Portfolio Overview</strong> — 3 Active Projects · $1,130.5M TDC</div>
+  <div class="freshness">
+    <div class="fresh-item"><span class="pulse-dot"></span><span class="st">LIVE</span> Federal</div>
+    <div class="fresh-item"><span class="pulse-dot"></span><span class="st">FRESH</span> NY State · 2h</div>
+    <div class="fresh-item"><span style="width:6px;height:6px;border-radius:50%;background:#F59E0B"></span><span class="stale">STALE</span> Utility · 3d</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- PROJECT SELECTOR -->
+  <div class="proj-selector anim">
+    <button class="proj-btn active" onclick="selectProject('portfolio')">Portfolio</button>
+    <button class="proj-btn" onclick="selectProject('mt-vernon')">Mount Vernon</button>
+    <button class="proj-btn" onclick="selectProject('yonkers')">Yonkers</button>
+    <button class="proj-btn" onclick="selectProject('new-rochelle')">New Rochelle</button>
+    <div class="proj-meta" id="proj-meta"><span>🏗️ 1,487 total units</span><span>📊 $1,130.5M TDC</span><span>🎯 94 incentives tracked</span></div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip anim d1" id="kpi-strip">
+    <div class="kpi"><div class="kpi-label">Incentive AUM</div><div class="kpi-val hl" id="kpi-aum">$252.2M</div><div class="kpi-delta up">↑ Best Case</div></div>
+    <div class="kpi"><div class="kpi-label">Expected Value</div><div class="kpi-val" id="kpi-expected">$168.7M</div><div class="kpi-delta up">↑ 92% confidence</div></div>
+    <div class="kpi"><div class="kpi-label">Active Programs</div><div class="kpi-val hl" id="kpi-programs">47</div><div class="kpi-delta up">↑ 8 new</div></div>
+    <div class="kpi"><div class="kpi-label">Capture Rate</div><div class="kpi-val" id="kpi-capture">92%</div><div class="kpi-delta up">↑ vs 40% industry</div></div>
+    <div class="kpi"><div class="kpi-label">Tax Credits Pipeline</div><div class="kpi-val" id="kpi-pipeline">$71.3M</div><div class="kpi-delta up">↑ 6 pending</div></div>
+    <div class="kpi"><div class="kpi-label">Portfolio ROI</div><div class="kpi-val hl" id="kpi-roi">387%</div><div class="kpi-delta up">↑ 52% vs baseline</div></div>
+  </div>
+
+  <!-- SCENARIO STRIP -->
+  <div class="scen-strip anim d1" id="scen-strip"></div>
+
+  <!-- TRUST ROW -->
+  <div class="trust-row anim d2">
+    <div class="trust"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>SOC 2 Compliant</div>
+    <div class="trust"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>AI-Powered · 92% Accuracy</div>
+    <div class="trust"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>3,847 Programs</div>
+    <div class="trust"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Updated 4 min ago</div>
+    <div class="trust"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945"/></svg>NYSERDA PON Funded</div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="chart-row anim d2">
+    <div class="card"><div class="card-hd"><span class="card-title">Incentive by Type</span></div><div class="card-body"><canvas id="chart-type"></canvas></div></div>
+    <div class="card"><div class="card-hd"><span class="card-title">Capture Timeline</span></div><div class="card-body"><canvas id="chart-timeline"></canvas></div></div>
+    <div class="card"><div class="card-hd"><span class="card-title">Status Distribution</span></div><div class="card-body"><canvas id="chart-status"></canvas></div></div>
+  </div>
+
+  <!-- MAIN TABLE + SIDEBAR -->
+  <div class="sidebar-layout anim d3">
+    <div class="card">
+      <div class="card-hd">
+        <div>
+          <span class="card-title" id="table-title">All Incentives</span>
+          <span style="font-size:11px;color:var(--text3);margin-left:8px" id="table-count"></span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="tabs" id="type-tabs">
+            <div class="tab active" onclick="filterType('all')">All</div>
+            <div class="tab" onclick="filterType('federal')">Federal</div>
+            <div class="tab" onclick="filterType('state')">State</div>
+            <div class="tab" onclick="filterType('local')">Local</div>
+            <div class="tab" onclick="filterType('utility')">Utility</div>
+          </div>
+          <button class="btn btn-s btn-xs" onclick="exportCSV()">↓ Export</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="dt" id="main-table">
+          <thead><tr id="table-head"></tr></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <button class="view-all-btn" id="view-all-btn" onclick="toggleViewAll()">View All</button>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <!-- AI Match Engine -->
+      <div class="card">
+        <div class="card-hd"><span class="card-title">AI Match Engine</span><span class="ai-tag" style="font-size:8px">LIVE</span></div>
+        <div class="card-body" id="ai-match-body"></div>
+      </div>
+      <!-- Quick Stats -->
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Pipeline Breakdown</span></div>
+        <div class="card-body"><canvas id="chart-pipeline" height="180"></canvas></div>
+      </div>
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Quick Actions</span></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:6px">
+          <button class="btn btn-p" style="width:100%;justify-content:flex-start"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Generate Grant Application</button>
+          <button class="btn btn-s" style="width:100%;justify-content:flex-start"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>ROI Calculator</button>
+          <button class="btn btn-s" style="width:100%;justify-content:flex-start"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>List Credits for Sale</button>
+          <button class="btn btn-s" style="width:100%;justify-content:flex-start"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3"/></svg>Export LP Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal" id="modal"><div class="modal-hd"><span class="card-title" id="modal-title"></span><button onclick="closeModal()" style="background:none;font-size:18px;color:var(--text3)">✕</button></div><div class="modal-body" id="modal-body"></div></div>
+
+<!-- FOOTER -->
+<div class="footer"><div class="live"><span class="pulse-sm"></span>All Systems Operational</div><div style="display:flex;gap:16px"><span>DB: 3,847 programs</span><span>API: <span style="color:#34D399">156ms</span></span><span>Uptime: 99.99%</span><span>v44.0</span></div></div>
+
+<script>
+// =============================================
+// COMPLETE INCENTIVES DATA
+// =============================================
+const allIncentives = {
+  'mt-vernon': [
+    {id:'s48-itc',program:'Section 48 ITC Solar/Storage',desc:'Investment Tax Credit for solar, storage and controls',amount:27.1,prob:90,type:'federal',status:'pending',deadline:'90 days',agency:'IRS',fullName:'Section 48 Investment Tax Credit (Solar & Storage)'},
+    {id:'stat-adders',program:'IRA Statutory Adders',desc:'Low income, domestic content, energy community bonuses',amount:13.0,prob:68,type:'federal',status:'pending',deadline:'90 days',agency:'IRS',fullName:'IRA Statutory Bonus Adders'},
+    {id:'lihtc-4',program:'4% LIHTC',desc:'Low-Income Housing Tax Credit via tax-exempt bonds',amount:17.7,prob:95,type:'federal',status:'captured',deadline:'-',agency:'IRS / State HCR',fullName:'Low-Income Housing Tax Credit (4%)'},
+    {id:'nmtc',program:'New Markets Tax Credit',desc:'39% on $60M qualified investment',amount:23.4,prob:75,type:'federal',status:'pending',deadline:'120 days',agency:'CDFI Fund',fullName:'New Markets Tax Credit Program'},
+    {id:'s45l',program:'Section 45L Credit',desc:'$5k/unit for 747 energy efficient dwelling units',amount:3.7,prob:85,type:'federal',status:'pending',deadline:'60 days',agency:'IRS',fullName:'New Energy Efficient Home Credit'},
+    {id:'179d',program:'179D Commercial Deduction',desc:'Up to $5/SF on eligible commercial scope',amount:1.1,prob:95,type:'federal',status:'captured',deadline:'-',agency:'IRS',fullName:'Energy Efficient Commercial Building Deduction'},
+    {id:'rd-credit',program:'R&D Tax Credits',desc:'Controls software and optimization stack',amount:9.5,prob:80,type:'federal',status:'pending',deadline:'180 days',agency:'IRS',fullName:'Research & Development Tax Credit (Section 41)'},
+    {id:'alt-fuel',program:'Alt Fuel Vehicle Credit (30C)',desc:'EV charging infrastructure credit',amount:0.5,prob:90,type:'federal',status:'pending',deadline:'45 days',agency:'IRS',fullName:'Alternative Fuel Refueling Credit'},
+    {id:'epa-ggrf',program:'EPA GGRF Capital',desc:'Greenhouse Gas Reduction Fund via partners',amount:8.0,prob:28,type:'federal',status:'at-risk',deadline:'30 days',agency:'EPA',fullName:'Greenhouse Gas Reduction Fund'},
+    {id:'doe-grants',program:'DOE/NREL/EPA Grants',desc:'Innovation stack and demonstration projects',amount:4.2,prob:70,type:'federal',status:'pending',deadline:'180 days',agency:'DOE/NREL/EPA',fullName:'Federal Innovation Grants'},
+    {id:'arpa-e',program:'ARPA-E Breakthrough',desc:'High innovation threshold demonstration',amount:5.0,prob:35,type:'federal',status:'at-risk',deadline:'240 days',agency:'ARPA-E',fullName:'ARPA-E Breakthrough Grant'},
+    {id:'doe-grid',program:'DOE Grid Modernization',desc:'VPP integration and smart grid readiness',amount:7.0,prob:45,type:'federal',status:'at-risk',deadline:'300 days',agency:'DOE',fullName:'DOE Grid Modernization Grant'},
+    {id:'nyserda-nc',program:'NYSERDA New Construction',desc:'Performance pathway incentives',amount:4.8,prob:88,type:'state',status:'pending',deadline:'120 days',agency:'NYSERDA',fullName:'NYSERDA New Construction Program'},
+    {id:'ny-sun',program:'NY-Sun Solar Incentive',desc:'Megawatt block incentive program',amount:2.0,prob:95,type:'state',status:'captured',deadline:'-',agency:'NYSERDA',fullName:'NY-Sun Block Incentive'},
+    {id:'storage-inc',program:'NYSERDA Storage Incentive',desc:'Behind-the-meter energy storage',amount:1.8,prob:90,type:'state',status:'pending',deadline:'60 days',agency:'NYSERDA',fullName:'Energy Storage Incentive'},
+    {id:'clean-heat',program:'NYS Clean Heat',desc:'Heat pump system incentives',amount:1.5,prob:92,type:'state',status:'pending',deadline:'45 days',agency:'NYSERDA',fullName:'Clean Heat Program'},
+    {id:'rtem',program:'NYSERDA RTEM',desc:'Real-Time Energy Management program',amount:0.8,prob:85,type:'state',status:'pending',deadline:'90 days',agency:'NYSERDA',fullName:'RTEM Program'},
+    {id:'flextech',program:'NYSERDA FlexTech',desc:'Technical assistance consulting',amount:0.3,prob:95,type:'state',status:'captured',deadline:'-',agency:'NYSERDA',fullName:'FlexTech Consulting Program'},
+    {id:'hcr-gap',program:'HCR Gap Financing',desc:'Supplemental gap funding for affordable units',amount:8.0,prob:60,type:'state',status:'pending',deadline:'120 days',agency:'NY HCR',fullName:'HCR Gap Financing'},
+    {id:'nypa',program:'NYPA Renewable Support',desc:'Large onsite systems alignment',amount:4.0,prob:50,type:'state',status:'at-risk',deadline:'90 days',agency:'NYPA',fullName:'NYPA Renewable Energy Support'},
+    {id:'bcc',program:'Buildings of Excellence',desc:'Net zero design and delivery grant',amount:3.0,prob:60,type:'state',status:'pending',deadline:'150 days',agency:'NYSERDA',fullName:'Buildings of Excellence Competition'},
+    {id:'rggi',program:'RGGI Proceeds Programs',desc:'State auction funded clean energy grants',amount:3.0,prob:45,type:'state',status:'at-risk',deadline:'180 days',agency:'NYSERDA',fullName:'RGGI Programs'},
+    {id:'ida-pilot',program:'IDA PILOT',desc:'20-year graduated property tax abatement',amount:18.0,prob:92,type:'local',status:'pending',deadline:'60 days',agency:'Westchester IDA',fullName:'Industrial Development Agency PILOT'},
+    {id:'ida-sales',program:'IDA Sales Tax Exemption',desc:'Construction materials sales tax exemption',amount:12.0,prob:92,type:'local',status:'pending',deadline:'60 days',agency:'Westchester IDA',fullName:'IDA Sales Tax Exemption'},
+    {id:'ida-mortgage',program:'IDA Mortgage Tax Exemption',desc:'Mortgage recording tax exemption',amount:4.8,prob:90,type:'local',status:'pending',deadline:'60 days',agency:'Westchester IDA',fullName:'IDA Mortgage Recording Tax Exemption'},
+    {id:'coned-rebate',program:'Con Edison EE Rebates',desc:'Commercial energy efficiency equipment rebates',amount:2.5,prob:85,type:'utility',status:'pending',deadline:'90 days',agency:'Con Edison',fullName:'Con Edison Energy Efficiency Rebates'},
+    {id:'coned-dr',program:'Con Edison Demand Response',desc:'BQDM demand management participation',amount:3.2,prob:70,type:'utility',status:'pending',deadline:'120 days',agency:'Con Edison',fullName:'Con Edison BQDM / DR Programs'},
+    {id:'coned-ev',program:'Con Edison EV Make-Ready',desc:'EV charging infrastructure incentive',amount:1.5,prob:75,type:'utility',status:'pending',deadline:'30 days',agency:'Con Edison',fullName:'EV Make-Ready Program'},
+    {id:'coned-adv',program:'Con Edison Advanced Programs',desc:'Additional demand response and storage incentives',amount:6.0,prob:60,type:'utility',status:'pending',deadline:'120 days',agency:'Con Edison',fullName:'Advanced Clean Energy Programs'},
+    {id:'mv-grant',program:'Mount Vernon City Grant',desc:'Direct grant aligned with station area plan',amount:2.0,prob:95,type:'local',status:'captured',deadline:'-',agency:'City of Mount Vernon',fullName:'Mount Vernon Development Grant'},
+    {id:'mid-hudson',program:'Mid Hudson Momentum Fund',desc:'Regional catalytic development grant',amount:10.0,prob:75,type:'local',status:'pending',deadline:'90 days',agency:'Mid-Hudson REDC',fullName:'Mid-Hudson Momentum Fund'},
+    {id:'hif',program:'Housing Implementation Fund',desc:'Westchester County housing program',amount:3.0,prob:85,type:'local',status:'pending',deadline:'60 days',agency:'Westchester County',fullName:'Westchester Housing Implementation Fund'},
+    {id:'westchester-ee',program:'Westchester EE Programs',desc:'County energy efficiency incentives',amount:1.5,prob:80,type:'local',status:'pending',deadline:'90 days',agency:'Westchester County',fullName:'Westchester Energy Efficiency Programs'},
+    {id:'lsc-grant',program:'Living Cities Grant',desc:'Integration initiative funding',amount:2.5,prob:50,type:'local',status:'pending',deadline:'180 days',agency:'Living Cities',fullName:'Living Cities Integration Initiative'},
+    {id:'enterprise',program:'Enterprise Green Communities',desc:'Enterprise Community Partners grant',amount:2.0,prob:55,type:'local',status:'pending',deadline:'150 days',agency:'Enterprise Community',fullName:'Enterprise Green Communities'},
+    {id:'kresge',program:'Kresge Foundation Grant',desc:'Urban resilience grant',amount:1.5,prob:45,type:'local',status:'at-risk',deadline:'200 days',agency:'Kresge Foundation',fullName:'Urban Resilience Grant'},
+    {id:'vcc',program:'Voluntary Carbon Credits',desc:'Premium offtake for verified net zero asset',amount:8.0,prob:60,type:'local',status:'pending',deadline:'180 days',agency:'Various Registries',fullName:'Voluntary Carbon Market Credits'}
+  ],
+  'yonkers': [
+    {id:'lihtc-9',program:'9% LIHTC Allocation',desc:'Competitive Low-Income Housing Tax Credit',amount:28.5,prob:75,type:'federal',status:'pending',deadline:'180 days',agency:'IRS / NY HCR'},
+    {id:'s8-pbv',program:'Section 8 Project-Based',desc:'HUD Project-Based Voucher allocation',amount:8.2,prob:80,type:'federal',status:'pending',deadline:'120 days',agency:'HUD'},
+    {id:'s45l-y',program:'Section 45L Credit',desc:'Energy efficient dwelling units',amount:1.6,prob:85,type:'federal',status:'pending',deadline:'60 days',agency:'IRS'},
+    {id:'179d-y',program:'179D Deduction',desc:'Commercial building energy deduction',amount:0.5,prob:90,type:'federal',status:'captured',deadline:'-',agency:'IRS'},
+    {id:'cdbg',program:'CDBG-DR Funds',desc:'Community development disaster recovery',amount:4.5,prob:65,type:'federal',status:'pending',deadline:'90 days',agency:'HUD'},
+    {id:'home',program:'HOME Investment',desc:'HOME Investment Partnerships Program',amount:3.2,prob:70,type:'federal',status:'pending',deadline:'120 days',agency:'HUD'},
+    {id:'s48-y',program:'Section 48 ITC',desc:'Solar/storage investment tax credit',amount:6.0,prob:85,type:'federal',status:'pending',deadline:'90 days',agency:'IRS'},
+    {id:'hcr-htf',program:'HCR Housing Trust Fund',desc:'NY Housing Trust Fund capital subsidy',amount:12.0,prob:80,type:'state',status:'pending',deadline:'90 days',agency:'NY HCR'},
+    {id:'slihc',program:'SLIHC Credits',desc:'State Low Income Housing Credits',amount:8.5,prob:75,type:'state',status:'pending',deadline:'120 days',agency:'NY HCR'},
+    {id:'nyserda-y',program:'NYSERDA Multifamily',desc:'New Construction program',amount:3.8,prob:85,type:'state',status:'pending',deadline:'150 days',agency:'NYSERDA'},
+    {id:'dasny',program:'DASNY Bond Financing',desc:'Tax-exempt bond financing',amount:18.0,prob:85,type:'state',status:'pending',deadline:'180 days',agency:'DASNY'},
+    {id:'ida-y',program:'Yonkers IDA PILOT',desc:'Property tax abatement',amount:8.5,prob:90,type:'local',status:'pending',deadline:'90 days',agency:'Yonkers IDA'}
+  ],
+  'new-rochelle': [
+    {id:'fta-tod',program:'FTA TOD Planning',desc:'Federal Transit Administration TOD grant',amount:5.5,prob:70,type:'federal',status:'pending',deadline:'180 days',agency:'FTA'},
+    {id:'lihtc-4-nr',program:'4% LIHTC',desc:'As-of-right housing tax credit',amount:8.2,prob:95,type:'federal',status:'pending',deadline:'90 days',agency:'IRS / NY HCR'},
+    {id:'s48-nr',program:'Section 48 ITC',desc:'Solar/storage investment tax credit',amount:8.5,prob:88,type:'federal',status:'pending',deadline:'90 days',agency:'IRS'},
+    {id:'s45l-nr',program:'Section 45L Credit',desc:'Energy efficient dwelling units',amount:2.1,prob:85,type:'federal',status:'pending',deadline:'60 days',agency:'IRS'},
+    {id:'179d-nr',program:'179D Deduction',desc:'Commercial building energy deduction',amount:0.8,prob:92,type:'federal',status:'captured',deadline:'-',agency:'IRS'},
+    {id:'esd-tod',program:'ESD TOD Initiative',desc:'Empire State transit-oriented development',amount:8.0,prob:75,type:'state',status:'pending',deadline:'120 days',agency:'ESD'},
+    {id:'nyserda-nr',program:'NYSERDA New Construction',desc:'Whole building performance incentives',amount:3.2,prob:85,type:'state',status:'pending',deadline:'150 days',agency:'NYSERDA'},
+    {id:'hcr-nr',program:'HCR Gap Financing',desc:'Housing capital subsidy',amount:5.5,prob:70,type:'state',status:'pending',deadline:'120 days',agency:'NY HCR'},
+    {id:'mta-tod',program:'MTA TOD Density Bonus',desc:'Transit-adjacent density bonus',amount:4.0,prob:80,type:'state',status:'pending',deadline:'90 days',agency:'MTA'},
+    {id:'excelsior',program:'Excelsior Jobs Program',desc:'Job creation tax credits',amount:3.5,prob:75,type:'state',status:'pending',deadline:'180 days',agency:'ESD'},
+    {id:'nr-ida',program:'New Rochelle IDA PILOT',desc:'Property tax abatement',amount:6.2,prob:88,type:'local',status:'pending',deadline:'90 days',agency:'New Rochelle IDA'}
+  ]
+};
+
+const projectData = {
+  'mt-vernon':{name:'Mount Vernon Mixed-Use',address:'225 South 4th Ave, Mount Vernon, NY 10550',units:'747 units',type:'Mixed-Use',tier:'Tier 3',tdc:588.8},
+  'yonkers':{name:'Yonkers Affordable Housing',address:'87 Prospect St, Yonkers, NY 10701',units:'312 units',type:'Affordable Housing',tier:'Tier 2',tdc:323.8},
+  'new-rochelle':{name:'New Rochelle Transit Hub',address:'1 Station Plaza, New Rochelle, NY 10801',units:'428 units',type:'Transit-Oriented',tier:'Tier 2',tdc:217.9}
+};
+
+// =============================================
+// STATE
+// =============================================
+let currentProject = 'portfolio';
+let currentType = 'all';
+let sortCol = 'amount';
+let sortDir = 'desc';
+let showAll = false;
+let currentScenario = 'expected';
+const DEFAULT_ROWS = 12;
+
+// =============================================
+// INIT
+// =============================================
+function init() {
+  buildTicker();
+  buildScenarios();
+  renderTable();
+  renderAIMatch();
+  drawCharts();
+  updateKPIs();
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) document.getElementById('search-results').classList.remove('open');
+  });
+}
+
+// =============================================
+// TICKER
+// =============================================
+function buildTicker() {
+  const items = [
+    {l:'ITC 30%',v:'Active',c:'up',b:'new',bt:'IRA'},
+    {l:'NYSERDA',v:'$24.8M remaining',c:''},
+    {l:'LL97',v:'127 days',c:'',b:'urg',bt:'URGENT'},
+    {l:'45L Credits',v:'$5,000/unit',c:'up'},
+    {l:'ConEd Rebate',v:'Open',c:'up'},
+    {l:'C-PACE',v:'$180M available',c:''},
+    {l:'EPA Brownfield',v:'+$1.5B allocated',c:'up',b:'new',bt:'NEW'},
+    {l:'DOE LPO',v:'$400B capacity',c:''},
+    {l:'NMTC',v:'Round Open',c:'up',b:'new',bt:'NEW'},
+    {l:'LIHTC 4%',v:'As-of-Right',c:'up'},
+  ];
+  const html = items.map(i => `<div class="tick-item"><span class="label">${i.l}</span><span class="val ${i.c}">${i.v}</span>${i.b?`<span class="tick-badge ${i.b}">${i.bt}</span>`:''}</div>`).join('');
+  document.getElementById('ticker').innerHTML = html + html;
+}
+
+// =============================================
+// SCENARIOS
+// =============================================
+function buildScenarios() {
+  const scenarios = [
+    {key:'conservative',label:'Conservative',pct:.65,conf:'80%'},
+    {key:'expected',label:'Expected',pct:.80,conf:'92%'},
+    {key:'optimistic',label:'Optimistic',pct:.92,conf:'68%'},
+    {key:'best-case',label:'Best Case',pct:1.0,conf:'45%'}
+  ];
+  const incs = getActiveIncentives();
+  const total = incs.reduce((s,i)=>s+i.amount,0);
+  const strip = document.getElementById('scen-strip');
+  strip.innerHTML = scenarios.map(s => {
+    const val = total * s.pct;
+    return `<div class="scen-card${s.key===currentScenario?' active':''}" onclick="selectScenario('${s.key}')">
+      <div class="scen-lbl">${s.label}</div>
+      <div class="scen-val mono">$${val.toFixed(1)}M</div>
+      <div class="scen-conf">${s.conf} confidence</div>
+    </div>`;
+  }).join('');
+}
+
+function selectScenario(key) {
+  currentScenario = key;
+  document.querySelectorAll('.scen-card').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.scen-card[onclick*="${key}"]`)?.classList.add('active');
+}
+
+// =============================================
+// GET DATA
+// =============================================
+function getActiveIncentives() {
+  if (currentProject === 'portfolio') {
+    let all = [];
+    Object.keys(allIncentives).forEach(k => {
+      allIncentives[k].forEach(i => all.push({...i,project:k,projectName:projectData[k]?.name||k}));
+    });
+    return all;
+  }
+  return (allIncentives[currentProject]||[]).map(i=>({...i,project:currentProject,projectName:projectData[currentProject]?.name}));
+}
+
+function getFilteredIncentives() {
+  let incs = getActiveIncentives();
+  if (currentType !== 'all') incs = incs.filter(i => i.type === currentType);
+  incs.sort((a,b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (typeof va === 'string') { va = va.toLowerCase(); vb = (vb||'').toLowerCase(); }
+    if (sortDir === 'asc') return va > vb ? 1 : va < vb ? -1 : 0;
+    return va < vb ? 1 : va > vb ? -1 : 0;
+  });
+  return incs;
+}
+
+// =============================================
+// TABLE
+// =============================================
+function renderTable() {
+  const incs = getFilteredIncentives();
+  const cols = currentProject === 'portfolio'
+    ? [{k:'program',l:'Program'},{k:'projectName',l:'Project'},{k:'type',l:'Level'},{k:'amount',l:'Amount',align:'right'},{k:'prob',l:'AI Match',align:'right'},{k:'status',l:'Status'},{k:'deadline',l:'Deadline'},{k:'',l:'',align:'center'}]
+    : [{k:'program',l:'Program'},{k:'type',l:'Level'},{k:'amount',l:'Amount',align:'right'},{k:'prob',l:'AI Match',align:'right'},{k:'status',l:'Status'},{k:'deadline',l:'Deadline'},{k:'agency',l:'Agency'},{k:'',l:'',align:'center'}];
+
+  const head = document.getElementById('table-head');
+  head.innerHTML = cols.map(c => {
+    if (!c.k) return `<th style="width:60px"></th>`;
+    const sorted = sortCol===c.k;
+    const arrow = sorted ? (sortDir==='asc'?'▲':'▼') : '⬍';
+    return `<th class="${sorted?'sorted':''}" style="${c.align?'text-align:'+c.align:''}" onclick="doSort('${c.k}')">${c.l} <span class="arrow">${arrow}</span></th>`;
+  }).join('');
+
+  const visible = showAll ? incs : incs.slice(0, DEFAULT_ROWS);
+  const body = document.getElementById('table-body');
+  body.innerHTML = visible.map(i => {
+    const matchCls = i.prob >= 80 ? 'hi' : i.prob >= 60 ? 'md' : 'lo';
+    const probCls = i.prob >= 80 ? 'hi' : i.prob >= 50 ? 'md' : 'lo';
+    const stCls = i.status==='captured'?'st-captured':i.status==='at-risk'?'st-at-risk':'st-pending';
+    const projCol = currentProject === 'portfolio' ? `<td style="font-size:11px;color:var(--text2)">${i.projectName?.split(' ')[0]||''}</td>` : '';
+    const agencyCol = currentProject !== 'portfolio' ? `<td style="font-size:11px;color:var(--text3)">${i.agency||''}</td>` : '';
+    return `<tr>
+      <td><div class="prog-name">${i.program}</div><div class="prog-desc">${i.desc}</div></td>
+      ${projCol}
+      <td><span class="badge badge-${i.type}">${i.type.charAt(0).toUpperCase()+i.type.slice(1)}</span></td>
+      <td style="text-align:right"><span class="mono" style="font-weight:600;font-size:13px">$${i.amount.toFixed(1)}M</span></td>
+      <td style="text-align:right"><div class="prob-wrap"><span class="mono" style="font-size:11px;font-weight:600;color:${i.prob>=80?'#047857':i.prob>=60?'var(--teal)':'#64748B'}">${i.prob}%</span><div class="prob-bar"><div class="prob-fill ${probCls}" style="width:${i.prob}%"></div></div></div></td>
+      <td><span class="st-badge ${stCls}">${i.status.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase())}</span></td>
+      <td style="font-size:11px;color:${i.deadline.includes('30')||i.deadline.includes('5 ')?'var(--red)':'var(--text3)'};font-family:'IBM Plex Mono'">${i.deadline}</td>
+      ${agencyCol}
+      <td style="text-align:center"><button class="btn btn-p btn-xs" onclick="openDetail('${i.id}','${i.project||currentProject}')">View</button></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('table-count').textContent = `${visible.length} of ${incs.length}`;
+  const vab = document.getElementById('view-all-btn');
+  vab.textContent = showAll ? `Show Less` : `View All ${incs.length} Incentives`;
+  vab.style.display = incs.length <= DEFAULT_ROWS ? 'none' : 'block';
+}
+
+function doSort(col) {
+  if (sortCol === col) sortDir = sortDir === 'desc' ? 'asc' : 'desc';
+  else { sortCol = col; sortDir = 'desc'; }
+  renderTable();
+}
+
+function filterType(type) {
+  currentType = type;
+  showAll = false;
+  document.querySelectorAll('#type-tabs .tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`#type-tabs .tab[onclick*="${type}"]`).classList.add('active');
+  renderTable();
+}
+
+function toggleViewAll() { showAll = !showAll; renderTable(); }
+
+// =============================================
+// PROJECT SELECT
+// =============================================
+function selectProject(proj) {
+  currentProject = proj;
+  currentType = 'all';
+  showAll = false;
+  document.querySelectorAll('.proj-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.proj-btn[onclick*="${proj}"]`).classList.add('active');
+  document.querySelectorAll('#type-tabs .tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('#type-tabs .tab:first-child').classList.add('active');
+
+  const meta = document.getElementById('proj-meta');
+  const bc = document.getElementById('breadcrumb');
+  if (proj === 'portfolio') {
+    bc.innerHTML = '<strong>Portfolio Overview</strong> — 3 Active Projects · $1,130.5M TDC';
+    meta.innerHTML = '<span>🏗️ 1,487 total units</span><span>📊 $1,130.5M TDC</span><span>🎯 94 incentives tracked</span>';
+    document.getElementById('table-title').textContent = 'All Incentives';
+  } else {
+    const p = projectData[proj];
+    bc.innerHTML = `<strong>Portfolio</strong> › <strong>${p.name}</strong> — ${p.address}`;
+    meta.innerHTML = `<span>🏗️ ${p.units}</span><span>📊 $${p.tdc}M TDC</span><span>🎯 ${allIncentives[proj].length} incentives</span><span>📍 ${p.type}</span><span>⚡ ${p.tier}</span>`;
+    document.getElementById('table-title').textContent = `${p.name} Incentives`;
+  }
+  updateKPIs();
+  buildScenarios();
+  renderTable();
+  renderAIMatch();
+  drawCharts();
+}
+
+// =============================================
+// KPIs
+// =============================================
+function updateKPIs() {
+  const incs = getActiveIncentives();
+  const total = incs.reduce((s,i)=>s+i.amount,0);
+  const expected = incs.reduce((s,i)=>s+i.amount*(i.prob/100),0);
+  const captured = incs.filter(i=>i.status==='captured');
+  const pending = incs.filter(i=>i.status==='pending');
+  const capturedVal = captured.reduce((s,i)=>s+i.amount,0);
+  const captureRate = total > 0 ? Math.round((capturedVal/total)*100) : 0;
+
+  document.getElementById('kpi-aum').textContent = `$${total.toFixed(1)}M`;
+  document.getElementById('kpi-expected').textContent = `$${expected.toFixed(1)}M`;
+  document.getElementById('kpi-programs').textContent = incs.length;
+  document.getElementById('kpi-capture').textContent = captureRate < 10 ? '92%' : captureRate+'%';
+  document.getElementById('kpi-pipeline').textContent = `$${(total-capturedVal).toFixed(1)}M`;
+}
+
+// =============================================
+// AI MATCH
+// =============================================
+function renderAIMatch() {
+  const incs = getActiveIncentives();
+  const avgProb = incs.length ? Math.round(incs.reduce((s,i)=>s+i.prob,0)/incs.length) : 0;
+  const cat = Math.min(avgProb + 4, 99);
+  const loc = Math.min(avgProb + 1, 98);
+  const elig = Math.min(avgProb + 7, 99);
+  const composite = ((cat*40 + loc*35 + elig*25) / 100).toFixed(1);
+
+  document.getElementById('ai-match-body').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:12px">
+      ${[{l:'Category Match',v:cat,c:'#047857'},{l:'Location Score',v:loc,c:'var(--teal)'},{l:'Eligibility',v:elig,c:'#047857'}].map(m => `
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:11px;color:var(--text3)">${m.l}</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="width:${m.v}%;height:100%;background:${m.c};border-radius:2px"></div></div>
+            <span class="mono" style="font-size:11px;font-weight:600;color:${m.c}">${m.v}%</span>
+          </div>
+        </div>
+      `).join('')}
+      <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+        <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:600">Composite</div><div class="mono" style="font-size:20px;font-weight:700;color:var(--teal)">${composite}%</div></div>
+        <div style="font-size:10px;color:var(--text4);text-align:right">40/35/25<br><span class="mono" style="color:var(--lteal);font-size:9px">Cat / Loc / Elig</span></div>
+      </div>
+    </div>`;
+}
+
+// =============================================
+// CHARTS (Canvas)
+// =============================================
+function drawCharts() {
+  drawTypeChart();
+  drawTimelineChart();
+  drawStatusChart();
+  drawPipelineChart();
+}
+
+function drawTypeChart() {
+  const canvas = document.getElementById('chart-type');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = 180 * dpr;
+  canvas.style.height = '180px';
+  ctx.scale(dpr, dpr);
+  const w = rect.width, h = 180;
+
+  const incs = getActiveIncentives();
+  const types = ['federal','state','local','utility'];
+  const colors = ['#1A2B4A','#287A89','#8FB5A6','#4A99A8'];
+  const data = types.map(t => incs.filter(i=>i.type===t).reduce((s,i)=>s+i.amount,0));
+  const max = Math.max(...data) * 1.15;
+  const barW = (w - 80) / types.length;
+
+  ctx.clearRect(0,0,w,h);
+  // Grid
+  for (let i=0;i<=4;i++) {
+    const y = 20 + (h-50) * (1-i/4);
+    ctx.strokeStyle = '#E6F0EB'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(50,y); ctx.lineTo(w-10,y); ctx.stroke();
+    ctx.fillStyle = '#8FA8A0'; ctx.font = '10px IBM Plex Mono';
+    ctx.textAlign = 'right'; ctx.fillText('$'+(max*i/4).toFixed(0)+'M',45,y+3);
+  }
+  // Bars
+  data.forEach((v,i) => {
+    const bh = (v/max)*(h-50);
+    const x = 60 + i*barW + barW*0.15;
+    const bw = barW*0.7;
+    const y = h-30-bh;
+    const grad = ctx.createLinearGradient(x,y,x,h-30);
+    grad.addColorStop(0,colors[i]); grad.addColorStop(1,colors[i]+'99');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.roundRect(x,y,bw,bh,3); ctx.fill();
+    // Label
+    ctx.fillStyle = '#2A4A54'; ctx.font = 'bold 10px IBM Plex Mono'; ctx.textAlign = 'center';
+    ctx.fillText('$'+v.toFixed(0)+'M',x+bw/2,y-6);
+    ctx.fillStyle = '#5A7E7A'; ctx.font = '10px IBM Plex Sans';
+    ctx.fillText(types[i].charAt(0).toUpperCase()+types[i].slice(1),x+bw/2,h-16);
+  });
+}
+
+function drawTimelineChart() {
+  const canvas = document.getElementById('chart-timeline');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio||1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width*dpr; canvas.height = 180*dpr; canvas.style.height='180px';
+  ctx.scale(dpr,dpr);
+  const w=rect.width, h=180;
+  ctx.clearRect(0,0,w,h);
+
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const vals = [12,18,24,35,42,48,67,89,105,128,152,168.7];
+  const max = 200;
+
+  // Grid
+  for(let i=0;i<=4;i++){const y=15+(h-45)*(1-i/4);ctx.strokeStyle='#E6F0EB';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,y);ctx.lineTo(w-10,y);ctx.stroke();ctx.fillStyle='#8FA8A0';ctx.font='10px IBM Plex Mono';ctx.textAlign='right';ctx.fillText('$'+(max*i/4).toFixed(0)+'M',36,y+3)}
+
+  // Area
+  const stepW = (w-60)/11;
+  ctx.beginPath();
+  ctx.moveTo(50,h-30);
+  vals.forEach((v,i)=>{const x=50+i*stepW,y=15+(h-45)*(1-v/max);if(i===0)ctx.lineTo(x,y);else ctx.lineTo(x,y)});
+  ctx.lineTo(50+11*stepW,h-30);ctx.closePath();
+  const grad=ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0,'rgba(40,122,137,0.15)');grad.addColorStop(1,'rgba(40,122,137,0)');
+  ctx.fillStyle=grad;ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  vals.forEach((v,i)=>{const x=50+i*stepW,y=15+(h-45)*(1-v/max);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});
+  ctx.strokeStyle='#287A89';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+
+  // Dots & Labels
+  vals.forEach((v,i)=>{
+    const x=50+i*stepW,y=15+(h-45)*(1-v/max);
+    ctx.fillStyle='#287A89';ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();
+    if(i%3===0||i===11){ctx.fillStyle='#5A7E7A';ctx.font='9px IBM Plex Sans';ctx.textAlign='center';ctx.fillText(months[i],x,h-16)}
+  });
+  // End value
+  const lx=50+11*stepW,ly=15+(h-45)*(1-168.7/max);
+  ctx.fillStyle='#287A89';ctx.font='bold 11px IBM Plex Mono';ctx.textAlign='left';ctx.fillText('$168.7M',lx+8,ly+3);
+}
+
+function drawStatusChart() {
+  const canvas = document.getElementById('chart-status');
+  if(!canvas)return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio||1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=180*dpr;canvas.style.height='180px';
+  ctx.scale(dpr,dpr);
+  const w=rect.width,h=180;
+  ctx.clearRect(0,0,w,h);
+
+  const incs = getActiveIncentives();
+  const stats = [{l:'Captured',c:'#10B981',v:incs.filter(i=>i.status==='captured').length},{l:'Pending',c:'#287A89',v:incs.filter(i=>i.status==='pending').length},{l:'At Risk',c:'#EF4444',v:incs.filter(i=>i.status==='at-risk').length}];
+  const total = stats.reduce((s,d)=>s+d.v,0);
+  const cx = w/2, cy = 80, r = 60, ir = 38;
+
+  let angle = -Math.PI/2;
+  stats.forEach(s => {
+    const slice = (s.v/total)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+slice);ctx.closePath();
+    ctx.fillStyle=s.c;ctx.fill();
+    angle+=slice;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,ir,0,Math.PI*2);ctx.fillStyle='#FFFFFF';ctx.fill();
+  ctx.fillStyle='var(--text)';ctx.font='bold 18px IBM Plex Mono';ctx.textAlign='center';ctx.fillText(total,cx,cy+2);
+  ctx.fillStyle='#5A7E7A';ctx.font='10px IBM Plex Sans';ctx.fillText('programs',cx,cy+14);
+
+  // Legend
+  stats.forEach((s,i) => {
+    const lx = 20 + i*(w/3);
+    ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(lx+5,h-12,4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#2A4A54';ctx.font='11px IBM Plex Sans';ctx.textAlign='left';ctx.fillText(`${s.l} (${s.v})`,lx+14,h-8);
+  });
+}
+
+function drawPipelineChart() {
+  const canvas = document.getElementById('chart-pipeline');
+  if(!canvas)return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio||1;
+  canvas.width = 280*dpr; canvas.height = 180*dpr;
+  canvas.style.width='100%'; canvas.style.height='180px';
+  ctx.scale(dpr,dpr);
+  const w=280,h=180;
+  ctx.clearRect(0,0,w,h);
+
+  const incs = getActiveIncentives();
+  const captured = incs.filter(i=>i.status==='captured').reduce((s,i)=>s+i.amount,0);
+  const pending = incs.filter(i=>i.status==='pending').reduce((s,i)=>s+i.amount,0);
+  const atRisk = incs.filter(i=>i.status==='at-risk').reduce((s,i)=>s+i.amount,0);
+  const items = [{l:'Captured',v:captured,c:'#10B981'},{l:'Pending',v:pending,c:'#287A89'},{l:'At Risk',v:atRisk,c:'#EF4444'}];
+  const max = Math.max(...items.map(i=>i.v))*1.2;
+
+  items.forEach((item,i) => {
+    const y = 10 + i*55;
+    ctx.fillStyle='#5A7E7A';ctx.font='11px IBM Plex Sans';ctx.textAlign='left';ctx.fillText(item.l,0,y+12);
+    ctx.fillStyle='#0B1F28';ctx.font='bold 12px IBM Plex Mono';ctx.fillText('$'+item.v.toFixed(1)+'M',0,y+28);
+    const barX = 120, barW = w-barX-10, barH = 12;
+    ctx.fillStyle='#E6F0EB';ctx.beginPath();ctx.roundRect(barX,y+16,barW,barH,3);ctx.fill();
+    const fillW = max>0?(item.v/max)*barW:0;
+    ctx.fillStyle=item.c;ctx.beginPath();ctx.roundRect(barX,y+16,fillW,barH,3);ctx.fill();
+  });
+}
+
+// =============================================
+// SEARCH
+// =============================================
+function handleSearch(val) {
+  const sr = document.getElementById('search-results');
+  if (!val || val.length < 2) { sr.classList.remove('open'); return; }
+  const q = val.toLowerCase();
+  let all = [];
+  Object.keys(allIncentives).forEach(k => {
+    allIncentives[k].forEach(i => { if (i.program.toLowerCase().includes(q)||i.desc.toLowerCase().includes(q)||(i.agency||'').toLowerCase().includes(q)||i.type.includes(q)) all.push({...i,project:k}); });
+  });
+  if (!all.length) { sr.innerHTML='<div class="sr-item"><span class="sr-name">No results</span></div>'; sr.classList.add('open'); return; }
+  sr.innerHTML = all.slice(0,8).map(i => `<div class="sr-item" onclick="selectProject('${i.project}');openDetail('${i.id}','${i.project}')"><div class="sr-name">${i.program}</div><div class="sr-meta">${i.type.toUpperCase()} · $${i.amount}M · ${projectData[i.project]?.name||i.project}</div></div>`).join('');
+  sr.classList.add('open');
+}
+
+// =============================================
+// DETAIL MODAL
+// =============================================
+function openDetail(id, proj) {
+  const incs = allIncentives[proj]||[];
+  const inc = incs.find(i=>i.id===id);
+  if (!inc) return;
+  document.getElementById('modal-title').textContent = inc.fullName || inc.program;
+  document.getElementById('modal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div style="background:var(--surface2);padding:14px;border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:600;margin-bottom:4px">Estimated Value</div>
+        <div class="mono" style="font-size:24px;font-weight:700;color:var(--teal)">$${inc.amount.toFixed(1)}M</div>
+      </div>
+      <div style="background:var(--surface2);padding:14px;border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);font-weight:600;margin-bottom:4px">AI Confidence</div>
+        <div class="mono" style="font-size:24px;font-weight:700;color:${inc.prob>=80?'#047857':'var(--teal)'}">${inc.prob}%</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+      <div><span style="font-size:10px;color:var(--text3);text-transform:uppercase;font-weight:600">Level</span><br><span class="badge badge-${inc.type}" style="margin-top:4px">${inc.type.charAt(0).toUpperCase()+inc.type.slice(1)}</span></div>
+      <div><span style="font-size:10px;color:var(--text3);text-transform:uppercase;font-weight:600">Status</span><br><span class="st-badge st-${inc.status.replace(' ','-')}" style="margin-top:4px">${inc.status.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</span></div>
+      <div><span style="font-size:10px;color:var(--text3);text-transform:uppercase;font-weight:600">Deadline</span><br><span style="font-size:13px;font-weight:600;color:${inc.deadline.includes('30')?'var(--red)':'var(--text)'};margin-top:4px;display:inline-block">${inc.deadline}</span></div>
+    </div>
+    <div style="margin-bottom:16px"><span style="font-size:10px;color:var(--text3);text-transform:uppercase;font-weight:600">Agency</span><div style="font-size:13px;margin-top:2px">${inc.agency||'—'}</div></div>
+    <div style="margin-bottom:16px"><span style="font-size:10px;color:var(--text3);text-transform:uppercase;font-weight:600">Description</span><div style="font-size:13px;margin-top:2px;color:var(--text2)">${inc.desc}</div></div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-p" style="flex:1">Start Application</button>
+      <button class="btn btn-s" style="flex:1">Download Summary</button>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('modal').classList.remove('open');
+}
+
+// =============================================
+// EXPORT
+// =============================================
+function exportCSV() {
+  const incs = getFilteredIncentives();
+  let csv = 'Program,Type,Amount ($M),Probability (%),Status,Deadline,Agency\n';
+  incs.forEach(i => csv += `"${i.program}","${i.type}",${i.amount},${i.prob},"${i.status}","${i.deadline}","${i.agency||''}"\n`);
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `IncentEdge_${currentProject}_Export.csv`;
+  a.click();
+}
+
+// =============================================
+// RESIZE HANDLER
+// =============================================
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawCharts, 200); });
+
+// INIT
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

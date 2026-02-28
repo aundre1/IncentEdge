@@ -160,7 +160,7 @@ const incentiveMatchesByProject: Record<string, Array<{
     { id: 'm1', name: 'Low-Income Housing Tax Credit (LIHTC)', agency: 'NY HCR', confidence: 95, estimated_value: 18000000, reasons: ['60% affordable units meets threshold', 'Westchester County qualified census tract'], category: 'Tax Credit' },
     { id: 'm2', name: 'HUD HOME Investment Partnerships', agency: 'HUD', confidence: 88, estimated_value: 4500000, reasons: ['Mixed-use with affordable component', 'Mount Vernon priority area'], category: 'Grant' },
     { id: 'm3', name: 'NY State Affordable Housing Program', agency: 'NYSHCR', confidence: 85, estimated_value: 6200000, reasons: ['120 affordable units qualifies', 'Mixed-income development'], category: 'Grant' },
-    { id: 'm4', name: '421-a Tax Exemption', agency: 'NYC/State', confidence: 82, estimated_value: 9800000, reasons: ['Residential units over retail base', 'Prevailing wage eligible'], category: 'Property Tax' },
+    { id: 'm4', name: '485-x Affordable Neighborhoods Tax Exemption', agency: 'NYC HPD', confidence: 82, estimated_value: 12000000, reasons: ['Min. 25% affordable units qualifies for 40-year exemption', 'Prevailing wage commitment satisfies 100+ unit requirement'], category: 'Property Tax' },
     { id: 'm5', name: 'Community Development Block Grant', agency: 'HUD / Westchester', confidence: 75, estimated_value: 2100000, reasons: ['Serves low/mod income residents', 'Community impact area'], category: 'Grant' },
     { id: 'm6', name: 'Federal Historic Tax Credit', agency: 'IRS / NPS', confidence: 62, estimated_value: 3800000, reasons: ['Historic district adjacency', 'Rehabilitation of existing structures'], category: 'Tax Credit' },
   ],

@@ -8,7 +8,6 @@ import {
   Download,
   ChevronDown,
   ChevronUp,
-  Eye,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -450,12 +449,10 @@ export function V44IncentiveTable({ incentives, currentProject, onViewDetail }: 
                     {/* Action */}
                     <td className="px-4 py-3 text-right">
                       <Button
-                        variant="ghost"
                         size="sm"
                         onClick={() => onViewDetail(inc.id, inc.project)}
-                        className="h-7 px-2.5 text-teal hover:text-teal-700 hover:bg-teal-50 dark:hover:bg-teal-900/20"
+                        className="h-7 px-3 bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 text-white text-xs font-semibold"
                       >
-                        <Eye className="w-3.5 h-3.5 mr-1" />
                         View
                       </Button>
                     </td>
