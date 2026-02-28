@@ -19,12 +19,128 @@ export interface ProjectInfo {
   type: string;
   tier: string;
   tdc: number;
+  sqft?: number;
+  affordableUnits?: number;
+  clearHeight?: number;
+  floors?: number;
+  tenantCount?: number;
+  rooms?: number;
+  beds?: number;
+  mwCapacity?: number;
+  annualMwh?: number;
 }
 
 export const projectData: Record<string, ProjectInfo> = {
-  'mt-vernon': { name: 'Mount Vernon Mixed-Use', address: '225 South 4th Ave, Mount Vernon, NY 10550', units: '747 units', type: 'Mixed-Use', tier: 'Tier 3', tdc: 588.8 },
-  'yonkers': { name: 'Yonkers Affordable Housing', address: '87 Prospect St, Yonkers, NY 10701', units: '312 units', type: 'Affordable Housing', tier: 'Tier 2', tdc: 323.8 },
-  'new-rochelle': { name: 'New Rochelle Transit Hub', address: '1 Station Plaza, New Rochelle, NY 10801', units: '428 units', type: 'Transit-Oriented', tier: 'Tier 2', tdc: 217.9 },
+  'mt-vernon': {
+    name: 'Mount Vernon Mixed-Use',
+    address: '225 South 4th Ave, Mount Vernon, NY 10550',
+    units: '747 units',
+    type: 'Mixed-Use',
+    tier: 'Tier 3',
+    tdc: 588.8,
+    sqft: 825000,
+    affordableUnits: 250,
+  },
+  'yonkers': {
+    name: 'Yonkers Affordable Housing',
+    address: '87 Prospect St, Yonkers, NY 10701',
+    units: '312 units',
+    type: 'Multifamily',
+    tier: 'Tier 2',
+    tdc: 323.8,
+    sqft: 280000,
+    affordableUnits: 312,
+  },
+  'new-rochelle': {
+    name: 'New Rochelle Transit Hub',
+    address: '1 Station Plaza, New Rochelle, NY 10801',
+    units: '428 units',
+    type: 'Transit-Oriented',
+    tier: 'Tier 2',
+    tdc: 217.9,
+    sqft: 410000,
+    affordableUnits: 145,
+  },
+  'westchester-industrial': {
+    name: 'Westchester Distribution Center',
+    address: '450 Ridge Road, Port Chester, NY 10573',
+    units: '1 facility',
+    type: 'Industrial',
+    tier: 'Tier 1',
+    tdc: 125.5,
+    sqft: 185000,
+    clearHeight: 32,
+  },
+  'stamford-office': {
+    name: 'Stamford Office Tower',
+    address: '1 Stamford Plaza, Stamford, CT 06901',
+    units: '285 units',
+    type: 'Office',
+    tier: 'Tier 2',
+    tdc: 195.2,
+    sqft: 285000,
+    floors: 12,
+  },
+  'westchester-hotel': {
+    name: 'Westchester Boutique Hotel',
+    address: '800 Westchester Avenue, White Plains, NY 10604',
+    units: '156 rooms',
+    type: 'Hotel',
+    tier: 'Tier 2',
+    tdc: 89.3,
+    rooms: 156,
+    sqft: 95000,
+  },
+  'greenwich-healthcare': {
+    name: 'Greenwich Medical Campus',
+    address: '123 Hospital Drive, Greenwich, CT 06830',
+    units: '1 campus',
+    type: 'Healthcare',
+    tier: 'Tier 1',
+    tdc: 215.8,
+    sqft: 180000,
+    beds: 120,
+  },
+  'new-haven-retail': {
+    name: 'New Haven Shopping District',
+    address: '500 Chapel Street, New Haven, CT 06510',
+    units: '28 tenants',
+    type: 'Retail',
+    tier: 'Tier 2',
+    tdc: 78.4,
+    sqft: 125000,
+    tenantCount: 28,
+  },
+  'bridgeport-solar': {
+    name: 'Bridgeport Solar Farm',
+    address: 'Industrial Park Road, Bridgeport, CT 06601',
+    units: '1 facility',
+    type: 'Solar',
+    tier: 'Tier 1',
+    tdc: 42.6,
+    mwCapacity: 12,
+    annualMwh: 18000,
+  },
+  'rye-data-center': {
+    name: 'Rye Hyperscale Data Center',
+    address: '555 North Street, Rye, NY 10580',
+    units: '1 facility',
+    type: 'Data Center',
+    tier: 'Tier 3',
+    tdc: 305.2,
+    sqft: 245000,
+    floors: 4,
+  },
+  'scarsdale-warehouse': {
+    name: 'Scarsdale Logistics Hub',
+    address: '700 Commercial Drive, Scarsdale, NY 10583',
+    units: '1 facility',
+    type: 'Warehouse',
+    tier: 'Tier 1',
+    tdc: 58.9,
+    sqft: 320000,
+    clearHeight: 28,
+  },
 };
 
 export const allIncentives: Record<string, Incentive[]> = {
@@ -93,6 +209,46 @@ export const allIncentives: Record<string, Incentive[]> = {
     { id: 'mta-tod', program: 'MTA TOD Density Bonus', desc: 'Transit-adjacent density bonus', amount: 4.0, prob: 80, type: 'state', status: 'pending', deadline: '90 days', agency: 'MTA', fullName: 'MTA TOD Density Bonus' },
     { id: 'excelsior', program: 'Excelsior Jobs Program', desc: 'Job creation tax credits', amount: 3.5, prob: 75, type: 'state', status: 'pending', deadline: '180 days', agency: 'ESD', fullName: 'Excelsior Jobs Program' },
     { id: 'nr-ida', program: 'New Rochelle IDA PILOT', desc: 'Property tax abatement', amount: 6.2, prob: 88, type: 'local', status: 'pending', deadline: '90 days', agency: 'New Rochelle IDA', fullName: 'New Rochelle IDA PILOT' },
+  ],
+  'westchester-industrial': [
+    { id: 'wc-179d', program: '179D Commercial Deduction', desc: 'Energy efficient warehouse deduction', amount: 3.2, prob: 90, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'wc-ida', program: 'Westchester IDA PILOT', desc: 'Industrial property tax abatement', amount: 6.8, prob: 92, type: 'local', status: 'pending', deadline: '60 days', agency: 'Westchester IDA', fullName: 'Industrial Development Agency PILOT' },
+    { id: 'wc-coned', program: 'Con Edison Industrial Rebate', desc: 'Large facility efficiency rebates', amount: 1.5, prob: 85, type: 'utility', status: 'pending', deadline: '120 days', agency: 'Con Edison', fullName: 'Industrial Energy Efficiency Rebates' },
+  ],
+  'stamford-office': [
+    { id: 'st-179d', program: '179D Commercial Deduction', desc: 'Office building energy deduction', amount: 2.8, prob: 88, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'st-s45l', program: 'Section 45L Credit', desc: 'Energy efficient commercial spaces', amount: 1.4, prob: 82, type: 'federal', status: 'pending', deadline: '60 days', agency: 'IRS', fullName: 'Section 45L Credit' },
+    { id: 'st-ct-pilot', program: 'Connecticut PILOT', desc: 'Office property tax abatement', amount: 5.2, prob: 85, type: 'local', status: 'pending', deadline: '75 days', agency: 'Stamford Economic Development', fullName: 'Connecticut PILOT Program' },
+  ],
+  'westchester-hotel': [
+    { id: 'wh-179d', program: '179D Commercial Deduction', desc: 'Hotel energy efficiency deduction', amount: 1.6, prob: 85, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'wh-ida', program: 'White Plains IDA PILOT', desc: 'Hotel development property tax abatement', amount: 4.2, prob: 88, type: 'local', status: 'pending', deadline: '60 days', agency: 'White Plains IDA', fullName: 'IDA PILOT' },
+    { id: 'wh-tourism', program: 'NYS Tourism Incentive', desc: 'Hotel development grant', amount: 2.5, prob: 70, type: 'state', status: 'pending', deadline: '120 days', agency: 'ESD', fullName: 'Tourism Development Grant' },
+  ],
+  'greenwich-healthcare': [
+    { id: 'gh-501c3', program: 'Non-Profit Exemptions', desc: '501(c)(3) property tax exemption', amount: 8.5, prob: 95, type: 'local', status: 'captured', deadline: '-', agency: 'Greenwich Tax Assessor', fullName: 'Non-Profit Property Tax Exemption' },
+    { id: 'gh-179d', program: '179D Commercial Deduction', desc: 'Healthcare facility energy deduction', amount: 3.1, prob: 88, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'gh-ct-capital', program: 'CT Healthcare Capital Grant', desc: 'State healthcare infrastructure grant', amount: 4.8, prob: 75, type: 'state', status: 'pending', deadline: '150 days', agency: 'CT DEEP', fullName: 'Healthcare Capital Grant Program' },
+  ],
+  'new-haven-retail': [
+    { id: 'nh-179d', program: '179D Commercial Deduction', desc: 'Retail center energy deduction', amount: 1.2, prob: 85, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'nh-downtown', program: 'New Haven Downtown Revitalization', desc: 'Downtown redevelopment grant', amount: 3.5, prob: 80, type: 'local', status: 'pending', deadline: '120 days', agency: 'City of New Haven', fullName: 'Downtown Revitalization Grant' },
+    { id: 'nh-cdbg', program: 'CDBG-DR Funds', desc: 'Community development block grant', amount: 2.2, prob: 65, type: 'federal', status: 'pending', deadline: '90 days', agency: 'HUD', fullName: 'CDBG-DR' },
+  ],
+  'bridgeport-solar': [
+    { id: 'bs-itc-30', program: 'Solar Investment Tax Credit 30%', desc: 'Federal solar ITC at full 30%', amount: 12.8, prob: 95, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: 'Section 48 ITC (30%)' },
+    { id: 'bs-pbi', program: 'Production-Based Incentive', desc: 'Per-MWh generation incentives', amount: 5.4, prob: 75, type: 'federal', status: 'pending', deadline: '180 days', agency: 'NREL', fullName: 'Solar Production Incentive' },
+    { id: 'bs-nyserda', program: 'NYSERDA Solar Megawatt', desc: 'NY-Sun block incentive program', amount: 3.2, prob: 88, type: 'state', status: 'pending', deadline: '120 days', agency: 'NYSERDA', fullName: 'NY-Sun Solar Incentive' },
+  ],
+  'rye-data-center': [
+    { id: 'rdc-179d', program: '179D Commercial Deduction', desc: 'Data center energy efficiency deduction', amount: 4.5, prob: 90, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'rdc-ida', program: 'Rye IDA PILOT', desc: 'Data center property tax abatement', amount: 12.5, prob: 85, type: 'local', status: 'pending', deadline: '60 days', agency: 'Rye IDA', fullName: 'IDA PILOT' },
+    { id: 'rdc-coned-dr', program: 'Con Ed Data Center Demand Response', desc: 'Large facility demand management', amount: 2.8, prob: 80, type: 'utility', status: 'pending', deadline: '120 days', agency: 'Con Edison', fullName: 'Industrial Demand Response' },
+  ],
+  'scarsdale-warehouse': [
+    { id: 'sw-179d', program: '179D Commercial Deduction', desc: 'Warehouse energy efficiency deduction', amount: 3.6, prob: 88, type: 'federal', status: 'pending', deadline: '90 days', agency: 'IRS', fullName: '179D Deduction' },
+    { id: 'sw-ida', program: 'Scarsdale IDA PILOT', desc: 'Logistics facility property tax abatement', amount: 5.9, prob: 90, type: 'local', status: 'pending', deadline: '60 days', agency: 'Scarsdale IDA', fullName: 'IDA PILOT' },
+    { id: 'sw-coned', program: 'Con Edison Warehouse Rebate', desc: 'Warehouse efficiency incentives', amount: 1.8, prob: 85, type: 'utility', status: 'pending', deadline: '120 days', agency: 'Con Edison', fullName: 'Commercial Energy Efficiency Rebates' },
   ],
 };
 
