@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { formatCompactCurrency } from '@/lib/utils';
 import { projectData, allIncentives, type ProjectInfo } from '@/data/incentives';
-import { Plus, Building2, ChevronDown, ChevronUp, Pencil, Camera, Grid3X3, ImageIcon, List as ListIcon } from 'lucide-react';
+import { Plus, Building2, ChevronDown, ChevronUp, Pencil, Camera, Grid3X3, ImageIcon, List as ListIcon, CheckCircle } from 'lucide-react';
 
 interface V44ProjectSelectorProps {
   currentProject: string;
@@ -63,70 +63,6 @@ function getStreetViewImageUrl(address: string): string | null {
   if (!apiKey) return null;
   const encoded = encodeURIComponent(address);
   return `https://maps.googleapis.com/maps/api/streetview?size=640x360&location=${encoded}&key=${apiKey}&pitch=-5`;
-}
-
-// ─── Sector Metrics Mapping ──────────────────────────────────────────────────
-
-interface SectorMetrics {
-  primary: { label: string; value: string | number | null };
-  secondary: { label: string; value: string | number | null };
-}
-
-function getSectorMetrics(projectType: string, data: any): SectorMetrics {
-  const sectorMetrics: Record<string, (d: any) => SectorMetrics> = {
-    'multifamily': (d) => ({
-      primary: { label: 'Units', value: d.units || null },
-      secondary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-    }),
-    'affordable-housing': (d) => ({
-      primary: { label: 'Units', value: d.units || null },
-      secondary: { label: 'Affordable', value: d.affordableUnits || null },
-    }),
-    'mixed-use': (d) => ({
-      primary: { label: 'Units', value: d.units || null },
-      secondary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-    }),
-    'industrial': (d) => ({
-      primary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-      secondary: { label: 'Clear Ht', value: d.clearHeight ? `${d.clearHeight}'` : null },
-    }),
-    'office': (d) => ({
-      primary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-      secondary: { label: 'Floors', value: d.floors || null },
-    }),
-    'retail': (d) => ({
-      primary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-      secondary: { label: 'Tenants', value: d.tenantCount || null },
-    }),
-    'commercial': (d) => ({
-      primary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-      secondary: { label: 'Tenants', value: d.tenantCount || null },
-    }),
-    'hotel': (d) => ({
-      primary: { label: 'Rooms', value: d.rooms || null },
-      secondary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-    }),
-    'healthcare': (d) => ({
-      primary: { label: 'Beds', value: d.beds || null },
-      secondary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-    }),
-    'solar': (d) => ({
-      primary: { label: 'Capacity', value: d.mwCapacity ? `${d.mwCapacity}MW` : null },
-      secondary: { label: 'Annual', value: d.annualMwh ? `${d.annualMwh}MWh` : null },
-    }),
-    'transit-oriented': (d) => ({
-      primary: { label: 'Units', value: d.units || null },
-      secondary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-    }),
-  };
-
-  const metricsFn = sectorMetrics[projectType.toLowerCase()] ||
-    ((d) => ({
-      primary: { label: 'Units', value: d.units || null },
-      secondary: { label: 'Sq Ft', value: d.sqft ? `${(d.sqft / 1000).toFixed(0)}K` : null },
-    }));
-
-  return metricsFn(data);
 }
 
 // ─── localStorage helpers ────────────────────────────────────────────────────
@@ -338,16 +274,25 @@ function ProjectCard16x9({
     >
       {/* Background image or gradient */}
       {!showGradient && imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={project.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover"
-          onError={() => setImgError(true)}
-          unoptimized={true}
-          priority={isActive}
-        />
+        imageUrl.startsWith('data:') ? (
+          <img
+            src={imageUrl}
+            alt={project.name}
+            className="w-full h-full object-cover"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <Image
+            src={imageUrl}
+            alt={project.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+            onError={() => setImgError(true)}
+            unoptimized={true}
+            priority={isActive}
+          />
+        )
       )}
       {(showGradient || !imageUrl) && (
         <GradientPlaceholder name={project.name} type={project.type} isActive={isActive} />
@@ -508,6 +453,15 @@ function AddProjectCard16x9({ onClick }: AddProjectCard16x9Props) {
   );
 }
 
+// ─── Slug helper ─────────────────────────────────────────────────────────────
+
+function toProjectKey(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 // ─── V44ProjectSelector (main export) ────────────────────────────────────────
 
 export function V44ProjectSelector({
@@ -516,7 +470,10 @@ export function V44ProjectSelector({
 }: V44ProjectSelectorProps) {
   const [showAll, setShowAll] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [viewMode, setViewMode] = useState<'image' | 'text'>('image');
+  // Local project registry — seeded from static data, extended by user additions
+  const [allProjects, setAllProjects] = useState<Record<string, ProjectInfo>>(() => ({ ...projectData }));
   // Map of projectKey → custom data URL (overrides street view image)
   const [customImages, setCustomImages] = useState<Record<string, string>>(() => {
     // Hydrate from localStorage on first render
@@ -535,16 +492,15 @@ export function V44ProjectSelector({
     type: '',
     tdc: '',
   });
-  const [verifyingAddress, setVerifyingAddress] = useState(false);
 
-  const projectKeys = Object.keys(projectData);
+  const projectKeys = Object.keys(allProjects);
   const totalProjects = projectKeys.length;
 
   const allItems = ['portfolio', ...projectKeys];
   const visibleItems = showAll ? allItems : allItems.slice(0, CARDS_PER_ROW);
   const hasOverflow = allItems.length + 1 > CARDS_PER_ROW; // +1 for Add card
 
-  const selectedProject = currentProject !== 'portfolio' ? projectData[currentProject] : null;
+  const selectedProject = currentProject !== 'portfolio' ? allProjects[currentProject] : null;
   const totalIncentives = Object.values(allIncentives).reduce((sum, arr) => sum + arr.length, 0);
   const incentiveCount =
     currentProject === 'portfolio'
@@ -556,8 +512,38 @@ export function V44ProjectSelector({
     setCustomImages((prev) => ({ ...prev, [key]: dataUrl }));
   }, []);
 
+  const resetForm = () =>
+    setFormData({ name: '', address: '', units: '', type: '', tdc: '' });
+
+  const handleAddProject = () => {
+    const key = toProjectKey(formData.name);
+    const tdcValue = parseFloat(formData.tdc.replace(/[^0-9.]/g, ''));
+    const newProject: ProjectInfo = {
+      name: formData.name,
+      address: formData.address,
+      units: formData.units ? `${formData.units} units` : '—',
+      type: formData.type,
+      tier: 'Tier 1',
+      tdc: Number.isFinite(tdcValue) ? tdcValue / 1_000_000 : 0,
+    };
+
+    setAllProjects((prev) => ({ ...prev, [key]: newProject }));
+    setShowAddModal(false);
+    resetForm();
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+  };
+
   return (
     <div className="space-y-4">
+      {/* Success toast */}
+      {showSuccess && (
+        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/10 border border-teal-500/30 text-teal-700 dark:text-teal-300 text-sm font-medium">
+          <CheckCircle className="h-4 w-4 flex-shrink-0" />
+          Project added to your portfolio.
+        </div>
+      )}
+
       {/* View Toggle */}
       {totalProjects >= 10 && (
         <div className="flex items-center gap-2 px-1">
@@ -613,7 +599,7 @@ export function V44ProjectSelector({
             );
           }
 
-          const project = projectData[key];
+          const project = allProjects[key];
           if (!project) return null;
 
           const count = (allIncentives[key] || []).length;
@@ -717,26 +703,17 @@ export function V44ProjectSelector({
               </div>
               <div>
                 <label className="block text-sm font-medium text-deep-700 dark:text-sage-300 mb-1">
-                  Address {verifyingAddress && <span className="text-xs text-teal-500">• Verifying...</span>}
+                  Address
                 </label>
                 <input
                   type="text"
                   placeholder="e.g., 225 Grand Concourse, Bronx, NY 10451"
                   value={formData.address}
-                  onChange={(e) => {
-                    setFormData({ ...formData, address: e.target.value });
-                  }}
-                  onBlur={() => {
-                    if (formData.address) {
-                      setVerifyingAddress(true);
-                      // Simulate address verification delay
-                      setTimeout(() => setVerifyingAddress(false), 500);
-                    }
-                  }}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm placeholder:text-sage-400 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
                 />
                 <p className="text-xs text-sage-500 dark:text-sage-400 mt-1">
-                  When you enter an address, we'll automatically fetch the Street View image
+                  Street View image will auto-fetch for the property location
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -793,19 +770,19 @@ export function V44ProjectSelector({
               <button
                 onClick={() => {
                   setShowAddModal(false);
-                  setFormData({ name: '', address: '', units: '', type: '', tdc: '' });
+                  resetForm();
                 }}
                 className="px-4 py-2 text-sm font-medium text-deep-600 dark:text-sage-400 hover:text-deep-900 dark:hover:text-white transition-colors"
               >
                 Cancel
               </button>
               <button
-                disabled={!formData.name || !formData.address || !formData.type}
-                onClick={() => {
-                  // Here you'd implement adding the project to your data source
-                  setShowAddModal(false);
-                  setFormData({ name: '', address: '', units: '', type: '', tdc: '' });
-                }}
+                disabled={
+                  !formData.name ||
+                  !formData.address ||
+                  !formData.type
+                }
+                onClick={handleAddProject}
                 className="px-5 py-2 rounded-lg bg-deep-900 dark:bg-teal-600 text-white text-sm font-semibold hover:bg-deep-800 dark:hover:bg-teal-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Add Project
