@@ -74,6 +74,8 @@ const STATE_DATA: StateData[] = [
   { abbr: 'AK', name: 'Alaska', total: 243, federal: 67, state: 92, local: 49, utility: 35, topPrograms: ['AIDEA Business Programs', 'AHFC Housing Programs', 'AEA Energy Efficiency Programs'] },
   { abbr: 'WY', name: 'Wyoming', total: 234, federal: 64, state: 89, local: 47, utility: 34, topPrograms: ['Wyoming Business Council', 'Wyoming Community Dev. Authority', 'Rocky Mountain Power WY Efficiency'] },
   { abbr: 'WV', name: 'West Virginia', total: 223, federal: 61, state: 85, local: 45, utility: 32, topPrograms: ['WV Development Office', 'WVHDF Housing Programs', 'Appalachian Power Efficiency'] },
+  { abbr: 'DC', name: 'District of Columbia', total: 5, federal: 1, state: 4, local: 0, utility: 0, topPrograms: ['DC LIHTC', 'DC First Mortgage Loan Program', 'HOC Production', 'DC Property Tax Exemption', 'OPFI Grants'] },
+  { abbr: 'PR', name: 'Puerto Rico', total: 6, federal: 1, state: 4, local: 0, utility: 1, topPrograms: ['Act 60 Export Services Tax Credit', 'IRA Investment Tax Credit', 'Municipal Energy Efficiency Program', 'Act 60 Startup Investor Credit'] },
 ];
 
 type FilterTab = 'all' | 'federal' | 'state' | 'local' | 'utility';
@@ -132,7 +134,7 @@ export default function MapPage() {
             Incentive Map
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            Explore incentive programs across all 50 states
+            Explore incentive programs across all 50 states + DC + Puerto Rico
           </p>
         </div>
       </div>
@@ -141,7 +143,7 @@ export default function MapPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           { label: 'Total Programs', value: totalPrograms.toLocaleString(), icon: Landmark },
-          { label: 'Avg per State', value: Math.round(totalPrograms / 50).toLocaleString(), icon: TrendingUp },
+          { label: 'Avg per Region', value: Math.round(totalPrograms / STATE_DATA.length).toLocaleString(), icon: TrendingUp },
           { label: `Highest (${topState?.abbr})`, value: topState?.total.toLocaleString() ?? '—', icon: Building2 },
           { label: 'IRA Programs', value: '847', icon: Zap },
         ].map((stat) => {
