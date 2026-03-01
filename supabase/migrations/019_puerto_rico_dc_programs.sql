@@ -280,6 +280,7 @@ INSERT INTO incentive_programs (
     status,
     administrator,
     administering_agency,
+    source_url,
     stackable,
     entity_types,
     last_verified_at,
@@ -572,26 +573,34 @@ INSERT INTO incentive_programs (
 );
 
 -- ============================================================================
--- LOG SYNC EVENT
+-- LOG SYNC EVENT (Optional - logs sync if table exists)
 -- ============================================================================
-INSERT INTO program_sync_log (
-    sync_type,
-    source,
-    status,
-    programs_added,
-    programs_updated,
-    triggered_by,
-    metadata
-) VALUES (
-    'manual',
-    'claude-code',
-    'completed',
-    11,
-    0,
-    NULL,
-    jsonb_build_object(
-        'migration', '019_puerto_rico_dc_programs',
-        'reason', 'Add Puerto Rico and District of Columbia to incentive map',
-        'territories_added', ARRAY['PR', 'DC']
-    )
-);
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_name = 'program_sync_log'
+    ) THEN
+        INSERT INTO program_sync_log (
+            sync_type,
+            source,
+            status,
+            programs_added,
+            programs_updated,
+            triggered_by,
+            metadata
+        ) VALUES (
+            'manual',
+            'claude-code',
+            'completed',
+            11,
+            0,
+            NULL,
+            jsonb_build_object(
+                'migration', '019_puerto_rico_dc_programs',
+                'reason', 'Add Puerto Rico and District of Columbia to incentive map',
+                'territories_added', ARRAY['PR', 'DC']
+            )
+        );
+    END IF;
+END $$;
