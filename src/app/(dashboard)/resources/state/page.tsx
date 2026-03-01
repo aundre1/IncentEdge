@@ -53,6 +53,8 @@ const US_STATES = [
   { value: 'VT', label: 'Vermont' }, { value: 'VA', label: 'Virginia' },
   { value: 'WA', label: 'Washington' }, { value: 'WV', label: 'West Virginia' },
   { value: 'WI', label: 'Wisconsin' }, { value: 'WY', label: 'Wyoming' },
+  { value: 'DC', label: 'District of Columbia' },
+  { value: 'PR', label: 'Puerto Rico' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -242,9 +244,42 @@ const STATE_DATA: Record<string, StateData> = {
       { id: 'ga-cdbg', name: 'Georgia CDBG Program', type: 'Grant', amount: '$100K – $2M', agency: 'DCA Georgia', description: 'CDBG funds for housing, infrastructure, and community development in non-entitlement Georgia communities.' },
     ],
   },
+  DC: {
+    name: 'District of Columbia',
+    totalPrograms: 19,
+    taxCredits: 7,
+    grants: 8,
+    loans: 3,
+    rebates: 1,
+    info: 'DC Department of Housing and Community Development (DHCD) manages housing finance with LIHTC, first mortgage loans, and DC Housing Opportunities Commission programs.',
+    programs: [
+      { id: 'dc-lihtc', name: 'DC LIHTC Program', type: 'Tax Credit', amount: '$500K – $8M', agency: 'DHCD', description: 'Competitive 9% and 4% LIHTC allocation for affordable rental housing development throughout DC.' },
+      { id: 'dc-first-mortgage', name: 'DC First Mortgage Loan Program', type: 'Loan', amount: '$1M – $15M', agency: 'DHCD', description: 'Low-interest permanent financing for affordable rental housing development and preservation in DC.' },
+      { id: 'dc-hoc', name: 'HOC Production', type: 'Grant', amount: '$2M – $25M', agency: 'DC Housing Opportunities Commission', description: 'Direct production of affordable housing by District agency serving very low-income residents.' },
+      { id: 'dc-tax-exempt', name: 'DC Property Tax Exemption', type: 'Tax Credit', amount: 'Annual savings varies', agency: 'DHCD / OTR', description: 'Property tax exemption for affordable housing developments meeting affordability and service requirements.' },
+      { id: 'dc-opfi', name: 'Office of Planning & Finance Initiatives Grants', type: 'Grant', amount: '$250K – $3M', agency: 'OPFI', description: 'Development grants for mixed-income and workforce housing supporting DC economic development.' },
+    ],
+  },
+  PR: {
+    name: 'Puerto Rico',
+    totalPrograms: 21,
+    taxCredits: 12,
+    grants: 6,
+    loans: 2,
+    rebates: 1,
+    info: 'Puerto Rico offers incentives through Act 60 (Export Services), energy credits, and federal programs including IRA tax credits with enhanced bonuses for construction in PR.',
+    programs: [
+      { id: 'pr-act60', name: 'Act 60 Export Services Tax Credit', type: 'Tax Credit', amount: '4–37% tax reduction', agency: 'PR Department of Treasury', description: 'Individual and business tax benefits for export services established businesses and entrepreneurs relocating to Puerto Rico.' },
+      { id: 'pr-ira-itc', name: 'IRA Investment Tax Credit (PR)', type: 'Tax Credit', amount: '30–40%', agency: 'IRS / PR Treasury', description: 'Enhanced federal ITC for clean energy projects in Puerto Rico with potential energy community bonuses for disaster recovery zones.' },
+      { id: 'pr-municipal-energy', name: 'Municipal Energy Efficiency Program', type: 'Grant', amount: '$250K – $2M', agency: 'Puerto Rico Energy Bureau', description: 'Grants for municipal and public facility energy efficiency upgrades and renewable energy installations.' },
+      { id: 'pr-resilience', name: 'Resilience Bond Fund', type: 'Loan', amount: '$500K – $5M', agency: 'PR Department of Housing', description: 'Financing for hurricane-resilient housing reconstruction and disaster mitigation in approved zones.' },
+      { id: 'pr-solar-incentive', name: 'Net Metering & Solar Incentive', type: 'Rebate', amount: 'Variable by utility', agency: 'Puerto Rico Energy Commission', description: 'Net metering credits and rebates for residential and commercial distributed solar installations.' },
+      { id: 'pr-startup', name: 'Act 60 Startup Investor Credit', type: 'Tax Credit', amount: '37% of investment', agency: 'PR Department of Treasury', description: 'Tax credit for investors in PR-based startups focused on innovation and tech sectors.' },
+    ],
+  },
 };
 
-const POPULAR_STATES = ['NY', 'CA', 'TX', 'FL', 'IL', 'CO', 'WA', 'MA'];
+const POPULAR_STATES = ['NY', 'CA', 'TX', 'FL', 'IL', 'CO', 'WA', 'MA', 'DC', 'PR'];
 
 const TYPE_COLORS: Record<string, string> = {
   'Tax Credit': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',

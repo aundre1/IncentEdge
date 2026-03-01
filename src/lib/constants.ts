@@ -186,6 +186,7 @@ export const US_STATES = [
   { value: 'WI', label: 'Wisconsin' },
   { value: 'WY', label: 'Wyoming' },
   { value: 'DC', label: 'District of Columbia' },
+  { value: 'PR', label: 'Puerto Rico' },
 ] as const;
 
 // User Roles
