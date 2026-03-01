@@ -8,10 +8,17 @@
     "start": "next start",
     "lint": "next lint",
     "check": "tsc",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:import": "tsx scripts/import-programs.ts",
+    "db:import:tier1": "tsx scripts/import-programs.ts --tier 1",
+    "db:import:dry": "tsx scripts/import-programs.ts --dry-run",
+    "db:import:all": "tsx scripts/import-programs.ts",
+    "db:verify": "tsx scripts/verify-import.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
+    "csv-parse": "^5.5.6",
+    "dotenv": "^16.4.5",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -80,6 +87,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^20.19.0",
+    "tsx": "^4.7.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@types/swagger-ui-react": "^5.18.0",
