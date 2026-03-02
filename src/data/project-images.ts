@@ -13,7 +13,7 @@ export const projectImageUrls: Record<string, string> = {
   'westchester-hotel': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=640&h=360&fit=crop',
   'greenwich-healthcare': 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=640&h=360&fit=crop',
   'new-haven-retail': 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=640&h=360&fit=crop',
-  'bridgeport-solar': 'https://images.unsplash.com/photo-1509391366360-2e938d440dbb?w=640&h=360&fit=crop',
+  'bridgeport-solar': 'https://images.unsplash.com/photo-1618788110003-c7b46b76b22a?w=640&h=360&fit=crop',
   'rye-data-center': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=640&h=360&fit=crop',
   'scarsdale-warehouse': 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=640&h=360&fit=crop',
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { formatCompactCurrency } from '@/lib/utils';
@@ -493,7 +493,28 @@ export function V44ProjectSelector({
     units: '',
     type: '',
     tdc: '',
+    imageMode: 'street-view' as 'street-view' | 'upload',
   });
+
+  // Load saved images from Supabase on mount
+  useEffect(() => {
+    const loadSavedImages = async () => {
+      try {
+        const res = await fetch('/api/project-images');
+        if (res.ok) {
+          const data = await res.json();
+          const images: Record<string, string> = {};
+          data.forEach((item: any) => {
+            images[item.project_key] = item.image_url;
+          });
+          setCustomImages((prev) => ({ ...prev, ...images }));
+        }
+      } catch (err) {
+        console.error('Failed to load saved images:', err);
+      }
+    };
+    loadSavedImages();
+  }, []);
 
   const projectKeys = Object.keys(allProjects);
   const totalProjects = projectKeys.length;
@@ -509,13 +530,23 @@ export function V44ProjectSelector({
       ? totalIncentives
       : (allIncentives[currentProject] || []).length;
 
-  const handleCustomImageChange = useCallback((key: string, dataUrl: string) => {
+  const handleCustomImageChange = useCallback(async (key: string, dataUrl: string) => {
     saveCustomImage(key, dataUrl);
     setCustomImages((prev) => ({ ...prev, [key]: dataUrl }));
+    // Save to Supabase for persistence
+    try {
+      await fetch('/api/project-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_key: key, image_url: dataUrl }),
+      });
+    } catch (err) {
+      console.error('Failed to save image:', err);
+    }
   }, []);
 
   const resetForm = () =>
-    setFormData({ name: '', address: '', units: '', type: '', tdc: '' });
+    setFormData({ name: '', address: '', units: '', type: '', tdc: '', imageMode: 'street-view' });
 
   const handleAddProject = () => {
     const key = toProjectKey(formData.name);
@@ -766,6 +797,42 @@ export function V44ProjectSelector({
                   onChange={(e) => setFormData({ ...formData, tdc: e.target.value })}
                   className="w-full px-3 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-800 text-deep-900 dark:text-deep-100 text-sm placeholder:text-sage-400 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-deep-700 dark:text-sage-300 mb-2">
+                  Project Image
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, imageMode: 'street-view' })}
+                    className={cn(
+                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all',
+                      formData.imageMode === 'street-view'
+                        ? 'bg-teal-500 text-white shadow-md'
+                        : 'bg-deep-100 dark:bg-deep-700 text-deep-700 dark:text-sage-300 hover:bg-deep-200 dark:hover:bg-deep-600'
+                    )}
+                  >
+                    Google Street View (Default)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, imageMode: 'upload' })}
+                    className={cn(
+                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all',
+                      formData.imageMode === 'upload'
+                        ? 'bg-teal-500 text-white shadow-md'
+                        : 'bg-deep-100 dark:bg-deep-700 text-deep-700 dark:text-sage-300 hover:bg-deep-200 dark:hover:bg-deep-600'
+                    )}
+                  >
+                    Upload Image
+                  </button>
+                </div>
+                <p className="text-xs text-sage-500 dark:text-sage-400 mt-1.5">
+                  {formData.imageMode === 'street-view'
+                    ? 'Google Street View will be fetched automatically for this address.'
+                    : 'You can add a custom image after creating the project.'}
+                </p>
               </div>
             </div>
             <div className="flex justify-end gap-3 mt-6">
