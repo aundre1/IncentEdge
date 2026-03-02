@@ -20,6 +20,7 @@ const errorMessages: Record<string, string> = {
   unsupported_response_type: 'The authentication method is not supported. Please contact support.',
   invalid_scope: 'The requested permissions are invalid. Please contact support.',
   auth_callback_error: 'An error occurred during authentication. Please try again.',
+  'pkce_code_verifier_not_found': 'Your browser storage was cleared during sign-in. This is usually temporary—try signing in again. If it persists, clear your browser cookies and try once more.',
 };
 
 function getErrorMessage(error: string | null, message: string | null): string {
@@ -44,6 +45,8 @@ function getErrorTitle(error: string | null): string {
     case 'server_error':
     case 'temporarily_unavailable':
       return 'Service Unavailable';
+    case 'pkce_code_verifier_not_found':
+      return 'Browser Storage Issue';
     default:
       return 'Authentication Error';
   }

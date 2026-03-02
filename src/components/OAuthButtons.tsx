@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Loader2, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { OAuthLoadingModal } from '@/components/OAuthLoadingModal';
 import { signInWithOAuth, getOAuthCallbackUrl, type OAuthProvider } from '@/lib/auth-providers';
 
 // Google "G" logo SVG
@@ -115,6 +116,7 @@ export function OAuthButton({
   className,
 }: OAuthButtonProps) {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showOAuthModal, setShowOAuthModal] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   // When LinkedIn returns a "provider not enabled" error, switch to "Coming Soon" mode
   const [linkedInSetupRequired, setLinkedInSetupRequired] = React.useState(false);
@@ -158,6 +160,9 @@ export function OAuthButton({
           setError(msg);
         }
         setIsLoading(false);
+      } else {
+        // OAuth success: show branded loading modal while redirecting
+        setShowOAuthModal(true);
       }
       // On success the browser will redirect — no need to setIsLoading(false)
     } catch (err) {
@@ -168,6 +173,7 @@ export function OAuthButton({
 
   return (
     <div className="w-full">
+      <OAuthLoadingModal isVisible={showOAuthModal} />
       <div className="relative">
         <Button
           type="button"
