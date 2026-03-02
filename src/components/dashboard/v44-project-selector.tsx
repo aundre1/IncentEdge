@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { formatCompactCurrency } from '@/lib/utils';
 import { projectData, allIncentives, type ProjectInfo } from '@/data/incentives';
+import { projectImageUrls } from '@/data/project-images';
 import { Plus, Building2, ChevronDown, ChevronUp, Pencil, Camera, Grid3X3, ImageIcon, List as ListIcon, CheckCircle } from 'lucide-react';
 
 interface V44ProjectSelectorProps {
@@ -198,9 +199,10 @@ function ProjectCard16x9({
   const [imgError, setImgError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const streetViewUrl = !customImage ? getStreetViewImageUrl(project.address) : null;
+  const projectAssetUrl = projectImageUrls[projectKey] || null;
+  const streetViewUrl = !customImage && !projectAssetUrl ? getStreetViewImageUrl(project.address) : null;
   const dummyImageUrl = getDummyImageForPropertyType(project.type);
-  const imageUrl = customImage || streetViewUrl || dummyImageUrl;
+  const imageUrl = customImage || projectAssetUrl || streetViewUrl || dummyImageUrl;
   const showGradient = !imageUrl || imgError;
 
   // For text mode, show simple card
