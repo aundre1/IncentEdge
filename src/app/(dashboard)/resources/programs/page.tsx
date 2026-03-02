@@ -458,7 +458,7 @@ export default function ProgramDatabasePage() {
               Program Database
             </h1>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              Comprehensive reference for all 30,007 incentive programs
+              Comprehensive reference for all 217,000+ incentive programs
             </p>
           </div>
         </div>
@@ -467,7 +467,7 @@ export default function ProgramDatabasePage() {
       {/* STATS STRIP */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Programs', value: '30,007', icon: Database, color: 'text-teal-600 dark:text-teal-400' },
+          { label: 'Total Programs', value: '217,000+', icon: Database, color: 'text-teal-600 dark:text-teal-400' },
           { label: 'Active', value: '15,234', icon: CheckCircle2, color: 'text-emerald-600 dark:text-emerald-400' },
           { label: 'Federal', value: '8,491', icon: Landmark, color: 'text-blue-600 dark:text-blue-400' },
           { label: 'State', value: '12,482', icon: MapPin, color: 'text-violet-600 dark:text-violet-400' },

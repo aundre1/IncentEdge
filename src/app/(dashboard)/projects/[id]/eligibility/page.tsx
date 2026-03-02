@@ -194,7 +194,7 @@ function getConfidenceBadge(confidence: number) {
 }
 
 const SCAN_MESSAGES = [
-  'Scanning 30,007 programs...',
+  'Scanning 217,000+ programs...',
   'Evaluating federal credits...',
   'Checking state programs...',
   'Calculating stacking opportunities...',
@@ -297,7 +297,7 @@ export default function EligibilityScanPage({ params }: { params: Promise<{ id: 
           </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight font-sora">Eligibility Scan</h1>
-            <p className="text-sm text-muted-foreground">AI-powered matching across 30,007 programs</p>
+            <p className="text-sm text-muted-foreground">AI-powered matching across 217,000+ programs</p>
           </div>
         </div>
       </div>
@@ -337,7 +337,7 @@ export default function EligibilityScanPage({ params }: { params: Promise<{ id: 
             <div className="max-w-sm">
               <h2 className="text-lg font-semibold font-sora">Run Eligibility Scan</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Our AI will evaluate <span className="font-mono font-semibold text-foreground">30,007</span> federal, state, and local incentive programs
+                Our AI will evaluate <span className="font-mono font-semibold text-foreground">217,000+</span> federal, state, and local incentive programs
                 against your project profile in seconds.
               </p>
             </div>

@@ -50,7 +50,7 @@ const faqItems = [
   {
     question: 'How does IncentEdge find eligible programs for my project?',
     answer:
-      'Our AI analyzes your project details against 30,007+ verified incentive programs using a multi-factor eligibility engine. It evaluates jurisdiction, project type, construction type, energy efficiency, and dozens of other criteria to surface the most relevant opportunities.',
+      'Our AI analyzes your project details against 217,000+ verified incentive programs using a multi-factor eligibility engine. It evaluates jurisdiction, project type, construction type, energy efficiency, and dozens of other criteria to surface the most relevant opportunities.',
   },
   {
     question: 'What is IRA Direct Pay and how do I qualify?',

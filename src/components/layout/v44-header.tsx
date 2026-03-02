@@ -362,7 +362,7 @@ export function V44Header() {
             >
               <Search className="w-4 h-4 text-sage" />
               <span className="flex-1 text-left text-sage/70">
-                Search 30,007 incentive programs...
+                Search 217,000+ incentive programs...
               </span>
               <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono bg-deep-700 text-sage rounded border border-deep-600">
                 <Command className="w-3 h-3" />K
@@ -497,7 +497,7 @@ export function V44Header() {
           <DialogHeader className="sr-only">
             <DialogTitle>Search Incentive Programs</DialogTitle>
             <DialogDescription>
-              Search across 30,007 incentive programs by name, state, or category.
+              Search across 217,000+ incentive programs by name, state, or category.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSearch}>
@@ -609,7 +609,7 @@ export function V44Header() {
           {searchLoading && searchSuggestions.length === 0 && (
             <div className="px-4 py-6 text-center">
               <Loader2 className="w-5 h-5 animate-spin text-teal-500 mx-auto mb-2" />
-              <p className="text-sage/60 text-sm">Searching 30,007 programs...</p>
+              <p className="text-sage/60 text-sm">Searching 217,000+ programs...</p>
             </div>
           )}
 
@@ -626,7 +626,7 @@ export function V44Header() {
                 ) : searchQuery ? (
                   'Type at least 2 characters to see suggestions...'
                 ) : (
-                  'Start typing to instantly search 30,007 incentive programs'
+                  'Start typing to instantly search 217,000+ incentive programs'
                 )}
               </p>
             </div>

@@ -70,7 +70,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-lg text-deep-500 dark:text-sage-400 mb-10 leading-relaxed max-w-2xl">
-                Discover, analyze, and capture incentives across 30,007+ programs.
+                Discover, analyze, and capture incentives across 217,000+ programs.
                 What takes consultants 200+ hours, IncentEdge delivers in under 60 seconds.
               </p>
 
@@ -98,7 +98,7 @@ export default function HomePage() {
           <div className="max-w-[1200px] mx-auto grid gap-0 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-deep-100 dark:divide-deep-800">
             {[
               { label: 'TAM', value: '$500B+', desc: 'Annual incentive market' },
-              { label: 'Programs', value: '30,007+', desc: 'Federal, state & local' },
+              { label: 'Programs', value: '217,000+', desc: 'Federal, state & local' },
               { label: 'Time Saved', value: '100+ Hours', desc: 'Per project analyzed' },
               { label: 'Accuracy', value: '92%', desc: 'AI-powered matching' },
             ].map((stat) => (
@@ -258,7 +258,7 @@ export default function HomePage() {
             <div className="mt-16 grid gap-8 md:grid-cols-3">
               {[
                 { icon: Zap, title: 'Save 100+ Hours', desc: 'Per project on incentive research' },
-                { icon: Building2, title: '30,007+ Programs', desc: 'Verified across all 50 states' },
+                { icon: Building2, title: '217,000+ Programs', desc: 'Verified across all 50 states' },
                 { icon: Shield, title: 'Enterprise Security', desc: 'SOC 2 compliant encryption' },
               ].map((prop, i) => (
                 <div key={i} className="flex items-start gap-4">
@@ -293,7 +293,7 @@ export default function HomePage() {
               </span>
               <span className="flex items-center gap-2 px-4 py-2 rounded-lg border border-deep-200 dark:border-deep-700 bg-white dark:bg-deep-900">
                 <BarChart3 className="w-4 h-4 text-teal-500" />
-                <span className="font-semibold text-deep-900 dark:text-deep-100">30,007</span>
+                <span className="font-semibold text-deep-900 dark:text-deep-100">217,000+</span>
                 <span className="text-sage-500">Programs</span>
               </span>
             </div>

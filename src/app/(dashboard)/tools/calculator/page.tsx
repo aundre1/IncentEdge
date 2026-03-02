@@ -208,7 +208,7 @@ export default function CalculatorPage() {
       {/* Stats Bar */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Programs Tracked', value: '30,007+' },
+          { label: 'Programs Tracked', value: '217,000+' },
           { label: 'States Covered', value: '50' },
           { label: 'Real-time Scoring', value: 'Live' },
         ].map((stat) => (
@@ -550,7 +550,7 @@ export default function CalculatorPage() {
                 </Link>
               </Button>
               <p className="text-xs text-slate-400 text-center">
-                Full analysis uses AI matching against all 30,007+ programs
+                Full analysis uses AI matching against all 217,000+ programs
               </p>
             </>
           ) : (

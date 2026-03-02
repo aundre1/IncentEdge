@@ -148,7 +148,7 @@ function buildDemoResult(projectKey: string): EligibilityResult {
 // ============================================================================
 
 const ANALYSIS_MESSAGES = [
-  'Analyzing 30,007 programs...',
+  'Analyzing 217,000+ programs...',
   'Evaluating federal tax credits...',
   'Checking state incentives...',
   'Scoring local programs...',
@@ -712,7 +712,7 @@ export default function MatchingPage() {
               )}
             </div>
             <p className="text-slate-500 dark:text-slate-400">
-              AI-powered matching across 30,007+ verified programs
+              AI-powered matching across 217,000+ verified programs
             </p>
           </div>
         </div>

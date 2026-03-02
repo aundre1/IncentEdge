@@ -73,7 +73,7 @@ const valueProps = [
   {
     icon: Building2,
     title: '$500B+ Incentive Database',
-    description: '30,000+ verified programs across all 50 states',
+    description: '217,000+ verified programs across all 50 states',
   },
   {
     icon: Shield,

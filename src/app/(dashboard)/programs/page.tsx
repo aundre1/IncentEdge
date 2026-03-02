@@ -110,7 +110,7 @@ const featuredPrograms = [
 ];
 
 const stats = [
-  { label: 'Programs', value: '30,007', icon: Database },
+  { label: 'Programs', value: '217,000+', icon: Database },
   { label: 'States', value: '50', icon: Globe },
   { label: 'Awards Tracked', value: '8M+', icon: BarChart3 },
   { label: 'Updated', value: 'Daily', icon: RefreshCw },
@@ -126,7 +126,7 @@ export default function ProgramsPage() {
             Program Database
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            30,007 verified incentive programs across federal, state, local, and utility sources
+            217,000+ verified incentive programs across federal, state, local, and utility sources
           </p>
         </div>
       </div>

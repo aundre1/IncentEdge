@@ -439,7 +439,7 @@ export default function StateProgramsPage() {
                 Programs coming soon for {stateName}
               </p>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                We&apos;re curating state-specific programs. Use Discover to search all 30,007 programs now.
+                We&apos;re curating state-specific programs. Use Discover to search all 217,000+ programs now.
               </p>
             </div>
             <Link href={`/discover?state=${selectedState}`}>
