@@ -275,7 +275,12 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error in GET /api/dashboard/alerts:', error);
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('[API] GET /api/dashboard/alerts:', {
+      error: err.message,
+      stack: err.stack,
+      context: 'Unhandled exception in alerts handler',
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

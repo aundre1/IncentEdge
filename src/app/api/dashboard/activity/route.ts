@@ -84,7 +84,14 @@ export async function GET(request: NextRequest) {
     const { data: logs, error } = await query;
 
     if (error) {
-      console.error('Error fetching activity logs:', error);
+      console.error('[API] GET /api/dashboard/activity:', {
+        error: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+        context: 'Failed to fetch activity logs',
+        orgId: profile.organization_id,
+      });
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -118,7 +125,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data: activities });
   } catch (error) {
-    console.error('Error in GET /api/dashboard/activity:', error);
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('[API] GET /api/dashboard/activity:', {
+      error: err.message,
+      stack: err.stack,
+      context: 'Unhandled exception in activity feed handler',
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
