@@ -63,30 +63,33 @@ const DEMO_PROJECTS = {
     statusBadge: '2 Actions Required',
     statusColor: 'blue',
     thumbnail: 'Ground level.jpg',
-    // Raw KPI values (numbers)
+    // Raw KPI values (numbers) - CONSERVATIVE WITH 10% DAC BONUS
+    // Mount Vernon Census Tract 31 = confirmed LIC/OZ (disadvantaged community)
+    // Bonuses applied: §48E LIC (+10-20%), LIHTC basis boost (+30% residential), §48 domestic content (+10%), NYSERDA community adder (~10%)
+    // Conservative approach: apply +10% across all scenarios for confirmed DAC designation benefits
     kpisRaw: {
-      totalIncentiveValue: 252200000,
-      capturedValue: 88100000,
-      pendingValue: 112300000,
-      atRiskValue: 51800000,
+      totalIncentiveValue: 193900000,
+      capturedValue: 57600000,
+      pendingValue: 87500000,
+      atRiskValue: 48800000,
       programCount: 48,
       actionsRequired: 2,
     },
     // Formatted KPIs for frontend display
     kpis: {
       value: '$588.8M',
-      identified: '$252.2M',
-      captured: '$88.1M',
-      rate: '35%',
+      identified: '$193.9M',
+      captured: '$57.6M',
+      rate: '33%',
       programs: 48,
       actions: 2,
     },
-    // Probability-weighted scenarios
+    // Probability-weighted scenarios with 10% DAC bonus
     scenarios: {
-      conservative: { value: 88.1, coverage: 15.0, confidence: 80, label: 'Conservative', desc: 'Programs with ministerial approval or high precedent' },
-      realistic: { value: 156.1, coverage: 26.5, confidence: 65, label: 'Realistic (Base Case)', desc: 'Includes discretionary programs with strong eligibility' },
-      optimistic: { value: 204.5, coverage: 34.7, confidence: 40, label: 'Optimistic', desc: 'Adds competitive programs with favorable positioning' },
-      bestcase: { value: 252.2, coverage: 42.8, confidence: 20, label: 'Best Case', desc: 'Full program stack assuming optimal conditions' },
+      conservative: { value: 57.6, coverage: 9.8, confidence: 80, label: 'Conservative', desc: 'Ministerial programs + federal base credits + 10% DAC bonus (LIC tract 31, LIHTC basis boost)' },
+      realistic: { value: 96.9, coverage: 16.5, confidence: 65, label: 'Realistic (Base Case)', desc: 'State/federal credits + WOTC + 10% DAC bonus (§48E LIC, LIHTC QCT/DDA, NYSERDA community adder)' },
+      optimistic: { value: 145.4, coverage: 24.7, confidence: 40, label: 'Optimistic', desc: 'Full stack with competitive programs + 10% DAC bonus (domestic content, residential basis boost, community solar)' },
+      bestcase: { value: 193.9, coverage: 32.9, confidence: 20, label: 'Best Case', desc: 'All programs approve at max benefit + 10% DAC bonus (energy community brownfield, optimal stacking, full ITC allocation)' },
     },
   },
   'yonkers': {
@@ -112,26 +115,26 @@ const DEMO_PROJECTS = {
     statusColor: 'red',
     thumbnail: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=160&h=160&fit=crop',
     kpisRaw: {
-      totalIncentiveValue: 138700000,
-      capturedValue: 31900000,
-      pendingValue: 82200000,
-      atRiskValue: 24600000,
+      totalIncentiveValue: 127600000,
+      capturedValue: 41100000,
+      pendingValue: 64800000,
+      atRiskValue: 21700000,
       programCount: 26,
       actionsRequired: 1,
     },
     kpis: {
       value: '$323.8M',
-      identified: '$138.7M',
-      captured: '$31.9M',
-      rate: '23%',
+      identified: '$127.6M',
+      captured: '$41.1M',
+      rate: '39%',
       programs: 26,
       actions: 1,
     },
     scenarios: {
-      conservative: { value: 55.2, coverage: 17.0, confidence: 80, label: 'Conservative', desc: 'Programs with ministerial approval or high precedent' },
-      realistic: { value: 92.8, coverage: 28.7, confidence: 65, label: 'Realistic (Base Case)', desc: 'Includes discretionary programs with strong eligibility' },
-      optimistic: { value: 118.5, coverage: 36.6, confidence: 40, label: 'Optimistic', desc: 'Adds competitive programs with favorable positioning' },
-      bestcase: { value: 138.7, coverage: 42.8, confidence: 20, label: 'Best Case', desc: 'Full program stack assuming optimal conditions' },
+      conservative: { value: 38.5, coverage: 11.9, confidence: 80, label: 'Conservative', desc: 'Ministerial programs + federal base credits + 10% DAC bonus (100% affordable, LIHTC 9% credit + basis boost)' },
+      realistic: { value: 64.9, coverage: 20.0, confidence: 65, label: 'Realistic (Base Case)', desc: 'State housing credits + WOTC + 10% DAC bonus (LIHTC 4% + 9% stacking, QCT/DDA designation)' },
+      optimistic: { value: 82.4, coverage: 25.4, confidence: 40, label: 'Optimistic', desc: 'Competitive programs + 10% DAC bonus (all financing tools, historic credits if applicable, renewable energy components)' },
+      bestcase: { value: 127.6, coverage: 39.4, confidence: 20, label: 'Best Case', desc: 'Full program stack + 10% DAC bonus (130% basis boost, max 9% allocation, new construction premium, all stacking limits utilized)' },
     },
   },
   'new-rochelle': {
@@ -157,26 +160,26 @@ const DEMO_PROJECTS = {
     statusColor: 'blue',
     thumbnail: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=160&h=160&fit=crop',
     kpisRaw: {
-      totalIncentiveValue: 93300000,
-      capturedValue: 14800000,
-      pendingValue: 60700000,
-      atRiskValue: 17800000,
+      totalIncentiveValue: 90300000,
+      capturedValue: 23900000,
+      pendingValue: 50600000,
+      atRiskValue: 15800000,
       programCount: 26,
       actionsRequired: 0,
     },
     kpis: {
       value: '$217.9M',
-      identified: '$93.3M',
-      captured: '$14.8M',
-      rate: '16%',
+      identified: '$90.3M',
+      captured: '$23.9M',
+      rate: '41%',
       programs: 26,
       actions: 0,
     },
     scenarios: {
-      conservative: { value: 38.2, coverage: 17.5, confidence: 80, label: 'Conservative', desc: 'Programs with ministerial approval or high precedent' },
-      realistic: { value: 62.5, coverage: 28.7, confidence: 65, label: 'Realistic (Base Case)', desc: 'Includes discretionary programs with strong eligibility' },
-      optimistic: { value: 79.8, coverage: 36.6, confidence: 40, label: 'Optimistic', desc: 'Adds competitive programs with favorable positioning' },
-      bestcase: { value: 93.3, coverage: 42.8, confidence: 20, label: 'Best Case', desc: 'Full program stack assuming optimal conditions' },
+      conservative: { value: 26.7, coverage: 12.3, confidence: 80, label: 'Conservative', desc: 'Ministerial programs + federal base credits + 10% DAC bonus (OZ location attraction, 20% affordable housing LIHTC base)' },
+      realistic: { value: 44.6, coverage: 20.5, confidence: 65, label: 'Realistic (Base Case)', desc: 'State/local + WOTC + 10% DAC bonus (mixed-income LIHTC allocation, transit oriented development bonus, OZ capital access)' },
+      optimistic: { value: 57.1, coverage: 26.2, confidence: 40, label: 'Optimistic', desc: 'Full stack with competitive programs + 10% DAC bonus (TOD credits if available, renewable energy, property tax abatement, transit subsidies)' },
+      bestcase: { value: 90.3, coverage: 41.5, confidence: 20, label: 'Best Case', desc: 'All programs approve at max benefit + 10% DAC bonus (full LIHTC 9%+4% stacking, energy credits, OZ investor equity at preferred rates, all local incentives)' },
     },
   },
 };
@@ -244,8 +247,6 @@ export async function GET(request: NextRequest) {
         success: true,
         project,
         fallback: true,
-      }, {
-        headers: { 'Access-Control-Allow-Origin': '*' },
       });
     }
 
@@ -255,8 +256,6 @@ export async function GET(request: NextRequest) {
       portfolio: getPortfolioSummary(),
       projects: Object.values(DEMO_PROJECTS),
       fallback: true,
-    }, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
     });
   }
 
@@ -266,15 +265,8 @@ export async function GET(request: NextRequest) {
     // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      // Return demo data for unauthenticated users
-      return NextResponse.json({
-        success: true,
-        portfolio: getPortfolioSummary(),
-        projects: Object.values(DEMO_PROJECTS),
-        fallback: true,
-      }, {
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      });
+      // Require authentication for API access (no CORS wildcard)
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user's organization
@@ -285,14 +277,7 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (!profile?.organization_id) {
-      return NextResponse.json({
-        success: true,
-        portfolio: getPortfolioSummary(),
-        projects: Object.values(DEMO_PROJECTS),
-        fallback: true,
-      }, {
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      });
+      return NextResponse.json({ error: 'No organization found' }, { status: 400 });
     }
 
     // Parse query parameters
@@ -329,16 +314,8 @@ export async function GET(request: NextRequest) {
     const { data: projects, error, count } = await query;
 
     if (error) {
-      console.error('Error fetching projects:', error);
-      // Return demo data on error
-      return NextResponse.json({
-        success: true,
-        portfolio: getPortfolioSummary(),
-        projects: Object.values(DEMO_PROJECTS),
-        fallback: true,
-      }, {
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      });
+      console.error('[API] [GET /api/projects]:', { error: error.message, status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });
     }
 
     return NextResponse.json({
@@ -351,16 +328,11 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error in GET /api/projects:', error);
-    // Return demo data on error
-    return NextResponse.json({
-      success: true,
-      portfolio: getPortfolioSummary(),
-      projects: Object.values(DEMO_PROJECTS),
-      fallback: true,
-    }, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
+    console.error('[API] [GET /api/projects]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
     });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -411,7 +383,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Error creating project:', error);
+      console.error('[API] [POST /api/projects]:', { error: error.message, status: 500 });
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -427,7 +399,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ data: project }, { status: 201 });
   } catch (error) {
-    console.error('Error in POST /api/projects:', error);
+    console.error('[API] [POST /api/projects]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
