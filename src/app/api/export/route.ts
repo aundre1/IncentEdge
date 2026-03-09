@@ -213,6 +213,7 @@ function filterPrograms(
 }
 
 export async function GET(request: NextRequest) {
+  try {
   const url = new URL(request.url);
   const format = url.searchParams.get('format') || 'csv';
   const exportType = url.searchParams.get('type') || 'programs';
@@ -285,6 +286,14 @@ export async function GET(request: NextRequest) {
     { error: 'Invalid format. Supported: csv, json, pdf' },
     { status: 400 }
   );
+  } catch (error) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('GET /api/export: Unhandled exception.', {
+      message: err.message,
+      stack: err.stack,
+    });
+    return NextResponse.json({ error: 'Export failed. Please try again.' }, { status: 500 });
+  }
 }
 
 export async function OPTIONS() {

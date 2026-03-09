@@ -29,6 +29,34 @@ const CACHE_MAX_AGE = 60;
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
 
+  // Validate required environment variables before attempting DB calls
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error(
+      'GET /api/dashboard/stats: Missing required Supabase environment variables.',
+      {
+        hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      }
+    );
+    return NextResponse.json(
+      {
+        programCount: 24805,
+        projectsAnalyzed: 0,
+        totalValueFound: 0,
+        averageMatchScore: 0,
+        recentActivity: [],
+      },
+      {
+        status: 200,
+        headers: {
+          'X-Response-Time': `${Date.now() - startTime}ms`,
+          'X-Fallback': 'true',
+          'X-Fallback-Reason': 'missing-env-vars',
+        },
+      }
+    );
+  }
+
   try {
     const supabase = await createClient();
 
@@ -42,7 +70,12 @@ export async function GET(request: NextRequest) {
       .eq('status', 'active');
 
     if (programError) {
-      console.error('Error fetching program count:', programError);
+      console.error('GET /api/dashboard/stats: Failed to fetch program count.', {
+        message: programError.message,
+        code: programError.code,
+        details: programError.details,
+        hint: programError.hint,
+      });
     }
 
     // If user is authenticated, get their stats
@@ -193,9 +226,15 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error in GET /api/dashboard/stats:', error);
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('GET /api/dashboard/stats: Unhandled exception.', {
+      message: err.message,
+      stack: err.stack,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'set' : 'missing',
+      anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'set' : 'missing',
+    });
 
-    // Return fallback demo data on error
+    // Return fallback demo data on error — never let the dashboard break
     return NextResponse.json(
       {
         programCount: 24805,

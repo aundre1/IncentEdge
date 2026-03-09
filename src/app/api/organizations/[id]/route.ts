@@ -60,7 +60,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ data: organization });
   } catch (error) {
-    console.error('Error in GET /api/organizations/[id]:', error);
+    console.error('[API] [GET /api/organizations/[id]]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -113,7 +116,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       .single();
 
     if (error) {
-      console.error('Error updating organization:', error);
+      console.error('[API] [PUT /api/organizations/[id]]:', { error: error.message, status: 500 });
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -129,7 +132,10 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ data: organization });
   } catch (error) {
-    console.error('Error in PUT /api/organizations/[id]:', error);
+    console.error('[API] [PUT /api/organizations/[id]]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -175,13 +181,16 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       .eq('id', id);
 
     if (error) {
-      console.error('Error deleting organization:', error);
+      console.error('[API] [DELETE /api/organizations/[id]]:', { error: error.message, status: 500 });
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, message: 'Organization deleted' });
   } catch (error) {
-    console.error('Error in DELETE /api/organizations/[id]:', error);
+    console.error('[API] [DELETE /api/organizations/[id]]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

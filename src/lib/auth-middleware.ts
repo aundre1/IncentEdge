@@ -469,8 +469,12 @@ export function withFeature(
 // ============================================================================
 
 export function corsHeaders(): Record<string, string> {
+  const origin = process.env.CORS_ALLOWED_ORIGINS || process.env.ALLOWED_ORIGINS;
+  if (!origin) {
+    throw new Error('CORS_ALLOWED_ORIGINS environment variable is not set');
+  }
   return {
-    'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGINS || '*',
+    'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
     'Access-Control-Max-Age': '86400',

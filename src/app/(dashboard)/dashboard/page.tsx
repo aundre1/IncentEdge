@@ -28,6 +28,7 @@ import { StatsCard } from '@/components/StatsCard';
 import { DirectPayBadge } from '@/components/DirectPayBadge';
 import { formatCompactCurrency, formatRelativeTime } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
+import { DashboardErrorBoundary } from '@/components/DashboardErrorBoundary';
 
 interface DashboardStats {
   programCount: number;
@@ -59,7 +60,7 @@ const activityColors = {
   report: 'text-amber-500 bg-amber-100 dark:bg-amber-900/30',
 };
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { profile, user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -485,5 +486,13 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <DashboardErrorBoundary>
+      <DashboardContent />
+    </DashboardErrorBoundary>
   );
 }

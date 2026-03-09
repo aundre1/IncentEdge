@@ -1,4 +1,4 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -19,19 +19,15 @@ export async function GET(request: NextRequest) {
   }
 
   if (code) {
-    // ─── CRITICAL: Build the redirect response FIRST ───────────────────────
-    // Then create a Supabase client whose cookie callbacks write directly
-    // onto that response object. This guarantees the Set-Cookie headers are
-    // present in the response the browser receives, so the session is
-    // persisted before the dashboard route is visited.
+    // ─── CRITICAL: Build the redirect response FIRST, then bind the Supabase
+    // client to write Set-Cookie headers directly onto that response object.
     //
-    // The previous pattern (createClient via next/headers cookies()) set
-    // cookies on an implicit response, then returned a SEPARATE
-    // NextResponse.redirect() — those two objects are independent, so the
-    // Set-Cookie headers were lost and the browser never got the session
-    // cookies, causing the first-attempt login failure.
+    // Using getAll/setAll (not deprecated get/set/remove):
+    //   getAll reads ALL request cookies so the PKCE verifier is always found
+    //   regardless of how many chunks the ssr library split it into.
+    //   setAll writes session cookies directly onto redirectResponse so they
+    //   reach the browser in a single round-trip.
     // ─────────────────────────────────────────────────────────────────────────
-
     const redirectResponse = NextResponse.redirect(`${origin}${redirect}`);
 
     const supabase = createServerClient(
@@ -39,15 +35,17 @@ export async function GET(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
+          getAll() {
+            // Return every cookie on the incoming request — gives @supabase/ssr
+            // the full picture so it can find the PKCE code-verifier cookie.
+            return request.cookies.getAll();
           },
-          set(name: string, value: string, options: CookieOptions) {
-            // Write directly onto the redirect response
-            redirectResponse.cookies.set({ name, value, ...options });
-          },
-          remove(name: string, options: CookieOptions) {
-            redirectResponse.cookies.set({ name, value: '', ...options });
+          setAll(cookiesToSet) {
+            // Write session cookies (and any other cookies ssr wants to set)
+            // directly onto the redirect response the browser will receive.
+            cookiesToSet.forEach(({ name, value, options }) => {
+              redirectResponse.cookies.set({ name, value, ...options });
+            });
           },
         },
       }
@@ -80,20 +78,21 @@ export async function GET(request: NextRequest) {
         }
       }
 
-      // Session cookies are set on redirectResponse — browser will receive them
       return redirectResponse;
     }
 
-    // Exchange failed
+    // Exchange failed — log the raw error so it shows up in Vercel runtime logs
+    console.error('[Auth Callback] exchangeCodeForSession failed:', exchangeError.message);
     const errorUrl = new URL('/auth-error', origin);
     errorUrl.searchParams.set('error', 'session_exchange_failed');
-    errorUrl.searchParams.set('message', exchangeError.message);
+    errorUrl.searchParams.set('message', 'Authentication failed. Please try again.');
     return NextResponse.redirect(errorUrl);
   }
 
   // No code or error — invalid callback
+  console.error('[Auth Callback] No code in callback URL');
   const errorUrl = new URL('/auth-error', origin);
   errorUrl.searchParams.set('error', 'invalid_callback');
-  errorUrl.searchParams.set('message', 'Invalid authentication callback - no code provided');
+  errorUrl.searchParams.set('message', 'Authentication failed. Please try again.');
   return NextResponse.redirect(errorUrl);
 }

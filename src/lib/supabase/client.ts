@@ -1,16 +1,13 @@
 import { createBrowserClient } from '@supabase/ssr';
 
 export function createClient() {
+  // @supabase/ssr automatically uses a singleton in browser context
+  // (when isSingleton is omitted it defaults to true when isBrowser() is true).
+  // Explicitly setting isSingleton:true caused issues when createClient() was
+  // called during SSR — the module-cached client was created with no browser
+  // context, breaking document.cookie access for subsequent browser calls.
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      // isSingleton ensures the same client instance is reused across renders,
-      // which is critical for PKCE to work: the verifier stored in cookies when
-      // signInWithOAuth() is called must be accessible when the OAuth provider
-      // redirects back to the callback route. Without this, first-time OAuth
-      // sign-ins fail with "PKCE code_verifier not found in storage".
-      isSingleton: true,
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 }

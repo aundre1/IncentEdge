@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IncentEdge — Launch Dashboard</title>
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #10b981;
+    --accent2: #3b82f6;
+    --accent3: #f59e0b;
+    --red: #ef4444;
+    --purple: #8b5cf6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --card: #131d2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+  .logo span { color: var(--text); }
+  .countdown { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .countdown strong { color: var(--accent3); font-size: 15px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge.green { background: rgba(16,185,129,0.15); color: var(--accent); border: 1px solid rgba(16,185,129,0.3); }
+  .badge.yellow { background: rgba(245,158,11,0.15); color: var(--accent3); border: 1px solid rgba(245,158,11,0.3); }
+  .badge.red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .badge.blue { background: rgba(59,130,246,0.15); color: var(--accent2); border: 1px solid rgba(59,130,246,0.3); }
+  .badge.purple { background: rgba(139,92,246,0.15); color: var(--purple); border: 1px solid rgba(139,92,246,0.3); }
+
+  /* Layout */
+  .main { max-width: 1400px; margin: 0 auto; padding: 32px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+  .mb-8 { margin-bottom: 32px; }
+  .mb-6 { margin-bottom: 24px; }
+  .mb-4 { margin-bottom: 16px; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .icon-green { background: rgba(16,185,129,0.15); }
+  .icon-blue { background: rgba(59,130,246,0.15); }
+  .icon-yellow { background: rgba(245,158,11,0.15); }
+  .icon-red { background: rgba(239,68,68,0.15); }
+  .icon-purple { background: rgba(139,92,246,0.15); }
+
+  /* Stat Cards */
+  .stat-value { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: var(--muted); }
+  .stat-change { font-size: 11px; margin-top: 6px; }
+  .stat-change.up { color: var(--accent); }
+  .stat-change.warn { color: var(--accent3); }
+
+  /* Section Labels */
+  .section-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 8px; }
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.4; }
+  .check-item.done { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2); }
+  .check-item.blocking { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); }
+  .check-item.warning { background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2); }
+  .check-item.info { background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); }
+  .check-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+  .check-label { flex: 1; }
+  .check-label strong { display: block; }
+  .check-label span { color: var(--muted); font-size: 12px; }
+
+  /* API Route Table */
+  .route-group { margin-bottom: 16px; }
+  .route-group-name { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .route-list { display: flex; flex-direction: column; gap: 4px; }
+  .route-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; background: var(--surface2); border-radius: 6px; font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace; }
+  .route-path { color: var(--accent2); }
+  .route-methods { display: flex; gap: 4px; }
+  .method { padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+  .method.get { background: rgba(16,185,129,0.2); color: var(--accent); }
+  .method.post { background: rgba(59,130,246,0.2); color: var(--accent2); }
+  .method.put { background: rgba(245,158,11,0.2); color: var(--accent3); }
+  .method.delete { background: rgba(239,68,68,0.2); color: var(--red); }
+  .method.patch { background: rgba(139,92,246,0.2); color: var(--purple); }
+
+  /* App Store Section */
+  .store-step { display: flex; gap: 14px; padding: 14px; background: var(--surface2); border-radius: 8px; margin-bottom: 8px; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent2); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .step-num.ios { background: var(--accent); }
+  .step-num.android { background: #34a853; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .code-block { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #79c0ff; margin: 8px 0; line-height: 1.6; overflow-x: auto; }
+  .code-block .comment { color: var(--muted); }
+
+  /* Recommendations */
+  .rec-item { padding: 12px 14px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid; }
+  .rec-item.high { background: rgba(239,68,68,0.05); border-color: var(--red); }
+  .rec-item.medium { background: rgba(245,158,11,0.05); border-color: var(--accent3); }
+  .rec-item.low { background: rgba(59,130,246,0.05); border-color: var(--accent2); }
+  .rec-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .rec-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .rec-impact { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; margin-top: 6px; padding: 2px 8px; border-radius: 4px; }
+  .rec-impact.high { background: rgba(239,68,68,0.1); color: var(--red); }
+  .rec-impact.medium { background: rgba(245,158,11,0.1); color: var(--accent3); }
+  .rec-impact.low { background: rgba(59,130,246,0.1); color: var(--accent2); }
+
+  /* Tab bar */
+  .tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 28px; }
+  .tab { flex: 1; text-align: center; padding: 8px 12px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--muted); }
+  .tab.active { background: var(--surface2); color: var(--text); }
+
+  /* Progress bar */
+  .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+  .progress-fill { height: 100%; border-radius: 3px; }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  .text-green { color: var(--accent); }
+  .text-yellow { color: var(--accent3); }
+  .text-red { color: var(--red); }
+  .text-blue { color: var(--accent2); }
+  .text-muted { color: var(--muted); }
+  .text-sm { font-size: 12px; }
+  .text-xs { font-size: 11px; }
+  .mt-2 { margin-top: 8px; }
+  .mt-4 { margin-top: 16px; }
+  .flex { display: flex; }
+  .gap-2 { gap: 8px; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .flex-wrap { flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="logo">Incent<span>Edge</span></div>
+    <span class="badge green">● Backend Live</span>
+    <span class="badge blue">Next.js 15 + Supabase</span>
+    <span class="badge purple">61 API Routes</span>
+  </div>
+  <div class="countdown">
+    Public Launch → <strong>Mar 10, 2026</strong>
+    <span class="badge yellow">⏰ TOMORROW</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--   SECTION 1: STAT SUMMARY                  -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="grid-4 mb-8">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">API Routes</div>
+        <div class="card-icon icon-blue">📡</div>
+      </div>
+      <div class="stat-value text-blue">61</div>
+      <div class="stat-label">Endpoints across 12 domains</div>
+      <div class="progress-bar mt-2"><div class="progress-fill" style="width:100%;background:#3b82f6"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Incentive Programs</div>
+        <div class="card-icon icon-green">💰</div>
+      </div>
+      <div class="stat-value text-green">24K+</div>
+      <div class="stat-label">Verified in Supabase DB</div>
+      <div class="progress-bar mt-2"><div class="progress-fill" style="width:92%;background:#10b981"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Launch Checklist</div>
+        <div class="card-icon icon-yellow">📋</div>
+      </div>
+      <div class="stat-value text-yellow">71%</div>
+      <div class="stat-label">Items verified (15/21)</div>
+      <div class="progress-bar mt-2"><div class="progress-fill" style="width:71%;background:#f59e0b"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Security Score</div>
+        <div class="card-icon icon-red">🔐</div>
+      </div>
+      <div class="stat-value text-green">9.2</div>
+      <div class="stat-label">Post 17-fix audit (was 7.5)</div>
+      <div class="progress-bar mt-2"><div class="progress-fill" style="width:92%;background:#10b981"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--   SECTION 2: PRE-LAUNCH CHECKLIST          -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="mb-8">
+    <div class="section-label">🚀 Pre-Launch Checklist — Mar 10 Public Launch</div>
+    <div class="grid-2">
+
+      <!-- BLOCKING -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔴 Blocking — Must Clear Tonight</div>
+          <span class="badge red">5 items</span>
+        </div>
+        <div class="checklist">
+          <div class="check-item blocking">
+            <div class="check-icon">🔴</div>
+            <div class="check-label">
+              <strong>Verify Supabase RLS on all tables</strong>
+              <span>Anon key is public. RLS is your only data wall. Run: SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname='public'</span>
+            </div>
+          </div>
+          <div class="check-item blocking">
+            <div class="check-icon">🔴</div>
+            <div class="check-label">
+              <strong>CORS wildcard fallback in auth-middleware.ts:473</strong>
+              <span>ALLOWED_ORIGINS defaults to '*' if env var not set. Set ALLOWED_ORIGINS=https://incentedge.com in Vercel now.</span>
+            </div>
+          </div>
+          <div class="check-item blocking">
+            <div class="check-icon">🔴</div>
+            <div class="check-label">
+              <strong>SQL injection in search (projects + applications routes)</strong>
+              <span>Wrap search param in validateInputSecurity() before .ilike() calls. Already exists in /lib/api-security.ts — just not called.</span>
+            </div>
+          </div>
+          <div class="check-item blocking">
+            <div class="check-icon">🔴</div>
+            <div class="check-label">
+              <strong>Remove demo fallback in catch blocks</strong>
+              <span>api/projects/route.ts returns DEMO_PROJECTS on ANY server error — masks real failures in prod.</span>
+            </div>
+          </div>
+          <div class="check-item blocking">
+            <div class="check-icon">🔴</div>
+            <div class="check-label">
+              <strong>NEXT_PUBLIC_SUPABASE_URL + ANON_KEY on Vercel</strong>
+              <span>Confirm all required env vars are set in Vercel → Settings → Environment Variables for Production.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRE-LAUNCH -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🟡 Pre-Launch — Do Before Go-Live</div>
+          <span class="badge yellow">8 items</span>
+        </div>
+        <div class="checklist">
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Rate limit /api/contact, /api/email/send, /api/documents/upload</strong>
+              <span>Infrastructure exists in /lib/rate-limiter.ts — not applied to these routes yet.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Add React ErrorBoundary to dashboard</strong>
+              <span>No error boundaries = one thrown component crashes the whole app. Wrap DashboardContext provider.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Remove /api/seed from production routes</strong>
+              <span>Seed endpoint should be admin-only + disabled in prod. Gate behind NODE_ENV check.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Validate env vars on startup via /lib/env-validation.ts</strong>
+              <span>File exists but isn't hooked into app bootstrap. Import in next.config.js or instrumentation.ts.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Stripe webhook secret set in Vercel</strong>
+              <span>STRIPE_WEBHOOK_SECRET must match your Stripe dashboard endpoint secret. Verify /api/stripe/webhook.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Resend API key + from address configured</strong>
+              <span>Email on signup, report delivery, payment-failed emails won't work without this.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Custom domain DNS + SSL verified on Vercel</strong>
+              <span>incentedge.com → Vercel. Check: vercel domains list. SSL auto-provisions on first hit.</span>
+            </div>
+          </div>
+          <div class="check-item warning">
+            <div class="check-icon">🟡</div>
+            <div class="check-label">
+              <strong>Smoke test all 5 critical flows after deploy</strong>
+              <span>Signup → Dashboard → Incentive Search → Application → Stripe checkout. Do on prod URL, not localhost.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DONE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">✅ Confirmed Done</div>
+          <span class="badge green">8 items</span>
+        </div>
+        <div class="checklist">
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>Supabase auth (LinkedIn OIDC + Google OAuth)</strong><span>OAuth PKCE error fixed. Apple OAuth env vars set on Railway.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>IncentEdge branding on sign-in flow</strong><span>Committed and deployed.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>DATABASE_URL set on Railway</strong><span>Verified in previous session. Supabase pooler 6543 port.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>Phase 2 feature complete</strong><span>All Phase 2 deliverables shipped.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>24,458 incentive programs in DB</strong><span>Seeded and verified via /api/stats.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>Stripe integration (checkout + webhook + portal)</strong><span>3 routes built: create-checkout, webhook, portal.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>PDF report generation</strong><span>/lib/pdf-generator.ts + /api/reports/generate live.</span></div>
+          </div>
+          <div class="check-item done">
+            <div class="check-icon">✅</div>
+            <div class="check-label"><strong>AI recommendation engine</strong><span>/lib/ai-recommendation-engine.ts + DeepSeek/Claude tiered LLM.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POST-LAUNCH -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔵 Post-Launch — Week 2</div>
+          <span class="badge blue">6 items</span>
+        </div>
+        <div class="checklist">
+          <div class="check-item info">
+            <div class="check-icon">🔵</div>
+            <div class="check-label"><strong>Replace all console.* with structured logger</strong><span>330 occurrences. Use winston (already in devDeps). Gate by NODE_ENV.</span></div>
+          </div>
+          <div class="check-item info">
+            <div class="check-icon">🔵</div>
+            <div class="check-label"><strong>Replace 28 files using `any` type</strong><span>Type safety debt. Low risk at launch, but fix before major feature additions.</span></div>
+          </div>
+          <div class="check-item info">
+            <div class="check-icon">🔵</div>
+            <div class="check-label"><strong>Add Zod validation to remaining endpoints</strong><span>/api/dashboard, /api/analytics, /api/notifications, /api/settings, /api/team.</span></div>
+          </div>
+          <div class="check-item info">
+            <div class="check-icon">🔵</div>
+            <div class="check-label"><strong>Request timeout on all DB queries</strong><span>Add AbortSignal.timeout(5000) to slow/expensive queries.</span></div>
+          </div>
+          <div class="check-item info">
+            <div class="check-icon">🔵</div>
+            <div class="check-label"><strong>Add Sentry for error tracking</strong><span>You're flying blind without error alerts in prod.</span></div>
+          </div>
+          <div class="check-item info">
+            <div class="check-icon">🔵</div>
+            <div class="check-label"><strong>Implement API versioning (/api/v1/)</strong><span>No rush — do before any breaking API changes.</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--   SECTION 3: BACKEND API MAP               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="mb-8">
+    <div class="section-label">📡 Backend API Surface — 61 Routes</div>
+    <div class="grid-3">
+
+      <!-- Col 1 -->
+      <div>
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">🏗️ Core — Projects</div>
+            <span class="badge green">5 routes</span>
+          </div>
+          <div class="route-group">
+            <div class="route-list">
+              <div class="route-item"><span class="route-path">/api/projects</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+              <div class="route-item"><span class="route-path">/api/projects/[id]</span><span class="route-methods"><span class="method get">GET</span><span class="method put">PUT</span><span class="method delete">DELETE</span></span></div>
+              <div class="route-item"><span class="route-path">/api/projects/analyze</span><span class="route-methods"><span class="method post">POST</span></span></div>
+              <div class="route-item"><span class="route-path">/api/project-images</span><span class="route-methods"><span class="method post">POST</span></span></div>
+              <div class="route-item"><span class="route-path">/api/calculate</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">📋 Applications</div>
+            <span class="badge green">7 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/applications</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/applications/[id]</span><span class="route-methods"><span class="method get">GET</span><span class="method put">PUT</span><span class="method delete">DELETE</span></span></div>
+            <div class="route-item"><span class="route-path">/api/applications/[id]/submit</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/applications/[id]/status</span><span class="route-methods"><span class="method patch">PATCH</span></span></div>
+            <div class="route-item"><span class="route-path">/api/applications/[id]/tasks</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/applications/[id]/comments</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🔍 Programs + Search</div>
+            <span class="badge blue">9 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/programs</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/[id]</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/search</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/search/semantic</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/eligible</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/sync</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/ingest</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/ingest/process</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/programs/ingest/status/[id]</span><span class="route-methods"><span class="method get">GET</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2 -->
+      <div>
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">📊 Analytics + Dashboard</div>
+            <span class="badge purple">7 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/dashboard</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/dashboard/stats</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/dashboard/activity</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/dashboard/alerts</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/analytics</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/analytics/portfolio</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/analytics/incentives</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/analytics/applications</span><span class="route-methods"><span class="method get">GET</span></span></div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">🤖 AI + Grant Writing</div>
+            <span class="badge purple">3 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/grant-writing/narrative</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/grant-writing/probability</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/cost-estimation</span><span class="route-methods"><span class="method post">POST</span></span></div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">🏪 Marketplace</div>
+            <span class="badge yellow">4 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/marketplace/listings</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/marketplace/listings/[id]</span><span class="route-methods"><span class="method get">GET</span><span class="method put">PUT</span></span></div>
+            <div class="route-item"><span class="route-path">/api/marketplace/cpace</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/marketplace/inquiries</span><span class="route-methods"><span class="method post">POST</span></span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">✅ Compliance</div>
+            <span class="badge green">4 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/compliance</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/compliance/[projectId]</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/compliance/[projectId]/items</span><span class="route-methods"><span class="method get">GET</span><span class="method patch">PATCH</span></span></div>
+            <div class="route-item"><span class="route-path">/api/compliance/[projectId]/certify</span><span class="route-methods"><span class="method post">POST</span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 3 -->
+      <div>
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">💳 Billing (Stripe)</div>
+            <span class="badge green">4 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/stripe/create-checkout</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/stripe/checkout</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/stripe/portal</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/stripe/webhook</span><span class="route-methods"><span class="method post">POST</span></span></div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">👥 Team + Orgs</div>
+            <span class="badge blue">6 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/team</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/team/[userId]</span><span class="route-methods"><span class="method put">PUT</span><span class="method delete">DELETE</span></span></div>
+            <div class="route-item"><span class="route-path">/api/team/invitations</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/team/roles</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/organizations</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/organizations/[id]</span><span class="route-methods"><span class="method get">GET</span><span class="method put">PUT</span></span></div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <div class="card-title">🔗 Integrations</div>
+            <span class="badge yellow">5 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/integrations/api-keys</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span><span class="method delete">DELETE</span></span></div>
+            <div class="route-item"><span class="route-path">/api/integrations/webhooks</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/integrations/webhooks/test</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/integrations/connections</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📁 Docs + Reports + Other</div>
+            <span class="badge blue">12 routes</span>
+          </div>
+          <div class="route-list">
+            <div class="route-item"><span class="route-path">/api/documents</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/documents/upload</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/documents/[id]/extract</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/reports</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/reports/generate</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/export</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/jobs, /api/jobs/[id]</span><span class="route-methods"><span class="method get">GET</span><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/notifications</span><span class="route-methods"><span class="method get">GET</span><span class="method patch">PATCH</span></span></div>
+            <div class="route-item"><span class="route-path">/api/email/send</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/health, /api/status, /api/stats</span><span class="route-methods"><span class="method get">GET</span></span></div>
+            <div class="route-item"><span class="route-path">/api/leads/capture</span><span class="route-methods"><span class="method post">POST</span></span></div>
+            <div class="route-item"><span class="route-path">/api/settings</span><span class="route-methods"><span class="method get">GET</span><span class="method put">PUT</span></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--   SECTION 4: APP STORE SUBMISSION          -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="mb-8">
+    <div class="section-label">📱 Mobile App Store Submission — ClipExtract (Builds Already Ready)</div>
+    <div class="grid-2">
+
+      <!-- iOS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🍏 iOS → App Store Connect</div>
+          <span class="badge green">Build 5fd0169c ✅ READY</span>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num ios">1</div>
+          <div class="step-content">
+            <div class="step-title">One-time: Create App Store Connect API Key</div>
+            <div class="step-desc">Sign in to <strong>appstoreconnect.apple.com</strong> → Users and Access → Keys tab → Generate API Key. Download the .p8 file — you can only download it once. Role: App Manager or Admin.</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num ios">2</div>
+          <div class="step-content">
+            <div class="step-title">Submit the build (run in Terminal)</div>
+            <div class="code-block">cd ~/Desktop/OC/clipextract/mobile<br>npx eas-cli submit --platform ios \<br>  --id 5fd0169c-4a45-44ab-8007-d60cf0d770e3</div>
+            <div class="step-desc">EAS will prompt for your API Key ID, Issuer ID, and the .p8 file path. After first run, credentials are stored — future submits are one command.</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num ios">3</div>
+          <div class="step-content">
+            <div class="step-title">TestFlight processing (15–30 min)</div>
+            <div class="step-desc">Build uploads to TestFlight. Apple processes it. You'll get an email at <strong>aoldacre7@gmail.com</strong>. App Store Connect App ID: <strong>6759565309</strong>.</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num ios">4</div>
+          <div class="step-content">
+            <div class="step-title">Submit for App Review</div>
+            <div class="step-desc">In App Store Connect → Your App → App Store tab → click <strong>Submit for Review</strong>. First review takes 24–48h. Have screenshots (6.7" and 12.9" iPad) and privacy policy URL ready.</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num ios">5</div>
+          <div class="step-content">
+            <div class="step-title">Required before review submits</div>
+            <div class="step-desc">
+              • App Privacy → Data types collected declared<br>
+              • Support URL (can be your website)<br>
+              • Privacy Policy URL (required)<br>
+              • Age rating questionnaire answered<br>
+              • 1024×1024 app icon (no alpha channel)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Android -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🤖 Android → Google Play Console</div>
+          <span class="badge green">Build e94bcfa6 ✅ READY</span>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num android">1</div>
+          <div class="step-content">
+            <div class="step-title">One-time: Create Service Account for EAS</div>
+            <div class="step-desc">Go to <strong>play.google.com/console</strong> → Setup → API access → Link to a Google Cloud Project → Create Service Account. Grant role: <strong>Release Manager</strong>. Download JSON key file.</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num android">2</div>
+          <div class="step-content">
+            <div class="step-title">Submit the build (run in Terminal)</div>
+            <div class="code-block">cd ~/Desktop/OC/clipextract/mobile<br>npx eas-cli submit --platform android \<br>  --id e94bcfa6-52fb-4618-98f8-a72043090075</div>
+            <div class="step-desc">EAS will ask for path to the Service Account JSON file. After first time, credentials stored for future non-interactive use. versionCode 12 — AAB is at Expo servers.</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num android">3</div>
+          <div class="step-content">
+            <div class="step-title">Choose release track in Play Console</div>
+            <div class="step-desc">EAS will ask which track: <strong>Internal → Alpha → Beta → Production</strong>. Start with <strong>Internal testing</strong> (instant, no review). Then promote to Production when ready. First Production submission requires Google review (1–3 days).</div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num android">4</div>
+          <div class="step-content">
+            <div class="step-title">Required before Production release</div>
+            <div class="step-desc">
+              • Store listing: title, short/long description, screenshots<br>
+              • 512×512 icon + 1024×500 feature graphic<br>
+              • Privacy policy URL<br>
+              • Content rating questionnaire (IARC)<br>
+              • Data safety section filled out<br>
+              • At least one Internal test with 1 tester (to unlock review)
+            </div>
+          </div>
+        </div>
+
+        <div class="store-step">
+          <div class="step-num android">5</div>
+          <div class="step-content">
+            <div class="step-title">Estimated timelines</div>
+            <div class="step-desc">
+              • Internal → Live: <strong>Instant</strong><br>
+              • Beta → Live: <strong>Instant</strong><br>
+              • Production (first time): <strong>1–3 days review</strong><br>
+              • Production (subsequent): <strong>Hours to 1 day</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!--   SECTION 5: DASHBOARD FEATURE RECS        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="mb-8">
+    <div class="section-label">💡 Recommended Dashboard Features — What's Missing</div>
+    <div class="grid-3">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔴 High Impact — Add Now</div>
+        </div>
+
+        <div class="rec-item high">
+          <div class="rec-title">Real-Time API Health Monitor</div>
+          <div class="rec-desc">Show live status for Supabase, Stripe, Resend, and AI services. Display uptime %, last checked timestamp, and error counts from /api/status. Without this you're blind to outages in prod.</div>
+          <div class="rec-impact high">🔴 CRITICAL for launch day</div>
+        </div>
+
+        <div class="rec-item high">
+          <div class="rec-title">Revenue Dashboard (MRR / ARR)</div>
+          <div class="rec-desc">Stripe data is in the DB — surface it. Show MRR, new subscribers today, churn, trial conversions, and upgrade rate by plan tier. The API surface is there; the view isn't.</div>
+          <div class="rec-impact high">🔴 Revenue visibility</div>
+        </div>
+
+        <div class="rec-item high">
+          <div class="rec-title">Error Log Feed (Admin Only)</div>
+          <div class="rec-desc">Surface unhandled exceptions and 5xx errors in real time. Currently 330 console.* calls with no structured output. Wire winston + surface on admin dashboard. Essential for debugging post-launch.</div>
+          <div class="rec-impact high">🔴 Ops critical</div>
+        </div>
+
+        <div class="rec-item high">
+          <div class="rec-title">User Signup Funnel</div>
+          <div class="rec-desc">Track: Visited → Signed Up → Onboarded → First Incentive Search → Paid. Currently the leads/capture endpoint exists but no funnel view. Know where users drop off on Day 1.</div>
+          <div class="rec-impact high">🔴 Growth critical</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🟡 Medium Impact — Week 2</div>
+        </div>
+
+        <div class="rec-item medium">
+          <div class="rec-title">Background Job Queue Monitor</div>
+          <div class="rec-desc">You have /api/jobs and /api/jobs/process but no visibility into queue depth, failed jobs, or retry status. Show a table: job_id, type, status, created, last_run, error message.</div>
+          <div class="rec-impact medium">🟡 Operational</div>
+        </div>
+
+        <div class="rec-item medium">
+          <div class="rec-title">Incentive Program Data Quality Panel</div>
+          <div class="rec-desc">24K+ programs in DB — show % with complete data, recently expired programs, programs by jurisdiction, and last sync timestamp from /api/programs/sync. Data freshness = trust.</div>
+          <div class="rec-impact medium">🟡 Data integrity</div>
+        </div>
+
+        <div class="rec-item medium">
+          <div class="rec-title">Application Pipeline Kanban</div>
+          <div class="rec-desc">Visual board: Draft → Submitted → In Review → Approved → Funded. Currently only API exists. A kanban view for portfolio managers would be the #1 power user feature.</div>
+          <div class="rec-impact medium">🟡 User engagement</div>
+        </div>
+
+        <div class="rec-item medium">
+          <div class="rec-title">Team Activity Log</div>
+          <div class="rec-desc">/api/dashboard/activity exists but no visible log in admin panel. Show who did what and when — critical for multi-tenant orgs where team members collaborate on applications.</div>
+          <div class="rec-impact medium">🟡 Enterprise feature</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔵 Strategic — Month 2</div>
+        </div>
+
+        <div class="rec-item low">
+          <div class="rec-title">Webhook Delivery Monitor</div>
+          <div class="rec-desc">/api/integrations/webhooks/test exists but no delivery log. Show: endpoint URL, last payload, response code, delivery latency, and retry history. Enterprise integrators need this.</div>
+          <div class="rec-impact low">🔵 Enterprise</div>
+        </div>
+
+        <div class="rec-item low">
+          <div class="rec-title">AI Recommendation Performance Tracker</div>
+          <div class="rec-desc">Track: How many AI recommendations led to applications? What's the match accuracy? Which programs get recommended most? This data exists in DB but isn't surfaced anywhere.</div>
+          <div class="rec-impact low">🔵 Product insights</div>
+        </div>
+
+        <div class="rec-item low">
+          <div class="rec-title">Compliance Deadline Calendar</div>
+          <div class="rec-desc">Surface all compliance items with due dates as a calendar view. /api/compliance/[projectId]/items has the data. IRA/ITC deadlines are critical — missing one costs millions.</div>
+          <div class="rec-impact low">🔵 High value for AoRa users</div>
+        </div>
+
+        <div class="rec-item low">
+          <div class="rec-title">Marketplace Transaction Feed</div>
+          <div class="rec-desc">C-PACE listings, tax credit transfers, and marketplace inquiries are all in the API. A live transaction feed with value, parties, and status would make the marketplace feel alive.</div>
+          <div class="rec-impact low">🔵 Marketplace growth</div>
+        </div>
+
+        <div class="rec-item low">
+          <div class="rec-title">Grant Narrative Quality Scores</div>
+          <div class="rec-desc">/api/grant-writing/probability gives success probability. Surface a score card per application: narrative quality %, key strengths, missing elements. Differentiate from any competitor.</div>
+          <div class="rec-impact low">🔵 AI differentiator</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)">
+    IncentEdge Launch Dashboard • Generated Mar 9, 2026 • Public Launch: Mar 10, 2026
+    <br><span style="color:var(--accent)">Backend: Next.js 15 + Supabase + Stripe + Anthropic AI • 61 API Routes • 24,458 Incentive Programs</span>
+  </div>
+
+</div>
+</body>
+</html>

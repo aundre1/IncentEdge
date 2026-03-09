@@ -18,3 +18,9 @@ incentedge_deliverables/
 .local/
 .vercel
 .env*.local
+# ✅ Security Report Templates - Internal Use Only
+SECURITY_AUDIT_REPORT.md
+SECURITY_AUDIT_INDEX.md
+
+.env.production.pulled
+.env.verify

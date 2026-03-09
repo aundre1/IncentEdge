@@ -21,6 +21,11 @@ import {
   Compass,
   Briefcase,
   Leaf,
+  Shield,
+  Activity,
+  TrendingUp,
+  ScrollText,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -52,6 +57,11 @@ const iconMap = {
   Compass,
   Briefcase,
   Leaf,
+  Shield,
+  Activity,
+  TrendingUp,
+  ScrollText,
+  Users,
 };
 
 interface NavItem {
@@ -121,6 +131,17 @@ const mainNavItems: NavItem[] = [
     label: 'Reports',
     href: '/reports',
     icon: 'BarChart3',
+  },
+  {
+    label: 'Admin',
+    href: '/admin',
+    icon: 'Shield',
+    children: [
+      { label: 'Health Monitor', href: '/admin/health' },
+      { label: 'Revenue', href: '/admin/revenue' },
+      { label: 'Error Logs', href: '/admin/logs' },
+      { label: 'Signup Funnel', href: '/admin/funnel' },
+    ],
   },
 ];
 

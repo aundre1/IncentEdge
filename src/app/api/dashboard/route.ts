@@ -82,7 +82,13 @@ export async function GET(request: NextRequest) {
       .eq('organization_id', orgId);
 
     if (projectsError) {
-      console.error('Error fetching projects:', projectsError);
+      console.error('GET /api/dashboard: Failed to fetch projects.', {
+        message: projectsError.message,
+        code: projectsError.code,
+        details: projectsError.details,
+        hint: projectsError.hint,
+        orgId,
+      });
       return NextResponse.json({ error: projectsError.message }, { status: 500 });
     }
 
@@ -213,7 +219,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data: stats });
   } catch (error) {
-    console.error('Error in GET /api/dashboard:', error);
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('GET /api/dashboard: Unhandled exception.', {
+      message: err.message,
+      stack: err.stack,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'set' : 'missing',
+      anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'set' : 'missing',
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

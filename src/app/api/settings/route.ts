@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
         .single();
 
       if (error) {
-        console.error('Error fetching profile:', error);
+        console.error('[API] [GET /api/settings] profile fetch failed:', { error: error.message, status: 500 });
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
 
@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
         .single();
 
       if (error) {
-        console.error('Error fetching organization:', error);
+        console.error('[API] [GET /api/settings] organization fetch failed:', { error: error.message, status: 500 });
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
 
@@ -177,7 +177,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ error: 'Invalid settings type' }, { status: 400 });
   } catch (error) {
-    console.error('Error in GET /api/settings:', error);
+    console.error('[API] [GET /api/settings]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -277,7 +280,7 @@ export async function PATCH(request: NextRequest) {
         .eq('id', user.id);
 
       if (updateError) {
-        console.error('Error updating preferences:', updateError);
+        console.error('[API] [PATCH /api/settings] preferences update failed:', { error: updateError.message, status: 500 });
         return NextResponse.json({ error: updateError.message }, { status: 500 });
       }
 
@@ -351,7 +354,7 @@ export async function PATCH(request: NextRequest) {
         .eq('id', profile.organization_id);
 
       if (updateError) {
-        console.error('Error updating organization:', updateError);
+        console.error('[API] [PATCH /api/settings] organization update failed:', { error: updateError.message, status: 500 });
         return NextResponse.json({ error: updateError.message }, { status: 500 });
       }
 
@@ -371,7 +374,10 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ error: 'Invalid settings type' }, { status: 400 });
   } catch (error) {
-    console.error('Error in PATCH /api/settings:', error);
+    console.error('[API] [PATCH /api/settings]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

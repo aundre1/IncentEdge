@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { z } from 'zod';
+import { sanitizeSearchTerm } from '@/lib/security/input-sanitizer';
 
 // Validation schema for creating a project
 const createProjectSchema = z.object({
@@ -236,8 +237,8 @@ export async function GET(request: NextRequest) {
   const projectId = searchParams.get('id');
   const demoMode = searchParams.get('demo') === 'true';
 
-  // Return demo data if requested or auth fails
-  if (demoMode || projectId) {
+  // Return demo data only when explicitly requested via ?demo=true
+  if (demoMode) {
     if (projectId && projectId !== 'portfolio') {
       const project = DEMO_PROJECTS[projectId as keyof typeof DEMO_PROJECTS];
       if (!project) {
@@ -305,7 +306,8 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%,address_line1.ilike.%${search}%`);
+      const sanitized = sanitizeSearchTerm(search);
+      query = query.or(`name.ilike.%${sanitized.value}%,description.ilike.%${sanitized.value}%,address_line1.ilike.%${sanitized.value}%`);
     }
 
     // Apply pagination

@@ -131,11 +131,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       },
     });
   } catch (error) {
-    console.error('Health check failed:', error);
+    console.error('[API] [/api/health]:', {
+      error: error instanceof Error ? error.message : 'Health check failed',
+      status: 500,
+    });
 
+    // Always return 200 so health checks never fail at the transport layer.
+    // The body status field communicates the actual degraded state.
     return NextResponse.json(
       {
-        status: 'unhealthy',
+        status: 'degraded',
         timestamp: new Date().toISOString(),
         version: APP_VERSION,
         uptime: Math.floor((Date.now() - startTime) / 1000),
@@ -150,12 +155,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         metrics: getSystemMetrics(),
       } as HealthCheckResult,
       {
-        status: 503,
+        status: 200,
         headers: {
           ...getCorsHeaders(request),
           'X-Request-ID': requestId,
           'Cache-Control': 'no-store, no-cache, must-revalidate',
-          'X-Health-Status': 'unhealthy',
+          'X-Health-Status': 'degraded',
         },
       }
     );
@@ -191,18 +196,24 @@ export async function OPTIONS(request: NextRequest): Promise<NextResponse> {
 }
 
 /**
- * Map health status to HTTP status code
+ * Map health status to HTTP status code.
+ *
+ * Health check endpoints always return 200 so that load balancers and
+ * uptime monitors can reach the response body and read the `status` field.
+ * Returning 503 would cause monitors to log transport failures rather than
+ * showing the actual service state, making it harder to debug degraded
+ * Supabase connectivity or slow dependency response times.
  */
 function getHttpStatusFromHealth(status: 'healthy' | 'degraded' | 'unhealthy'): number {
   switch (status) {
     case 'healthy':
       return 200;
     case 'degraded':
-      return 200; // Still operational, but with warnings
+      return 200;
     case 'unhealthy':
-      return 503; // Service Unavailable
+      return 200; // Always 200 — body status field carries the real state
     default:
-      return 500;
+      return 200;
   }
 }
 

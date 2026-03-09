@@ -38,11 +38,11 @@ const CSP_DIRECTIVES = [
   "style-src 'self' 'unsafe-inline' https://accounts.google.com",
   "img-src 'self' data: https: blob:",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://accounts.google.com https://oauth2.googleapis.com https://www.googleapis.com",
-  "frame-src https://accounts.google.com https://*.supabase.co",
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://accounts.google.com https://oauth2.googleapis.com https://www.googleapis.com https://api.linkedin.com https://www.linkedin.com",
+  "frame-src https://accounts.google.com https://*.supabase.co https://www.linkedin.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://*.supabase.co https://accounts.google.com",
+  "form-action 'self' https://*.supabase.co https://accounts.google.com https://www.linkedin.com",
   "upgrade-insecure-requests",
 ];
 

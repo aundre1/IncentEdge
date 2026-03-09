@@ -44,13 +44,16 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Error fetching organization:', error);
+      console.error('[API] [GET /api/organizations]:', { error: error.message, status: 500 });
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ data: organization });
   } catch (error) {
-    console.error('Error in GET /api/organizations:', error);
+    console.error('[API] [GET /api/organizations]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -99,7 +102,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (createError) {
-      console.error('Error creating organization:', createError);
+      console.error('[API] [POST /api/organizations]:', { error: createError.message, status: 500 });
       return NextResponse.json({ error: createError.message }, { status: 500 });
     }
 
@@ -110,7 +113,10 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id);
 
     if (updateError) {
-      console.error('Error updating profile:', updateError);
+      console.error('[API] [POST /api/organizations] profile link failed:', {
+        error: updateError.message,
+        status: 500,
+      });
       // Rollback organization creation
       await supabase.from('organizations').delete().eq('id', organization.id);
       return NextResponse.json({ error: 'Failed to link organization to profile' }, { status: 500 });
@@ -128,7 +134,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ data: organization }, { status: 201 });
   } catch (error) {
-    console.error('Error in POST /api/organizations:', error);
+    console.error('[API] [POST /api/organizations]:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 500,
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

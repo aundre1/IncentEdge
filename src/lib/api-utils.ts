@@ -116,7 +116,12 @@ export function handleError(
     path?: string;
   }
 ): NextResponse<ApiError> {
-  console.error('API Error:', error);
+  console.error('[API] [handleError]:', {
+    error: error instanceof Error ? error.message : String(error),
+    path: options?.path,
+    requestId: options?.requestId,
+    status: 500,
+  });
 
   if (error instanceof Error) {
     // Don't expose internal error messages in production
