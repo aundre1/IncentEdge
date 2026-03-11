@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://incentedge.com/og-image.png',
+        url: 'https://incentedge.com/og-image.svg',
         width: 1200,
         height: 630,
         alt: 'IncentEdge — IRA Tax Credit Discovery & Monetization Platform',
