@@ -1,6 +1,69 @@
 'use client';
 
 import * as React from 'react';
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How much does IncentEdge cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'IncentEdge offers three plans. Starter starts at $299/month with 5 projects and 25 analyses. Pro is $799/month with unlimited projects and analyses plus API access. Enterprise pricing is custom. All plans include a 14-day free trial, and early-adopter pilot pricing saves 50% for the first 12 months.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What IRA tax credits does IncentEdge cover?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'IncentEdge covers all major Inflation Reduction Act federal tax credits including Section 45L (new energy efficient homes), 179D (energy efficient commercial buildings), ITC (Investment Tax Credit), PTC (Production Tax Credit), 48C (advanced manufacturing), 45Q (carbon capture), and 45V (clean hydrogen). We also cover 217,000+ state and local programs across all 50 states.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is included in the free trial?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The 14-day free trial gives you full access to your selected plan features. No credit card is required to start. You can cancel anytime during the trial without being charged.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does IncentEdge offer Direct Pay (Elective Pay) support for IRA credits?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Pro and Enterprise plans include our Direct Pay checker, which identifies which IRA credits your projects qualify for under the elective pay mechanism — allowing tax-exempt entities like nonprofits, municipalities, and tribal governments to receive cash payments instead of non-refundable credits.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does IncentEdge provide API access for developers?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Pro and Enterprise plans include full API access to the IncentEdge incentive database. Developers can query 217,000+ programs programmatically, integrate eligibility screening into their own tools, and receive structured JSON responses. Documentation is available at incentedge.com/developers.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is IncentEdge secure and SOC 2 compliant?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. IncentEdge uses bank-level AES-256 encryption for data at rest and TLS 1.3 for data in transit. We are SOC 2 Type II compliant and never share your project data with third parties.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I upgrade or downgrade my plan later?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. You can upgrade or downgrade at any time. Upgrades are prorated for the remaining billing period. Downgrades take effect at the next billing date.',
+      },
+    },
+  ],
+};
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -133,6 +196,10 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+      />
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-slate-900/80">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">

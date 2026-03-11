@@ -1,0 +1,24 @@
+# IncentEdge — IRA Tax Credit Intelligence Platform
+# https://incentedge.com
+
+## About
+IncentEdge is an AI-powered SaaS platform for discovering, applying for, and monetizing IRA (Inflation Reduction Act) tax credits and clean energy incentives. We cover 217,000+ federal, state, and local programs.
+
+## Key Pages
+- Homepage: https://incentedge.com
+- Incentive Database: https://incentedge.com/incentives
+- Federal Credits: https://incentedge.com/incentives/federal
+- Developer API: https://incentedge.com/developers
+- Pricing: https://incentedge.com/pricing
+- IRA Guide: https://incentedge.com/resources/ira-guide
+
+## Coverage
+Federal programs: Section 45L, 179D, ITC, PTC, 48C, 45Q, 45V, LIHTC, NMTC, PACE
+State programs: All 50 states
+Total programs: 217,000+
+
+## Target Users
+- Clean energy developers
+- Finance teams and tax equity investors
+- Real estate developers
+- Engineering, procurement, and construction firms
