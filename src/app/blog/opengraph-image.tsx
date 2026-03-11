@@ -1,0 +1,128 @@
+import { ImageResponse } from 'next/og'
+
+export const runtime = 'edge'
+export const alt = 'IncentEdge Blog — IRA Tax Credit Guides & Insights'
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
+
+const STATS = [
+  { value: '20+', label: 'Articles' },
+  { value: 'Weekly', label: 'Updates' },
+  { value: 'Free', label: 'Access' },
+] as const
+
+export default function Image() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          background: '#112E3C',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          padding: '80px',
+          fontFamily: 'system-ui, sans-serif',
+        }}
+      >
+        {/* Logo mark */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #4A99A8 0%, #2d7a87 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '22px',
+              fontWeight: '800',
+              color: 'white',
+            }}
+          >
+            IE
+          </div>
+          <span
+            style={{
+              color: '#4A99A8',
+              fontSize: '28px',
+              fontWeight: '700',
+              letterSpacing: '-0.5px',
+            }}
+          >
+            IncentEdge
+          </span>
+        </div>
+
+        {/* Main headline */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <span
+            style={{
+              fontSize: '20px',
+              fontWeight: '700',
+              color: '#4A99A8',
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+            }}
+          >
+            INCENTEDGE BLOG
+          </span>
+          <div
+            style={{
+              fontSize: '60px',
+              fontWeight: '800',
+              color: 'white',
+              lineHeight: 1.05,
+              letterSpacing: '-1px',
+              maxWidth: '900px',
+            }}
+          >
+            IRA Tax Credit Guides &amp; Insights
+          </div>
+          <div
+            style={{
+              fontSize: '28px',
+              color: '#7cbfc9',
+              fontWeight: '400',
+              maxWidth: '800px',
+            }}
+          >
+            Expert analysis for developers and finance teams
+          </div>
+        </div>
+
+        {/* Bottom stats bar */}
+        <div style={{ display: 'flex', gap: '48px', alignItems: 'center', width: '100%' }}>
+          {STATS.map((stat) => (
+            <div
+              key={stat.value}
+              style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+            >
+              <span style={{ fontSize: '32px', fontWeight: '800', color: '#4A99A8' }}>
+                {stat.value}
+              </span>
+              <span style={{ fontSize: '18px', color: '#7cbfc9' }}>{stat.label}</span>
+            </div>
+          ))}
+          <div
+            style={{
+              marginLeft: 'auto',
+              background: '#4A99A8',
+              color: 'white',
+              padding: '14px 32px',
+              borderRadius: '8px',
+              fontSize: '20px',
+              fontWeight: '700',
+            }}
+          >
+            incentedge.com/blog
+          </div>
+        </div>
+      </div>
+    ),
+    { ...size }
+  )
+}

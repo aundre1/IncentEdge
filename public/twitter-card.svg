@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <!-- Background -->
+  <rect width="1200" height="600" fill="#112E3C"/>
+
+  <!-- Logo box -->
+  <rect x="80" y="70" width="56" height="56" rx="10" fill="#2d7a87"/>
+  <text x="108" y="106" text-anchor="middle" font-family="system-ui" font-weight="800" font-size="22" fill="white">IE</text>
+
+  <!-- Brand name -->
+  <text x="152" y="108" font-family="system-ui" font-weight="700" font-size="28" fill="#4A99A8">IncentEdge</text>
+
+  <!-- Main headline -->
+  <text x="80" y="270" font-family="system-ui" font-weight="800" font-size="58" fill="white">IRA Tax Credit Discovery</text>
+  <text x="80" y="344" font-family="system-ui" font-weight="800" font-size="58" fill="white">&amp; Monetization Platform</text>
+
+  <!-- Subheadline -->
+  <text x="80" y="396" font-family="system-ui" font-weight="400" font-size="26" fill="#7cbfc9">217,000+ programs. 60-second scan. AI-powered.</text>
+
+  <!-- Stats -->
+  <text x="80" y="494" font-family="system-ui" font-weight="800" font-size="30" fill="#4A99A8">$400B+</text>
+  <text x="80" y="518" font-family="system-ui" font-weight="400" font-size="17" fill="#7cbfc9">IRA Ecosystem</text>
+
+  <text x="270" y="494" font-family="system-ui" font-weight="800" font-size="30" fill="#4A99A8">217K+</text>
+  <text x="270" y="518" font-family="system-ui" font-weight="400" font-size="17" fill="#7cbfc9">Programs</text>
+
+  <text x="435" y="494" font-family="system-ui" font-weight="800" font-size="30" fill="#4A99A8">100+</text>
+  <text x="435" y="518" font-family="system-ui" font-weight="400" font-size="17" fill="#7cbfc9">Hours Saved</text>
+
+  <!-- CTA pill -->
+  <rect x="988" y="470" width="132" height="52" rx="8" fill="#4A99A8"/>
+  <text x="1054" y="502" text-anchor="middle" font-family="system-ui" font-weight="700" font-size="20" fill="white">incentedge.com</text>
+</svg>
