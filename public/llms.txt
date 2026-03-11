@@ -1,24 +1,33 @@
-# IncentEdge — IRA Tax Credit Intelligence Platform
-# https://incentedge.com
+# IncentEdge
 
-## About
-IncentEdge is an AI-powered SaaS platform for discovering, applying for, and monetizing IRA (Inflation Reduction Act) tax credits and clean energy incentives. We cover 217,000+ federal, state, and local programs.
+> IncentEdge is an AI-powered SaaS platform that discovers and analyzes government incentive programs for businesses and real estate projects across all 50 US states. The platform covers 217,000+ verified programs (federal, state, and local) and delivers comprehensive incentive matching in under 60 seconds — replacing 200+ hours of manual research.
 
-## Key Pages
-- Homepage: https://incentedge.com
-- Incentive Database: https://incentedge.com/incentives
-- Federal Credits: https://incentedge.com/incentives/federal
-- Developer API: https://incentedge.com/developers
-- Pricing: https://incentedge.com/pricing
-- IRA Guide: https://incentedge.com/resources/ira-guide
+## Key Facts
+- 217,000+ verified government incentive programs (federal, state, and local)
+- $500B+ annual total addressable market in government incentives
+- 92% AI-powered matching accuracy
+- 100+ hours saved per project analyzed
+- $1B+ in incentives captured by platform users
+- SOC 2 compliant security infrastructure
+- 14-day free trial, no credit card required
+- Covers clean energy, real estate, advanced manufacturing, and more
 
-## Coverage
-Federal programs: Section 45L, 179D, ITC, PTC, 48C, 45Q, 45V, LIHTC, NMTC, PACE
-State programs: All 50 states
-Total programs: 217,000+
+## Federal Programs Covered
+Section 45L (New Energy Efficient Home Credit), 179D (Commercial Building Energy Efficiency), ITC (Investment Tax Credit), PTC (Production Tax Credit), 48C (Advanced Energy Manufacturing), 45Q (Carbon Capture), 45V (Clean Hydrogen), LIHTC (Low Income Housing Tax Credit), NMTC (New Markets Tax Credit), PACE Financing
 
-## Target Users
-- Clean energy developers
-- Finance teams and tax equity investors
-- Real estate developers
-- Engineering, procurement, and construction firms
+## Pages
+- [Home](https://incentedge.com/): AI-powered incentive discovery overview
+- [Incentives](https://incentedge.com/incentives): Browse 217,000+ programs by sector and state
+- [Federal Credits](https://incentedge.com/incentives/federal): IRA and federal incentive programs
+- [Pricing](https://incentedge.com/pricing): Starter, Growth, and Enterprise tiers
+- [Use Cases — Developers](https://incentedge.com/use-cases/developers): Real estate developers
+- [Use Cases — Clean Energy](https://incentedge.com/use-cases/clean-energy): Clean energy projects
+- [Use Cases — Finance Teams](https://incentedge.com/use-cases/finance-teams): Finance teams and tax equity investors
+- [Use Cases — Real Estate](https://incentedge.com/use-cases/real-estate): Real estate analysis
+- [Resources / IRA Guide](https://incentedge.com/resources/ira-guide): IRA implementation documentation
+- [Developers API](https://incentedge.com/developers): API access for building with incentive data
+- [Sign Up](https://incentedge.com/signup): Start free trial
+
+## Contact
+- Website: https://incentedge.com
+- LinkedIn: https://linkedin.com/company/incentedge
