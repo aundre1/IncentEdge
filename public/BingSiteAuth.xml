@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+  SETUP REQUIRED:
+  1. Go to https://www.bing.com/webmasters/
+  2. Add your site: https://incentedge.com
+  3. Choose "XML file" verification
+  4. Replace this file content with the one Bing gives you
+-->
+<users>
+  <user>REPLACE_WITH_BING_VERIFICATION_CODE</user>
+</users>

@@ -13,7 +13,10 @@
     "db:import:tier1": "tsx scripts/import-programs.ts --tier 1",
     "db:import:dry": "tsx scripts/import-programs.ts --dry-run",
     "db:import:all": "tsx scripts/import-programs.ts",
-    "db:verify": "tsx scripts/verify-import.ts"
+    "db:verify": "tsx scripts/verify-import.ts",
+    "seo:verify": "node scripts/verify-seo.mjs",
+    "seo:verify:prod": "node scripts/verify-seo.mjs https://incentedge.com",
+    "seo:submit": "curl -s -X POST http://localhost:3000/api/seo/submit-sitemap | node -e \"process.stdin.resume(); let d=''; process.stdin.on('data',c=>d+=c); process.stdin.on('end',()=>console.log(JSON.parse(d)))\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
