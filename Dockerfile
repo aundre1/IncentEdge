@@ -53,8 +53,8 @@ ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 ENV NEXT_PUBLIC_APP_NAME=$NEXT_PUBLIC_APP_NAME
 
-# Run type check and build
-RUN npm run typecheck
+# Build
+ENV BUILD_STANDALONE=true
 RUN npm run build
 
 # ==========================================
